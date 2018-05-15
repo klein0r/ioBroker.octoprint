@@ -1,21 +1,21 @@
 <!--
-    ioBroker.template Widget-Set
+    ioBroker.octoprint Widget-Set
 
     version: "0.5.0"
 
-    Copyright 10.2015-2016 @@Author@@<@@email@@>
+    Copyright 10.2015-2016 Matthias Kleine<info@haus-automatisierung.com>
 -->
 <!-- here you can include so many css as you want -->
-<link rel="stylesheet" href="widgets/template/css/style.css" />
+<link rel="stylesheet" href="widgets/octoprint/css/style.css" />
 <!-- here you can include so many js-files as you want -->
-<script type="text/javascript" src="widgets/template/js/template.js"></script>
+<script type="text/javascript" src="widgets/octoprint/js/octoprint.js"></script>
 
 <!-- the full description of format in data-vis-attrs can be found here: 
     https://github.com/ioBroker/ioBroker.vis/blob/master/www/js/visEditInspect.js#L39 
 	
     ----------------------------------------------------------	
 	Mandatory XML attributes:
-		id="tplTemplateWIDGETNAME"
+		id="tplOctoprintWIDGETNAME"
         type="text/ejs"
         class="vis-tpl"
 		
@@ -75,7 +75,7 @@
 	--------------------------------------------------------
 	data-vis-prev
 		Html code used as preview of this widget. If widget is complex you can just use image as preview: 
-		data-vis-prev='<img src="widgets/hqwidgets/img/prev/Prev_tplTemplateShowInstance.png"></img>'
+		data-vis-prev='<img src="widgets/hqwidgets/img/prev/Prev_tplOctoprintShowInstance.png"></img>'
 		Of course the image must exist.
 
 	--------------------------------------------------------
@@ -100,17 +100,17 @@
     You can do "if" conditions and "for" cycles.
 
 -->
-<script id="tplTemplateShowInstance"
+<script id="tplOctoprintShowInstance"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<div id="prev_tplMysetShowInstance" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev " style="width: 280px; height: 159px;" > <div class="myset-class vis-widget-prev-body " style="padding:2px"> OID: hm-rpc.0.EEQ0006629.1.STATE<br> OID value: true<br> Color: <span style="color: rgb(128, 0, 0);">#800000</span><br> htmlText: <textarea readonly="" style="width:100%">asda</textarea></div>'
         data-vis-attrs="oid/id;myColor/color;htmlText/text;"
-        data-vis-attrs0="group.extraTemplate;extraAttr"
-        data-vis-set="template"
+        data-vis-attrs0="group.extraOctoprint;extraAttr"
+        data-vis-set="octoprint"
         data-vis-type="helper"
         data-vis-name="Show instance">
     <div class="vis-widget <%== this.data.attr('class') %>" style="width:230px; height:210px;" id="<%= this.data.attr('wid') %>" >
-        <div class="template-class vis-widget-body <%== this.data.attr('class') %>" style="padding:2px" >
+        <div class="octoprint-class vis-widget-body <%== this.data.attr('class') %>" style="padding:2px" >
             OID: <%= this.data.attr('oid') %><br>
             OID value: <%== vis.states[this.data.attr('oid') + '.val'] %><br>
 			Color: <span style="color: <%= this.data.attr('myColor') %>"><%= this.data.attr('myColor') %></span><br>
@@ -121,17 +121,17 @@
     </div>
 </script>
 
-<script id="tplTemplateHelper"
+<script id="tplOctoprintHelper"
         type="text/ejs"
         class="vis-tpl"
-        data-vis-prev='<div id="prev_tplTemplateHelper" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev " style="width: 280px; height: 159px;" > <div class="myset-class vis-widget-prev-body " style="padding:2px"> OID: hm-rpc.0.EEQ0006629.1.STATE<br> OID value: true<br> Color: <span style="color: rgb(128, 0, 0);">#800000</span><br> htmlText: <textarea readonly="" style="width:100%">asda</textarea></div>'
+        data-vis-prev='<div id="prev_tplOctoprintHelper" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev " style="width: 280px; height: 159px;" > <div class="myset-class vis-widget-prev-body " style="padding:2px"> OID: hm-rpc.0.EEQ0006629.1.STATE<br> OID value: true<br> Color: <span style="color: rgb(128, 0, 0);">#800000</span><br> htmlText: <textarea readonly="" style="width:100%">asda</textarea></div>'
         data-vis-attrs="oid/id;myColor/color;htmlText/text;"
-        data-vis-attrs0="group.extraTemplate;extraAttr"
-        data-vis-set="template"
+        data-vis-attrs0="group.extraOctoprint;extraAttr"
+        data-vis-set="octoprint"
         data-vis-type="helper"
         data-vis-name="Helper">
     <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>"><%
-        vis.binds.template.createWidget(this.data.wid, this.view, this.data, this.style);
+        vis.binds.octoprint.createWidget(this.data.wid, this.view, this.data, this.style);
     %></div>
 </script>
 
