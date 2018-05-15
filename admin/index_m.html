@@ -12,14 +12,14 @@
 <script type="text/javascript" src="../../lib/js/materialize.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 <script type="text/javascript" src="words.js"></script>
- <style>
-  .m .col .select-wrapper+label {
-   top: -26px;  
-  }
-     .m span{
-         font-size: 0.9em;
-     }
- </style>
+<style>
+    .m .col .select-wrapper+label {
+        top: -26px;  
+    }
+    .m span{
+        font-size: 0.9em;
+    }
+</style>
 <!-- you have to define 2 functions in the global scope: -->
 <script type="text/javascript">
 
@@ -66,59 +66,23 @@
 </script>
 </head>
 <body>
-    <!-- you have to put your config page in a div with id adapter-container -->
     <div class="m adapter-container">
         <div class="row">
-            <!-- Forms are the standard way to receive user inputted data.
-         Learn more http://materializecss.com/forms.html-->
             <div class="row">
                 <div class="input-field col s6">
-                    <img src="octoprint.png" class="logo">
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s3">
-                    <input class="value" id="test1" type="checkbox" />
-                    <label for="test1" class="translate">test1</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6 l4">
-                    <input class="value" id="myText" type="text">
-                    <label for="myText">Text</label>
-                    <span class="translate">Descriptions of the input field</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="number" class="value" id="test2" />
-                    <label for="test2" class="translate">Number</label>
-                    <!-- Important: label must come directly after input. Label is important. -->
-                    <span class="translate">test2</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input id="email" type="email" class="value validate">
-                    <label for="email" data-error="wrong" data-success="right">Email</label>
-                    <!--  You can add custom validation messages by adding either data-error or data-success attributes to your input field labels.-->
-                    <span class="translate">Verification input</span>
+                    <img src="template.png" class="logo">
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m4">
-                    <select class="value" id="mySelect">
-                        <option value="auto" class="translate">Auto</option>
-                        <option value="manual" class="translate">Manual</option>
-                    </select>
-                    <label for="mySelect" class="translate">My select</label>
-                    <!-- Important: label must come directly after select. Label is important. -->
+                    <input class="value" id="octoprintIp" type="text">
+                    <label for="myText" class="translate">IP</label>
+                    <span class="translate">IP of your OctoPrint installation</span>
                 </div>
                 <div class="input-field col s12 m8">
-                    <i class="material-icons prefix">mode_edit</i>
-                    <textarea id="Textarea" class="value materialize-textarea"></textarea>
-                    <label for="Textarea">Message</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <p class="translate">on save adapter restarts with new config immediately</p>
+                    <input class="value" id="octoprintApiKey" type="text">
+                    <label for="myText" class="translate">API-Key</label>
+                    <span class="translate">API-Key - can be found in the settings section of OctoPrint</span>
                 </div>
             </div>
         </div>

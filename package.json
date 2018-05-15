@@ -1,7 +1,7 @@
 {
   "name": "iobroker.octoprint",
-  "version": "0.6.0",
-  "description": "ioBroker octoprint Adapter",
+  "version": "0.0.1",
+  "description": "ioBroker OctoPrint Adapter",
   "author": {
     "name": "Matthias Kleine",
     "email": "info@haus-automatisierung.com"
@@ -12,7 +12,7 @@
       "email": "info@haus-automatisierung.com"
     }
   ],
-  "homepage": "https://github.com/ioBroker/ioBroker.octoprint",
+  "homepage": "https://github.com/klein0r/ioBroker.octoprint",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -22,9 +22,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.octoprint"
+    "url": "https://github.com/klein0r/ioBroker.octoprint"
   },
-  "dependencies": {},
+  "dependencies": {
+      "request": "^2.72.0"
+  },
   "devDependencies": {
     "gulp": "^3.9.1",
     "mocha": "^4.1.0",
@@ -35,7 +37,7 @@
     "test": "node node_modules/mocha/bin/mocha --exit"
   },
   "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.octoprint/issues"
+    "url": "https://github.com/klein0r/ioBroker.octoprint/issues"
   },
   "readmeFilename": "README.md"
 }
