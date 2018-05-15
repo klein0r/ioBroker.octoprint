@@ -33,16 +33,31 @@ if (state && !state.ack) {
         // No ack = changed by user
         if (conntected) {
             if (id.match(new RegExp(adapter.namespace + '\.temperature\.tool[0-9]{1}\.target'))) {
-                adapter.log.info('changing target temperature to ' + state.val);
+                adapter.log.info('changing target tool temperature to ' + state.val);
 
                 buildRequest(
                     'printer/tool',
-                    function(content) {},
+                    function(content) {
+                        refreshState();
+                    },
                     {
                         command: 'target',
                         targets: {
                             tool0: state.val
                         }
+                    }
+                );
+            } else if (id == adapter.namespace + 'temperature.bed.target') {
+                adapter.log.info('changing target bed temperature to ' + state.val);
+
+                buildRequest(
+                    'printer/bed',
+                    function(content) {
+                        refreshState();
+                    },
+                    {
+                        command: 'target',
+                        target: state.val
                     }
                 );
             }
