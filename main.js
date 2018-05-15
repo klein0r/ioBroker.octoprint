@@ -35,6 +35,7 @@ if (state && !state.ack) {
             if (id.match(new RegExp(adapter.namespace + '\.temperature\.tool[0-9]{1}\.target'))) {
                 adapter.log.info('changing target tool temperature to ' + state.val);
 
+                // TODO: Check which tool has been changed
                 buildRequest(
                     'printer/tool',
                     function(content) {
@@ -47,7 +48,7 @@ if (state && !state.ack) {
                         }
                     }
                 );
-            } else if (id == adapter.namespace + 'temperature.bed.target') {
+            } else if (id == adapter.namespace + '.temperature.bed.target') {
                 adapter.log.info('changing target bed temperature to ' + state.val);
 
                 buildRequest(
@@ -60,7 +61,63 @@ if (state && !state.ack) {
                         target: state.val
                     }
                 );
+            } else if (id == adapter.namespace + '.command.printer') {
+
+                var allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
+                var allowedCommandsPrinter = ['home'];
+
+                if (allowedCommandsConnection.indexOf(state.val) > -1) {
+                    adapter.log.info('sending printer connection command: ' + state.val);
+
+                    buildRequest(
+                        'connection',
+                        function(content) {
+                            refreshState();
+                        },
+                        {
+                            command: state.val
+                        }
+                    );
+                } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
+                    adapter.log.info('sending printer command: ' + state.val);
+
+                    buildRequest(
+                        'printer/printhead',
+                        function(content) {
+                            refreshState();
+                        },
+                        {
+                            command: state.val,
+                            axes: ['x', 'y', 'z']
+                        }
+                    );
+                    
+                } else {
+                    adapter.log.error('printer command not allowed: ' + state.val);
+                }
+            } else if (id == adapter.namespace + '.command.printjob') {
+
+                var allowedCommands = ['start', 'cancel', 'restart', 'pause'];
+
+                if (allowedCommands.indexOf(state.val) > -1) {
+                    adapter.log.info('sending printer command: ' + state.val);
+
+                    buildRequest(
+                        'job',
+                        function(content) {
+                            refreshState();
+                        },
+                        {
+                            command: state.val
+                        }
+                    );
+                } else {
+                    adapter.log.error('print job command not allowed: ' + state.val);
+                }
+                
             }
+        } else {
+            adapter.log.error('OctoPrint API not connected');
         }
     }
 });
@@ -108,11 +165,17 @@ function refreshState()
 
     if (conntected) {
         buildRequest(
+            'connection',
+            function (content) {
+                printerStatus = content.current.state;
+                adapter.setState('printer_status', {val: printerStatus, ack: true});
+            },
+            null
+        );
+
+        buildRequest(
             'printer',
             function (content) {
-                printerStatus = content.state.text;
-                adapter.setState('printer_status', {val: printerStatus, ack: true});
-
                 for (var key in content.temperature) {
                     var obj = content.temperature[key];
 
@@ -169,6 +232,31 @@ function refreshState()
                         });
                         adapter.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
                     }
+                }
+            },
+            null
+        );
+
+        buildRequest(
+            'job',
+            function (content) {
+                if (content.job) {
+                    adapter.setState('printjob.file.name', {val: content.job.file.name, ack: true});
+                    adapter.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
+                    adapter.setState('printjob.file.size', {val: content.job.file.size, ack: true});
+                    adapter.setState('printjob.file.date', {val: content.job.file.date, ack: true});
+
+                    if (content.job.filament) {
+                        adapter.setState('printjob.filament.length', {val: content.job.filament.length, ack: true});
+                        adapter.setState('printjob.filament.volume', {val: content.job.filament.volume, ack: true});
+                    }
+                }
+
+                if (content.progress) {
+                    adapter.setState('printjob.progress.completion', {val: content.progress.completion, ack: true});
+                    adapter.setState('printjob.progress.filepos', {val: content.progress.filepos, ack: true});
+                    adapter.setState('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
+                    adapter.setState('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                 }
             },
             null

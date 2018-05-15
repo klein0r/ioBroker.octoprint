@@ -9,8 +9,10 @@ Adapter to connect OctoPrint to ioBroker
 
 - Get version information
 - Get printer information
+- Get current print job information
 - Set tool temperature
 - Set bed temperature
+- Connect, disconnect and home printer by command
 
 ## Changelog
 

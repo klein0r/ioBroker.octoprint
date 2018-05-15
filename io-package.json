@@ -54,6 +54,38 @@
             "native": {}
         },
         {
+          "_id":  "command",
+          "type": "channel",
+          "common": {
+            "name": "Command"
+          },
+          "native": {}
+        },
+        {
+            "_id": "command.printer",
+            "type": "state",
+            "common": {
+                "name": "Printer Command",
+                "type": "string",
+                "role": "command",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "command.printjob",
+            "type": "state",
+            "common": {
+                "name": "Print job Command",
+                "type": "string",
+                "role": "command",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
           "_id":  "info",
           "type": "channel",
           "common": {
@@ -114,6 +146,158 @@
             "name": "Temperature information"
           },
           "native": {}
+        },
+        {
+          "_id":  "printjob",
+          "type": "channel",
+          "common": {
+            "name": "Print job information"
+          },
+          "native": {}
+        },
+        {
+          "_id":  "printjob.file",
+          "type": "channel",
+          "common": {
+            "name": "Print job file information"
+          },
+          "native": {}
+        },
+        {
+            "_id": "printjob.file.name",
+            "type": "state",
+            "common": {
+                "name": "File name",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.file.origin",
+            "type": "state",
+            "common": {
+                "name": "File origin",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.file.size",
+            "type": "state",
+            "common": {
+                "name": "File origin",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.file.date",
+            "type": "state",
+            "common": {
+                "name": "File origin",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+          "_id":  "printjob.filament",
+          "type": "channel",
+          "common": {
+            "name": "Print job filament information"
+          },
+          "native": {}
+        },
+        {
+            "_id": "printjob.filament.length",
+            "type": "state",
+            "common": {
+                "name": "Filament length",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.filament.volume",
+            "type": "state",
+            "common": {
+                "name": "Filament volume",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+          "_id":  "printjob.progress",
+          "type": "channel",
+          "common": {
+            "name": "Print job progress information"
+          },
+          "native": {}
+        },
+        {
+            "_id": "printjob.progress.completion",
+            "type": "state",
+            "common": {
+                "name": "Progress completion",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.progress.filepos",
+            "type": "state",
+            "common": {
+                "name": "Progress filepos",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.progress.printtime",
+            "type": "state",
+            "common": {
+                "name": "Progress print time",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "printjob.progress.printtime_left",
+            "type": "state",
+            "common": {
+                "name": "Progress print time left",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
         }
     ]
 }
