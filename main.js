@@ -2,26 +2,25 @@
 /*jslint node: true */
 'use strict';
 
-var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
+var utils = require(__dirname + '/lib/utils');
+var request = require('request');
+
 var adapter = new utils.Adapter('octoprint');
 
-// is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
     try {
-        adapter.log.info('cleaned everything up...');
+        adapter.setState('info.connection', false, true);
         callback();
     } catch (e) {
         callback();
     }
 });
 
-// is called if a subscribed object changes
 adapter.on('objectChange', function (id, obj) {
     // Warning, obj can be null if it was deleted
     adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
 
-// is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
     // Warning, state can be null if it was deleted
     adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
@@ -32,7 +31,6 @@ adapter.on('stateChange', function (id, state) {
     }
 });
 
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
     if (typeof obj === 'object' && obj.message) {
         if (obj.command === 'send') {
@@ -45,12 +43,55 @@ adapter.on('message', function (obj) {
     }
 });
 
-// is called when databases are connected and adapter received configuration.
-// start here!
 adapter.on('ready', function () {
     main();
 });
 
-function main() {
-    adapter.log.info('config test1: '    + adapter.config.test1);
+function main() {    
+    // Refresh State every Minute
+    refreshState();
+    setInterval(refreshState, 60000);
+}
+
+function refreshState()
+{
+    adapter.log.debug('refreshing OctoPrint state');
+
+    buildRequest(
+        'version',
+        function(content) {
+            adapter.setState('info.connection', true, true);
+
+            adapter.setState('meta.version', {val: content.server, ack: true});
+            adapter.setState('meta.api_version', {val: content.api, ack: true});
+        },
+        null
+    );
+}
+
+function buildRequest(service, callback, data)
+{
+    var url = 'http://' + adapter.config.octoprintIp + ':5000/api/' + service;
+
+    adapter.log.info('sending request to ' + url + ' with data: ' + JSON.stringify(data));
+
+    request(
+        {
+            url: url,
+            method: data ? "PUT" : "GET",
+            json: data ? data : true,
+            headers: {
+                "X-Api-Key": adapter.config.octoprintApiKey
+            }
+        },
+        function(error, response, content) {
+            if (!error && response.statusCode == 200) {
+               callback(content);
+            } else if (error) {
+                adapter.log.error(error);
+            } else {
+                adapter.log.error('Status Code: ' + response.statusCode + ' / Content: ' + content);
+            }
+        }
+    );
 }

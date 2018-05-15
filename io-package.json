@@ -31,14 +31,69 @@
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
         "keywords": ["octoprint"],
+        "license": "MIT",
         "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
         "loglevel": "info",
-        "type": "general"
+        "type": "hardware"
     },
     "native": {
         
     },
-    "objects": [
-
+    "objects": [],
+    "instanceObjects": [
+        {
+          "_id":  "info",
+          "type": "channel",
+          "common": {
+            "name": "Information"
+          },
+          "native": {}
+        },
+        {
+          "_id":  "info.connection",
+          "type": "state",
+          "common": {
+            "role":  "indicator.connected",
+            "name":  "If connected to OctoPrint",
+            "type":  "boolean",
+            "read":  true,
+            "write": false,
+            "def":   false
+          },
+          "native": {}
+        },
+        {
+            "_id": "meta",
+            "type": "channel",
+            "common": {
+                "role": "",
+                "name": "Meta information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "meta.version",
+            "type": "state",
+            "common": {
+                "name": "Version",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "meta.api_version",
+            "type": "state",
+            "common": {
+                "name": "API version",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        }
     ]
 }
