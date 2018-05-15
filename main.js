@@ -7,9 +7,14 @@ var request = require('request');
 
 var adapter = new utils.Adapter('octoprint');
 
+var conntected = false;
+var printerStatus = null;
+
 adapter.on('unload', function (callback) {
     try {
         adapter.setState('info.connection', false, true);
+        conntected = false;
+
         callback();
     } catch (e) {
         callback();
@@ -61,31 +66,93 @@ function refreshState()
         'version',
         function(content) {
             adapter.setState('info.connection', true, true);
+            conntected = true;
 
             adapter.setState('meta.version', {val: content.server, ack: true});
             adapter.setState('meta.api_version', {val: content.api, ack: true});
         },
         null
     );
+    
+    if (conntected) {
+        buildRequest(
+            'printer?history=true&limit=1',
+            function(content) {
+                
+                for (var key in content.temperature) {
+                    var obj = content.temperature[key];
+
+                    if (key.indexOf('tool') > -1) { // Tool information
+
+                        // Create tool channel
+                        adapter.setObjectNotExists('temperature.' + key, {
+                            type: 'channel',
+                            common: {
+                                name: key,
+                            },
+                            native: {}
+                        });
+
+                        // Set actual temperature
+                        adapter.setObjectNotExists('temperature.' + key + '.actual', {
+                            type: 'state',
+                            common: {
+                                name: 'Actual',
+                                type: 'number',
+                                role: 'value'
+                            },
+                            native: {}
+                        });
+                        adapter.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
+
+                        // Set target temperature
+                        adapter.setObjectNotExists('temperature.' + key + '.target', {
+                            type: 'state',
+                            common: {
+                                name: 'Target',
+                                type: 'number',
+                                role: 'value'
+                            },
+                            native: {}
+                        });
+                        adapter.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
+
+                        // Set offset temperature
+                        adapter.setObjectNotExists('temperature.' + key + '.offset', {
+                            type: 'state',
+                            common: {
+                                name: 'Offset',
+                                type: 'number',
+                                role: 'value'
+                            },
+                            native: {}
+                        });
+                        adapter.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
+                    }
+                }
+            },
+            null
+        );
+    }
 }
 
 function buildRequest(service, callback, data)
 {
-    var url = 'http://' + adapter.config.octoprintIp + ':5000/api/' + service;
+    var url = 'http://' + adapter.config.octoprintIp + ':' + adapter.config.octoprintPort + '/api/' + service;
 
     adapter.log.info('sending request to ' + url + ' with data: ' + JSON.stringify(data));
 
     request(
         {
             url: url,
-            method: data ? "PUT" : "GET",
+            method: data ? "POST" : "GET",
             json: data ? data : true,
             headers: {
                 "X-Api-Key": adapter.config.octoprintApiKey
             }
         },
         function(error, response, content) {
-            if (!error && response.statusCode == 200) {
+            if (!error && (response.statusCode == 200 || response.statusCode == 204)) {
                callback(content);
             } else if (error) {
                 adapter.log.error(error);

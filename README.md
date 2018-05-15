@@ -5,6 +5,11 @@
 
 Adapter to connect OctoPrint to ioBroker
 
+## Features
+
+- Get version information
+- Get printer information
+
 ## Changelog
 
 ### 0.0.1

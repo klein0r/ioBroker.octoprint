@@ -37,7 +37,7 @@
         "type": "hardware"
     },
     "native": {
-        
+        "octoprintPort": "5000"
     },
     "objects": [],
     "instanceObjects": [
@@ -94,6 +94,14 @@
                 "write": false
             },
             "native": {}
+        },
+        {
+          "_id":  "temperature",
+          "type": "channel",
+          "common": {
+            "name": "Temperature information"
+          },
+          "native": {}
         }
     ]
 }
