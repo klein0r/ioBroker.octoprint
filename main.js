@@ -8,12 +8,14 @@ var request = require('request');
 var adapter = new utils.Adapter('octoprint');
 
 var conntected = false;
-var printerStatus = null;
+var printerStatus = 'Disconnected';
 
 adapter.on('unload', function (callback) {
     try {
         adapter.setState('info.connection', false, true);
         conntected = false;
+        printerStatus = 'Disconnected';
+        adapter.setState('printer_status', {val: printerStatus, ack: true});
 
         callback();
     } catch (e) {
@@ -27,12 +29,24 @@ adapter.on('objectChange', function (id, obj) {
 });
 
 adapter.on('stateChange', function (id, state) {
-    // Warning, state can be null if it was deleted
-    adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
+if (state && !state.ack) {
+        // No ack = changed by user
+        if (conntected) {
+            if (id.match(new RegExp(adapter.namespace + '\.temperature\.tool[0-9]{1}\.target'))) {
+                adapter.log.info('changing target temperature to ' + state.val);
 
-    // you can use the ack flag to detect if it is status (true) or command (false)
-    if (state && !state.ack) {
-        adapter.log.info('ack is not set!');
+                buildRequest(
+                    'printer/tool',
+                    function(content) {},
+                    {
+                        command: 'target',
+                        targets: {
+                            tool0: state.val
+                        }
+                    }
+                );
+            }
+        }
     }
 });
 
@@ -52,7 +66,10 @@ adapter.on('ready', function () {
     main();
 });
 
-function main() {    
+function main() {
+    adapter.subscribeStates('*');
+    adapter.setState('printer_status', {val: printerStatus, ack: true});
+
     // Refresh State every Minute
     refreshState();
     setInterval(refreshState, 60000);
@@ -64,7 +81,7 @@ function refreshState()
 
     buildRequest(
         'version',
-        function(content) {
+        function (content) {
             adapter.setState('info.connection', true, true);
             conntected = true;
 
@@ -73,16 +90,18 @@ function refreshState()
         },
         null
     );
-    
+
     if (conntected) {
         buildRequest(
-            'printer?history=true&limit=1',
-            function(content) {
-                
+            'printer',
+            function (content) {
+                printerStatus = content.state.text;
+                adapter.setState('printer_status', {val: printerStatus, ack: true});
+
                 for (var key in content.temperature) {
                     var obj = content.temperature[key];
 
-                    if (key.indexOf('tool') > -1) { // Tool information
+                    if (key.indexOf('tool') > -1 || key == 'bed') { // Tool + bed information
 
                         // Create tool channel
                         adapter.setObjectNotExists('temperature.' + key, {
@@ -99,7 +118,9 @@ function refreshState()
                             common: {
                                 name: 'Actual',
                                 type: 'number',
-                                role: 'value'
+                                role: 'value',
+                                read: true,
+                                write: false
                             },
                             native: {}
                         });
@@ -111,7 +132,9 @@ function refreshState()
                             common: {
                                 name: 'Target',
                                 type: 'number',
-                                role: 'value'
+                                role: 'value',
+                                read: true,
+                                write: true
                             },
                             native: {}
                         });
@@ -123,7 +146,9 @@ function refreshState()
                             common: {
                                 name: 'Offset',
                                 type: 'number',
-                                role: 'value'
+                                role: 'value',
+                                read: true,
+                                write: false
                             },
                             native: {}
                         });

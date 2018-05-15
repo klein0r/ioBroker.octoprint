@@ -42,6 +42,18 @@
     "objects": [],
     "instanceObjects": [
         {
+            "_id": "printer_status",
+            "type": "state",
+            "common": {
+                "name": "Printer Status",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
+        {
           "_id":  "info",
           "type": "channel",
           "common": {
