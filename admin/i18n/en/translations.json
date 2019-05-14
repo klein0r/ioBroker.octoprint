@@ -1,9 +1,7 @@
 {
-  "Auto": "Auto",
-  "Manual": "Manual",
-  "My select": "My select",
-  "on save adapter restarts with new config immediately": "on save adapter restarts with new config immediately",
-  "template adapter settings": "template adapter settings",
-  "test1": "Test 1",
-  "test2": "Test 2"
+  "IP": "IP",
+  "IP of your OctoPrint installation": "IP of your OctoPrint installation",
+  "Port": "Port",
+  "API-Key": "API-Key",
+  "API-Key - can be found in the settings section of OctoPrint": "API-Key - can be found in the settings section of OctoPrint"
 }

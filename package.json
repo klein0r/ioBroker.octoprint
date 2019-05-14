@@ -1,6 +1,6 @@
 {
   "name": "iobroker.octoprint",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ioBroker OctoPrint Adapter",
   "author": {
     "name": "Matthias Kleine",
@@ -25,12 +25,28 @@
     "url": "https://github.com/klein0r/ioBroker.octoprint"
   },
   "dependencies": {
-      "request": "^2.72.0"
+    "@iobroker/adapter-core": "^1.0.3",
+    "request": "^2.72.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "mocha": "^4.1.0",
-    "chai": "^4.1.2"
+    "@iobroker/testing": "^1.2.0",
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/gulp": "^4.0.6",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.14.6",
+    "@types/proxyquire": "^1.3.28",
+    "@types/sinon": "^7.0.11",
+    "@types/sinon-chai": "^3.2.2",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.2",
+    "mocha": "^6.1.4",
+    "proxyquire": "^2.1.0",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0"
   },
   "main": "main.js",
   "scripts": {

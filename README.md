@@ -1,7 +1,8 @@
 ![Logo](admin/octoprint.png)
 
 # ioBroker.octoprint
-=================
+
+![Number of Installations](http://iobroker.live/badges/octoprint-installed.svg) ![Number of Installations](http://iobroker.live/badges/octoprint-stable.svg)
 
 Adapter to connect OctoPrint to ioBroker
 
@@ -16,6 +17,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 0.0.2
+
+* (klein0r) fixed several issues
+
 ### 0.0.1
 
 * (klein0r) initial release
@@ -24,7 +29,7 @@ Adapter to connect OctoPrint to ioBroker
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

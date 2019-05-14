@@ -1,39 +1,43 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
+/* jshint -W097 */
+/* jshint strict: false */
+/* jslint node: true */
 'use strict';
 
-var utils = require(__dirname + '/lib/utils');
+var utils = require('@iobroker/adapter-core');
 var request = require('request');
 
-var adapter = new utils.Adapter('octoprint');
+let adapter;
+
+function startAdapter(options) {
+    options = options || {};
+    Object.assign(options, {
+        name: 'octoprint',
+        ready: () => main()
+    });
+
+    adapter = new utils.Adapter(options);
+
+    return adapter;
+};
 
 var conntected = false;
 var printerStatus = 'Disconnected';
 
 adapter.on('unload', function (callback) {
     try {
-        adapter.setState('info.connection', false, true);
-        conntected = false;
-        printerStatus = 'Disconnected';
-        adapter.setState('printer_status', {val: printerStatus, ack: true});
-
+        setPrinterOffline();
         callback();
     } catch (e) {
         callback();
     }
 });
 
-adapter.on('objectChange', function (id, obj) {
-    // Warning, obj can be null if it was deleted
-    adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
-});
-
 adapter.on('stateChange', function (id, state) {
-if (state && !state.ack) {
+    if (state && !state.ack) {
         // No ack = changed by user
         if (conntected) {
             if (id.match(new RegExp(adapter.namespace + '\.temperature\.tool[0-9]{1}\.target'))) {
-                adapter.log.info('changing target tool temperature to ' + state.val);
+                adapter.log.debug('changing target tool temperature to ' + state.val);
 
                 // TODO: Check which tool has been changed
                 buildRequest(
@@ -49,7 +53,7 @@ if (state && !state.ack) {
                     }
                 );
             } else if (id == adapter.namespace + '.temperature.bed.target') {
-                adapter.log.info('changing target bed temperature to ' + state.val);
+                adapter.log.debug('changing target bed temperature to ' + state.val);
 
                 buildRequest(
                     'printer/bed',
@@ -67,7 +71,7 @@ if (state && !state.ack) {
                 var allowedCommandsPrinter = ['home'];
 
                 if (allowedCommandsConnection.indexOf(state.val) > -1) {
-                    adapter.log.info('sending printer connection command: ' + state.val);
+                    adapter.log.debug('sending printer connection command: ' + state.val);
 
                     buildRequest(
                         'connection',
@@ -79,7 +83,7 @@ if (state && !state.ack) {
                         }
                     );
                 } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
-                    adapter.log.info('sending printer command: ' + state.val);
+                    adapter.log.debug('sending printer command: ' + state.val);
 
                     buildRequest(
                         'printer/printhead',
@@ -91,7 +95,6 @@ if (state && !state.ack) {
                             axes: ['x', 'y', 'z']
                         }
                     );
-                    
                 } else {
                     adapter.log.error('printer command not allowed: ' + state.val);
                 }
@@ -100,7 +103,7 @@ if (state && !state.ack) {
                 var allowedCommands = ['start', 'cancel', 'restart', 'pause'];
 
                 if (allowedCommands.indexOf(state.val) > -1) {
-                    adapter.log.info('sending printer command: ' + state.val);
+                    adapter.log.debug('sending printer command: ' + state.val);
 
                     buildRequest(
                         'job',
@@ -134,10 +137,6 @@ adapter.on('message', function (obj) {
     }
 });
 
-adapter.on('ready', function () {
-    main();
-});
-
 function main() {
     adapter.subscribeStates('*');
     adapter.setState('printer_status', {val: printerStatus, ack: true});
@@ -147,8 +146,14 @@ function main() {
     setInterval(refreshState, 60000);
 }
 
-function refreshState()
-{
+function setPrinterOffline() {
+    adapter.setState('info.connection', false, true);
+    conntected = false;
+    printerStatus = 'Disconnected';
+    adapter.setState('printer_status', {val: printerStatus, ack: true});
+}
+
+function refreshState() {
     adapter.log.debug('refreshing OctoPrint state');
 
     buildRequest(
@@ -196,7 +201,8 @@ function refreshState()
                             common: {
                                 name: 'Actual',
                                 type: 'number',
-                                role: 'value',
+                                role: 'value.temperature',
+                                unit: '°C',
                                 read: true,
                                 write: false
                             },
@@ -210,7 +216,8 @@ function refreshState()
                             common: {
                                 name: 'Target',
                                 type: 'number',
-                                role: 'value',
+                                role: 'value.temperature',
+                                unit: '°C',
                                 read: true,
                                 write: true
                             },
@@ -224,7 +231,8 @@ function refreshState()
                             common: {
                                 name: 'Offset',
                                 type: 'number',
-                                role: 'value',
+                                role: 'value.temperature',
+                                unit: '°C',
                                 read: true,
                                 write: false
                             },
@@ -264,11 +272,10 @@ function refreshState()
     }
 }
 
-function buildRequest(service, callback, data)
-{
+function buildRequest(service, callback, data) {
     var url = 'http://' + adapter.config.octoprintIp + ':' + adapter.config.octoprintPort + '/api/' + service;
 
-    adapter.log.info('sending request to ' + url + ' with data: ' + JSON.stringify(data));
+    adapter.log.debug('sending request to ' + url + ' with data: ' + JSON.stringify(data));
 
     request(
         {
@@ -283,10 +290,21 @@ function buildRequest(service, callback, data)
             if (!error && (response.statusCode == 200 || response.statusCode == 204)) {
                callback(content);
             } else if (error) {
-                adapter.log.error(error);
+                adapter.log.debug(error);
+
+                setPrinterOffline();
             } else {
-                adapter.log.error('Status Code: ' + response.statusCode + ' / Content: ' + content);
+                adapter.log.debug('Status Code: ' + response.statusCode + ' / Content: ' + content);
+
+                setPrinterOffline();
             }
         }
     );
+}
+
+// If started as allInOne/compact mode => return function to create instance
+if (module && module.parent) {
+    module.exports = startAdapter;
+} else {
+    startAdapter();
 }

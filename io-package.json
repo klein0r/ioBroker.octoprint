@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
+            "0.0.2": {
+                "en": "fixed several issues",
+                "de": "Viele kleine Bugs behoben"
+            },
             "0.0.1": {
                 "en": "initial adapter",
                 "de": "Initiale Version"
@@ -29,6 +33,7 @@
         "icon": "octoprint.png",
         "materialize": true,
         "enabled": true,
+        "compact": true,
         "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
         "keywords": ["octoprint"],
         "license": "MIT",
