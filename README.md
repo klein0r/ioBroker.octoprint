@@ -2,7 +2,12 @@
 
 # ioBroker.octoprint
 
-![Number of Installations](http://iobroker.live/badges/octoprint-installed.svg) ![Number of Installations](http://iobroker.live/badges/octoprint-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.octoprint.svg)](https://www.npmjs.com/package/iobroker.octoprint)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.octoprint.svg)](https://www.npmjs.com/package/iobroker.octoprint)
+[![Stable](http://iobroker.live/badges/octoprint-stable.svg)](http://iobroker.live/badges/octoprint-stable.svg)
+[![installed](http://iobroker.live/badges/octoprint-installed.svg)](http://iobroker.live/badges/octoprint-installed.svg)
+
+[![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)](https://nodei.co/npm/iobroker.octoprint/)
 
 Adapter to connect OctoPrint to ioBroker
 
