@@ -13,13 +13,15 @@ class OctoPrint extends utils.Adapter {
             ...options,
             name: 'octoprint',
         });
+
+        this.refreshStateTimeout = null;
+        this.connected = false;
+        this.printerStatus = 'Disconnected';
+
         this.on('ready', this.onReady.bind(this));
         this.on('objectChange', this.onObjectChange.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
-
-        this.connected = false;
-        this.printerStatus = 'Disconnected';
     }
 
     /**
@@ -31,7 +33,6 @@ class OctoPrint extends utils.Adapter {
 
         // Refresh State every Minute
         this.refreshState();
-        setInterval(this.refreshState.bind(this), 60000);
     }
 
     /**
@@ -41,6 +42,12 @@ class OctoPrint extends utils.Adapter {
     onUnload(callback) {
         try {
             this.setPrinterOffline(false);
+
+            if (this.refreshStateTimeout) {
+                this.log.debug('clearing refresh state timeout');
+                clearTimeout(this.refreshStateTimeout);
+            }
+
             this.log.debug('cleaned everything up...');
             callback();
         } catch (e) {
@@ -278,6 +285,9 @@ class OctoPrint extends utils.Adapter {
                 null
             );
         }
+
+        this.log.debug('re-creating refresh state timeout');
+        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 60000);
     }
 
     buildRequest(service, callback, data) {
