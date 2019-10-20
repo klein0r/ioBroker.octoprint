@@ -69,20 +69,16 @@ class OctoPrint extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     onStateChange(id, state) {
-        var self = this;
-
         if (state && !state.ack) {
             // No ack = changed by user
             if (this.connected) {
-                if (id.match(new RegExp(this.namespace + '\.temperature\.tool[0-9]{1}\.target'))) {
+                if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
                     this.log.debug('changing target tool temperature to ' + state.val);
     
                     // TODO: Check which tool has been changed
                     this.buildRequest(
                         'printer/tool',
-                        function(content) {
-                            //self.refreshState();
-                        },
+                        null,
                         {
                             command: 'target',
                             targets: {
@@ -95,9 +91,7 @@ class OctoPrint extends utils.Adapter {
     
                     this.buildRequest(
                         'printer/bed',
-                        function(content) {
-                            //self.refreshState();
-                        },
+                        null,
                         {
                             command: 'target',
                             target: state.val
@@ -105,17 +99,15 @@ class OctoPrint extends utils.Adapter {
                     );
                 } else if (id == this.namespace + '.command.printer') {
     
-                    var allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
-                    var allowedCommandsPrinter = ['home'];
+                    const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
+                    const allowedCommandsPrinter = ['home'];
     
                     if (allowedCommandsConnection.indexOf(state.val) > -1) {
                         this.log.debug('sending printer connection command: ' + state.val);
     
                         this.buildRequest(
                             'connection',
-                            function(content) {
-                                //self.refreshState();
-                            },
+                            null,
                             {
                                 command: state.val
                             }
@@ -125,9 +117,7 @@ class OctoPrint extends utils.Adapter {
     
                         this.buildRequest(
                             'printer/printhead',
-                            function(content) {
-                                //self.refreshState();
-                            },
+                            null,
                             {
                                 command: state.val,
                                 axes: ['x', 'y', 'z']
@@ -138,16 +128,14 @@ class OctoPrint extends utils.Adapter {
                     }
                 } else if (id == this.namespace + '.command.printjob') {
 
-                    var allowedCommands = ['start', 'cancel', 'restart', 'pause'];
+                    const allowedCommands = ['start', 'cancel', 'restart', 'pause'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending printer command: ' + state.val);
 
                         this.buildRequest(
                             'job',
-                            function(content) {
-                                //self.refreshState();
-                            },
+                            null,
                             {
                                 command: state.val
                             }
@@ -175,16 +163,15 @@ class OctoPrint extends utils.Adapter {
 
     refreshState() {
         this.log.debug('refreshing OctoPrint state');
-        var self = this;
 
         this.buildRequest(
             'version',
-            function (content) {
-                self.setState('info.connection', true, true);
-                self.connected = true;
+            content => {
+                this.setState('info.connection', true, true);
+                this.connected = true;
     
-                self.setState('meta.version', {val: content.server, ack: true});
-                self.setState('meta.api_version', {val: content.api, ack: true});
+                this.setState('meta.version', {val: content.server, ack: true});
+                this.setState('meta.api_version', {val: content.api, ack: true});
             },
             null
         );
@@ -192,23 +179,23 @@ class OctoPrint extends utils.Adapter {
         if (this.connected) {
             this.buildRequest(
                 'connection',
-                function (content) {
-                    self.printerStatus = content.current.state;
-                    self.setState('printer_status', {val: self.printerStatus, ack: true});
+                content => {
+                    this.printerStatus = content.current.state;
+                    this.setState('printer_status', {val: this.printerStatus, ack: true});
                 },
                 null
             );
 
             this.buildRequest(
                 'printer',
-                function (content) {
-                    for (var key in content.temperature) {
-                        var obj = content.temperature[key];
+                content => {
+                    for (const key in content.temperature) {
+                        const obj = content.temperature[key];
 
                         if (key.indexOf('tool') > -1 || key == 'bed') { // Tool + bed information
 
                             // Create tool channel
-                            self.setObjectNotExists('temperature.' + key, {
+                            this.setObjectNotExists('temperature.' + key, {
                                 type: 'channel',
                                 common: {
                                     name: key,
@@ -217,7 +204,7 @@ class OctoPrint extends utils.Adapter {
                             });
 
                             // Set actual temperature
-                            self.setObjectNotExists('temperature.' + key + '.actual', {
+                            this.setObjectNotExists('temperature.' + key + '.actual', {
                                 type: 'state',
                                 common: {
                                     name: 'Actual',
@@ -229,10 +216,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {}
                             });
-                            self.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
+                            this.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
 
                             // Set target temperature
-                            self.setObjectNotExists('temperature.' + key + '.target', {
+                            this.setObjectNotExists('temperature.' + key + '.target', {
                                 type: 'state',
                                 common: {
                                     name: 'Target',
@@ -244,10 +231,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {}
                             });
-                            self.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
+                            this.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
 
                             // Set offset temperature
-                            self.setObjectNotExists('temperature.' + key + '.offset', {
+                            this.setObjectNotExists('temperature.' + key + '.offset', {
                                 type: 'state',
                                 common: {
                                     name: 'Offset',
@@ -259,7 +246,7 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {}
                             });
-                            self.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
+                            this.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
                         }
                     }
                 },
@@ -268,24 +255,24 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'job',
-                function (content) {
+                content => {
                     if (content.job) {
-                        self.setState('printjob.file.name', {val: content.job.file.name, ack: true});
-                        self.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
-                        self.setState('printjob.file.size', {val: content.job.file.size, ack: true});
-                        self.setState('printjob.file.date', {val: content.job.file.date, ack: true});
+                        this.setState('printjob.file.name', {val: content.job.file.name, ack: true});
+                        this.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
+                        this.setState('printjob.file.size', {val: content.job.file.size, ack: true});
+                        this.setState('printjob.file.date', {val: content.job.file.date, ack: true});
     
                         if (content.job.filament) {
-                            self.setState('printjob.filament.length', {val: content.job.filament.length, ack: true});
-                            self.setState('printjob.filament.volume', {val: content.job.filament.volume, ack: true});
+                            this.setState('printjob.filament.length', {val: content.job.filament.length, ack: true});
+                            this.setState('printjob.filament.volume', {val: content.job.filament.volume, ack: true});
                         }
                     }
 
                     if (content.progress) {
-                        self.setState('printjob.progress.completion', {val: content.progress.completion, ack: true});
-                        self.setState('printjob.progress.filepos', {val: content.progress.filepos, ack: true});
-                        self.setState('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
-                        self.setState('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
+                        this.setState('printjob.progress.completion', {val: content.progress.completion, ack: true});
+                        this.setState('printjob.progress.filepos', {val: content.progress.filepos, ack: true});
+                        this.setState('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
+                        this.setState('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                     }
                 },
                 null
@@ -294,25 +281,27 @@ class OctoPrint extends utils.Adapter {
     }
 
     buildRequest(service, callback, data) {
-        var url = 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort + '/api/' + service;
-        var self = this;
+        const url = 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort + '/api/' + service;
+        const self = this;
 
         this.log.debug('sending request to ' + url + ' with data: ' + JSON.stringify(data));
 
         request(
             {
                 url: url,
-                method: data ? "POST" : "GET",
+                method: data ? 'POST' : 'GET',
                 json: data ? data : true,
                 headers: {
-                    "X-Api-Key": this.config.octoprintApiKey
+                    'X-Api-Key': this.config.octoprintApiKey
                 }
             },
-            function(error, response, content) {
+            (error, response, content) => {
                 if (!error && response.statusCode == 409) { // Printer is not operational
                     self.setPrinterOffline(true);
                 } else if (!error && (response.statusCode == 200 || response.statusCode == 204)) {
-                   callback(content);
+                    if (callback && typeof callback === 'function') {
+                        callback(content);
+                    }
                 } else if (error) {
                     self.log.debug(error);
     
