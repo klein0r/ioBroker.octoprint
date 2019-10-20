@@ -1,7 +1,0 @@
-{
-  "IP": "IP-Adresse",
-  "IP of your OctoPrint installation": "IP (oder Hostname) der OctoPrint-Installation",
-  "Port": "Port",
-  "API-Key": "API-Schlüssel",
-  "API-Key - can be found in the settings section of OctoPrint": "API-Schlüssel - diesen Wert kannst Du in den Einstellungen deiner OctoPrint-Installation finden"
-}

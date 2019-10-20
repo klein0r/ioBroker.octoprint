@@ -14,32 +14,36 @@
         },
 		"title": "OctoPrint",
         "titleLang": {
-            "en": "Javascript / Node.js based OctoPrint adapter",
-            "de": "Javascript / Node.js basierte OctoPrint-Adapter"
+            "en": "OctoPrint",
+            "de": "OctoPrint"
         },
         "desc": {
-            "en": "ioBroker OctoPrint Adapter",
-            "de": "ioBroker OctoPrint Adapter"
+            "en": "Manage your OctoPrint instance",
+            "de": "Verwalte Deine OctoPrint-Instanz"
         },
         "authors": [
             "Matthias Kleine <info@haus-automatisierung.com>"
         ],
-        "docs": {
-            "en": "docs/en/admin.md",
-            "de": "docs/de/admin.md"
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "octoprint.png",
-        "materialize": true,
-        "enabled": true,
-        "compact": true,
-        "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
-        "keywords": ["octoprint"],
+        "keywords": [
+            "octoprint",
+            "3d printing",
+            "hardware"
+        ],
         "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "octoprint.png",
+        "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
+        "enabled": true,
         "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
         "loglevel": "info",
-        "type": "hardware"
+        "mode": "daemon",
+        "type": "hardware",
+        "compact": true,
+        "materialize": true,
+        "dependencies": [
+            { "js-controller": ">=1.4.2" }
+        ]
     },
     "native": {
         "octoprintPort": "5000"
@@ -102,7 +106,7 @@
           "_id":  "info.connection",
           "type": "state",
           "common": {
-            "role":  "indicator.connected",
+            "role":  "indicator.reachable",
             "name":  "If connected to OctoPrint",
             "type":  "boolean",
             "read":  true,
