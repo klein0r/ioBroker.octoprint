@@ -4,8 +4,8 @@
         "version": "0.0.2",
         "news": {
             "0.0.2": {
-                "en": "fixed several issues",
-                "de": "Viele kleine Bugs behoben"
+                "en": "fixed several issues, new class based structure",
+                "de": "Viele kleine Bugs behoben, neue Struktur des Adapters"
             },
             "0.0.1": {
                 "en": "initial adapter",

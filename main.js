@@ -81,7 +81,7 @@ class OctoPrint extends utils.Adapter {
             if (this.connected) {
                 if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
                     this.log.debug('changing target tool temperature to ' + state.val);
-    
+
                     // TODO: Check which tool has been changed
                     this.buildRequest(
                         'printer/tool',
@@ -95,7 +95,7 @@ class OctoPrint extends utils.Adapter {
                     );
                 } else if (id == this.namespace + '.temperature.bed.target') {
                     this.log.debug('changing target bed temperature to ' + state.val);
-    
+
                     this.buildRequest(
                         'printer/bed',
                         null,
@@ -105,13 +105,13 @@ class OctoPrint extends utils.Adapter {
                         }
                     );
                 } else if (id == this.namespace + '.command.printer') {
-    
+
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
-    
+
                     if (allowedCommandsConnection.indexOf(state.val) > -1) {
                         this.log.debug('sending printer connection command: ' + state.val);
-    
+
                         this.buildRequest(
                             'connection',
                             null,
@@ -121,7 +121,7 @@ class OctoPrint extends utils.Adapter {
                         );
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug('sending printer command: ' + state.val);
-    
+
                         this.buildRequest(
                             'printer/printhead',
                             null,
@@ -150,7 +150,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('print job command not allowed: ' + state.val);
                     }
-                    
+
                 }
             } else {
                 this.log.error('OctoPrint API not connected');
