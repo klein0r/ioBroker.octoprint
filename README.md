@@ -25,6 +25,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 0.0.3
+
+* (klein0r) Updated depencencies
+
 ### 0.0.2
 
 * (klein0r) fixed several issues, new class based structure

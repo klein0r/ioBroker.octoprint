@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "Updated depencencies",
+                "de": "Abhängigkeiten aktualisiert"
+            },
             "0.0.2": {
                 "en": "fixed several issues, new class based structure",
                 "de": "Viele kleine Bugs behoben, neue Struktur des Adapters"
@@ -40,6 +44,8 @@
         "mode": "daemon",
         "type": "hardware",
         "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "local",
         "materialize": true,
         "dependencies": [
             { "js-controller": ">=1.4.2" }
