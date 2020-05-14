@@ -25,6 +25,11 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 0.0.4
+
+* (klein0r) Added missing translations
+* (klein0r) Changed default port to 80
+
 ### 0.0.3
 
 * (klein0r) Updated depencencies
