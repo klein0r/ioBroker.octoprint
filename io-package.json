@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+            "0.0.4": {
+                "en": "Added missing translations",
+                "de": "Fehlende Übersetzungen hinzugefügt"
+            },
             "0.0.3": {
                 "en": "Updated depencencies",
                 "de": "Abhängigkeiten aktualisiert"
@@ -52,7 +56,7 @@
         ]
     },
     "native": {
-        "octoprintPort": "5000"
+        "octoprintPort": "80"
     },
     "objects": [],
     "instanceObjects": [

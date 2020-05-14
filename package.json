@@ -1,6 +1,6 @@
 {
   "name": "iobroker.octoprint",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ioBroker OctoPrint Adapter",
   "author": {
     "name": "Matthias Kleine",
