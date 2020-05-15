@@ -11,8 +11,6 @@ test/
 travis/
 .travis.yml
 appveyor.yml
-.travis.yaml
-appveyor.yaml
 tsconfig.json
 
 .eslintrc.json
