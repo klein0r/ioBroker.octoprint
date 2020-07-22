@@ -276,6 +276,7 @@
             "common": {
                 "name": "Progress completion",
                 "type": "number",
+                "unit": "%",
                 "role": "value",
                 "read": true,
                 "write": false
@@ -300,6 +301,7 @@
             "common": {
                 "name": "Progress print time",
                 "type": "number",
+                "unit": "s",
                 "role": "value",
                 "read": true,
                 "write": false
@@ -312,6 +314,7 @@
             "common": {
                 "name": "Progress print time left",
                 "type": "number",
+                "unit": "s",
                 "role": "value",
                 "read": true,
                 "write": false

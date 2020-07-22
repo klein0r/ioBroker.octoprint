@@ -19,7 +19,6 @@ class OctoPrint extends utils.Adapter {
         this.printerStatus = 'Disconnected';
 
         this.on('ready', this.onReady.bind(this));
-        this.on('objectChange', this.onObjectChange.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
@@ -50,23 +49,8 @@ class OctoPrint extends utils.Adapter {
 
             this.log.debug('cleaned everything up...');
             callback();
-        } catch (e) {
+        } catch {
             callback();
-        }
-    }
-
-    /**
-     * Is called if a subscribed object changes
-     * @param {string} id
-     * @param {ioBroker.Object | null | undefined} obj
-     */
-    onObjectChange(id, obj) {
-        if (obj) {
-            // The object was changed
-            this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-        } else {
-            // The object was deleted
-            this.log.info(`object ${id} deleted`);
         }
     }
 
@@ -93,7 +77,7 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     );
-                } else if (id == this.namespace + '.temperature.bed.target') {
+                } else if (id === this.namespace + '.temperature.bed.target') {
                     this.log.debug('changing target bed temperature to ' + state.val);
 
                     this.buildRequest(
@@ -104,7 +88,7 @@ class OctoPrint extends utils.Adapter {
                             target: state.val
                         }
                     );
-                } else if (id == this.namespace + '.command.printer') {
+                } else if (id === this.namespace + '.command.printer') {
 
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
@@ -133,7 +117,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('printer command not allowed: ' + state.val);
                     }
-                } else if (id == this.namespace + '.command.printjob') {
+                } else if (id === this.namespace + '.command.printjob') {
 
                     const allowedCommands = ['start', 'cancel', 'restart', 'pause'];
 
@@ -176,7 +160,7 @@ class OctoPrint extends utils.Adapter {
             content => {
                 this.setState('info.connection', true, true);
                 this.connected = true;
-    
+
                 this.setState('meta.version', {val: content.server, ack: true});
                 this.setState('meta.api_version', {val: content.api, ack: true});
             },
@@ -195,64 +179,69 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'printer',
-                content => {
-                    for (const key in content.temperature) {
+                async content => {
+                    for (const key of Object.keys(content.temperature)) {
                         const obj = content.temperature[key];
 
                         if (key.indexOf('tool') > -1 || key == 'bed') { // Tool + bed information
 
                             // Create tool channel
-                            this.setObjectNotExists('temperature.' + key, {
-                                type: 'channel',
-                                common: {
-                                    name: key,
-                                },
-                                native: {}
-                            });
+                            try {
+                                await this.setObjectNotExistsAsync('temperature.' + key, {
+                                    type: 'channel',
+                                    common: {
+                                        name: key,
+                                    },
+                                    native: {}
+                                });
 
-                            // Set actual temperature
-                            this.setObjectNotExists('temperature.' + key + '.actual', {
-                                type: 'state',
-                                common: {
-                                    name: 'Actual',
-                                    type: 'number',
-                                    role: 'value.temperature',
-                                    unit: '°C',
-                                    read: true,
-                                    write: false
-                                },
-                                native: {}
-                            });
+                                // Set actual temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.actual', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Actual',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+
+                                // Set target temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.target', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Target',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
+
+                                // Set offset temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.offset', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Offset',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                            } catch (e) {
+                                this.log.error(`Could not create temperature objects: ${e}`);
+                            }
+
                             this.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
-
-                            // Set target temperature
-                            this.setObjectNotExists('temperature.' + key + '.target', {
-                                type: 'state',
-                                common: {
-                                    name: 'Target',
-                                    type: 'number',
-                                    role: 'value.temperature',
-                                    unit: '°C',
-                                    read: true,
-                                    write: true
-                                },
-                                native: {}
-                            });
                             this.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
-
-                            // Set offset temperature
-                            this.setObjectNotExists('temperature.' + key + '.offset', {
-                                type: 'state',
-                                common: {
-                                    name: 'Offset',
-                                    type: 'number',
-                                    role: 'value.temperature',
-                                    unit: '°C',
-                                    read: true,
-                                    write: false
-                                },
-                                native: {}
-                            });
                             this.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
                         }
                     }
@@ -268,7 +257,7 @@ class OctoPrint extends utils.Adapter {
                         this.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
                         this.setState('printjob.file.size', {val: content.job.file.size, ack: true});
                         this.setState('printjob.file.date', {val: content.job.file.date, ack: true});
-    
+
                         if (content.job.filament) {
                             this.setState('printjob.filament.length', {val: content.job.filament.length, ack: true});
                             this.setState('printjob.filament.volume', {val: content.job.filament.volume, ack: true});
@@ -314,11 +303,11 @@ class OctoPrint extends utils.Adapter {
                     }
                 } else if (error) {
                     self.log.debug(error);
-    
+
                     self.setPrinterOffline(false);
                 } else {
                     self.log.debug('Status Code: ' + response.statusCode + ' / Content: ' + content);
-    
+
                     self.setPrinterOffline(false);
                 }
             }
