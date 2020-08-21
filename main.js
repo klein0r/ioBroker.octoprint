@@ -275,7 +275,7 @@ class OctoPrint extends utils.Adapter {
 
         await this.buildRequest(
             'version',
-            content => {
+            (content, status) => {
                 this.setState('info.connection', true, true);
                 this.apiConnected = true;
 
@@ -290,7 +290,7 @@ class OctoPrint extends utils.Adapter {
         if (this.apiConnected) {
             this.buildRequest(
                 'connection',
-                content => {
+                (content, status) => {
                     this.printerStatus = content.current.state;
                     this.setState('printer_status', {val: this.printerStatus, ack: true});
                 },
@@ -299,7 +299,7 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'printer',
-                content => {
+                (content, status) => {
                     if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
                         for (const key of Object.keys(content.temperature)) {
                             const obj = content.temperature[key];
@@ -374,7 +374,7 @@ class OctoPrint extends utils.Adapter {
             /*
             this.buildRequest(
                 'printer/command/custom',
-                content => {
+                (content, status) => {
                     // Todo
                 },
                 null
@@ -383,7 +383,7 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'system/commands',
-                content => {
+                (content, status) => {
                     this.systemCommands = [];
 
                     for (const key of Object.keys(content)) {
@@ -398,7 +398,7 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'job',
-                content => {
+                (content, status) => {
                     if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
                         this.setState('printjob.file.name', {val: content.job.file.name, ack: true});
                         this.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
