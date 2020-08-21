@@ -133,6 +133,7 @@ class OctoPrint extends utils.Adapter {
                             (content, status) => {
                                 if (status == 204) {
                                     this.setState(cleanId, {val: state.val, ack: true});
+                                    this.refreshState();
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
@@ -144,6 +145,7 @@ class OctoPrint extends utils.Adapter {
                             }
                         );
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
+
                         this.log.debug('sending printer command: ' + state.val);
 
                         this.buildRequest(
@@ -177,14 +179,14 @@ class OctoPrint extends utils.Adapter {
                         this.buildRequest(
                             'job',
                             (content, status) => {
-                            if (status == 204) {
-                                this.setState(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
-                                this.log.error(content);
-                            }
-                        },
+                                    this.log.error(content);
+                                }
+                            },
                             {
                                 command: state.val
                             }
@@ -203,14 +205,14 @@ class OctoPrint extends utils.Adapter {
                         this.buildRequest(
                             'printer/sd',
                             (content, status) => {
-                            if (status == 204) {
-                                this.setState(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
-                                this.log.error(content);
-                            }
-                        },
+                                    this.log.error(content);
+                                }
+                            },
                             {
                                 command: state.val
                             }
@@ -220,6 +222,7 @@ class OctoPrint extends utils.Adapter {
                     }
 
                 } else if (id === this.namespace + '.command.custom') {
+
                     this.log.debug('sending custom command: ' + state.val);
 
                     this.buildRequest(
@@ -259,6 +262,32 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
                     }
+                } else if (id.indexOf(this.namespace + '.command.jog.') === 0) {
+
+                    const axis = id.split('.').pop(); // Last element of the id is the axis
+                    const jogCommand = {
+                        command: 'jog',
+                    };
+
+                    // Add axis
+                    jogCommand[axis] = state.val;
+
+                    this.log.debug('sending jog ' + axis + ' command: ' + state.val);
+
+                    this.buildRequest(
+                        'printer/printhead',
+                        (content, status) => {
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                // 409 Conflict – If the printer is not operational or currently printing.
+
+                                this.log.error(content);
+                            }
+                        },
+                        jogCommand
+                    );
 
                 }
             } else {

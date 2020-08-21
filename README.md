@@ -21,6 +21,7 @@ Adapter to connect OctoPrint to ioBroker
 - Get version information
 - Get printer information
 - Get current print job information
+- Get file list information
 
 ### Temperatures
 
@@ -34,6 +35,7 @@ Adapter to connect OctoPrint to ioBroker
 - SD-Card: Init, Refresh, Release
 - Custom Printer Commands
 - System Commands
+- Jog X, Y and Z axis
 
 ## Changelog
 

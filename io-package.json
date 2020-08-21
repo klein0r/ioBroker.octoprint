@@ -145,6 +145,50 @@
             "native": {}
         },
         {
+          "_id":  "command.jog",
+          "type": "channel",
+          "common": {
+            "name": "Jog Commands"
+          },
+          "native": {}
+        },
+        {
+            "_id": "command.jog.x",
+            "type": "state",
+            "common": {
+                "name": "Jog X axis",
+                "type": "numeric",
+                "role": "value",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "command.jog.y",
+            "type": "state",
+            "common": {
+                "name": "Jog Y axis",
+                "type": "numeric",
+                "role": "value",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "command.jog.z",
+            "type": "state",
+            "common": {
+                "name": "Jog Z axis",
+                "type": "numeric",
+                "role": "value",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
           "_id":  "info",
           "type": "channel",
           "common": {
