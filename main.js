@@ -14,10 +14,12 @@ class OctoPrint extends utils.Adapter {
             name: 'octoprint',
         });
 
-        this.refreshStateTimeout = null;
         this.apiConnected = false;
         this.printerStatus = 'API not connected';
         this.systemCommands = [];
+
+        this.refreshStateTimeout = null;
+        this.refreshFilesTimeout = null;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -31,8 +33,8 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setState('printer_status', {val: this.printerStatus, ack: true});
 
-        // Refresh State every Minute
-        this.refreshState();
+        await this.refreshState();
+        await this.refreshFiles();
     }
 
     /**
@@ -46,6 +48,11 @@ class OctoPrint extends utils.Adapter {
             if (this.refreshStateTimeout) {
                 this.log.debug('clearing refresh state timeout');
                 clearTimeout(this.refreshStateTimeout);
+            }
+
+            if (this.refreshFilesTimeout) {
+                this.log.debug('clearing refresh files timeout');
+                clearTimeout(this.refreshFilesTimeout);
             }
 
             this.log.debug('cleaned everything up...');
@@ -423,7 +430,70 @@ class OctoPrint extends utils.Adapter {
         }
 
         this.log.debug('re-creating refresh state timeout');
+
+        clearTimeout(this.refreshStateTimeout);
         this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 30000);
+    }
+
+    async refreshFiles() {
+
+        if (this.apiConnected) {
+            this.buildRequest(
+                'files?recursive=true',
+                (content, status) => {
+
+                    let counter = 0;
+
+                    content.files.forEach(function(file) {
+
+                        this.setObjectNotExists('files.' + counter, {
+                            type: 'channel',
+                            common: {
+                                name: 'File ' + (counter + 1),
+                            },
+                            native: {}
+                        });
+
+                        this.setObjectNotExists('files.' + counter + '.name', {
+                            type: 'state',
+                            common: {
+                                name: 'File name',
+                                type: 'string',
+                                role: 'value',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        this.setState('files.' + counter + '.name', {val: file.display, ack: true});
+
+                        this.setObjectNotExists('files.' + counter + '.date', {
+                            type: 'state',
+                            common: {
+                                name: 'File date',
+                                type: 'string',
+                                role: 'value',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        this.setState('files.' + counter + '.date', {val: new Date(file.date * 1000).toLocaleDateString('de-DE'), ack: true});
+
+                        counter++;
+                    }.bind(this));
+
+                },
+                null
+            );
+        } else {
+            this.log.error('OctoPrint API not connected');
+        }
+
+        this.log.debug('re-creating refresh state timeout');
+
+        clearTimeout(this.refreshFilesTimeout);
+        this.refreshFilesTimeout = setTimeout(this.refreshState.bind(this), 60000 * 5); // Every 5 Minutes
     }
 
     async buildRequest(service, callback, data) {

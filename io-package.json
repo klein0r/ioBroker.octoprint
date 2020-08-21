@@ -360,6 +360,14 @@
                 "write": false
             },
             "native": {}
+        },
+        {
+          "_id":  "files",
+          "type": "channel",
+          "common": {
+            "name": "Available files to print"
+          },
+          "native": {}
         }
     ]
 }
