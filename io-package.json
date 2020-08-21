@@ -88,7 +88,7 @@
             "_id": "command.printer",
             "type": "state",
             "common": {
-                "name": "Printer Command",
+                "name": "Printer command",
                 "type": "string",
                 "role": "command",
                 "read": false,
@@ -100,7 +100,19 @@
             "_id": "command.printjob",
             "type": "state",
             "common": {
-                "name": "Print job Command",
+                "name": "Print job command",
+                "type": "string",
+                "role": "command",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "command.sd",
+            "type": "state",
+            "common": {
+                "name": "SD card command",
                 "type": "string",
                 "role": "command",
                 "read": false,

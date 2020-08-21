@@ -140,6 +140,29 @@ class OctoPrint extends utils.Adapter {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
 
+                } else if (id === this.namespace + '.command.sd') {
+                    
+                    const allowedCommands = ['init', 'refresh', 'release'];
+
+                    if (allowedCommands.indexOf(state.val) > -1) {
+                        this.log.debug('sending sd card command: ' + state.val);
+
+                        this.buildRequest(
+                            'printer/sd',
+                            (content, status) => {
+                                if (status == 409) {
+                                    // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
+                                    this.log.error(content);
+                                }
+                            },
+                            {
+                                command: state.val
+                            }
+                        );
+                    } else {
+                        this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
+                    }
+                    
                 }
             } else {
                 this.log.error('OctoPrint API not connected');
