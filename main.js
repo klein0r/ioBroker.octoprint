@@ -461,7 +461,7 @@ class OctoPrint extends utils.Adapter {
         this.log.debug('re-creating refresh state timeout');
 
         clearTimeout(this.refreshStateTimeout);
-        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 30000);
+        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 60000);
     }
 
     async refreshFiles() {
