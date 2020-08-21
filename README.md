@@ -23,6 +23,11 @@ Adapter to connect OctoPrint to ioBroker
 - Set bed temperature
 - Connect, disconnect and home printer by command
 
+## Available commands
+
+- `octoprint.x.command.printer` allows `connect`, `disconnect`, `fake_ack`
+- `octoprint.x.command.printjob` allows `start`, `cancel`, `restart`
+
 ## Changelog
 
 ### 0.0.5

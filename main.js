@@ -15,7 +15,7 @@ class OctoPrint extends utils.Adapter {
         });
 
         this.refreshStateTimeout = null;
-        this.connected = false;
+        this.apiConnected = false;
         this.printerStatus = 'Disconnected';
 
         this.on('ready', this.onReady.bind(this));
@@ -62,7 +62,7 @@ class OctoPrint extends utils.Adapter {
     onStateChange(id, state) {
         if (state && !state.ack) {
             // No ack = changed by user
-            if (this.connected) {
+            if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
                     this.log.debug('changing target tool temperature to ' + state.val);
 
@@ -115,24 +115,29 @@ class OctoPrint extends utils.Adapter {
                             }
                         );
                     } else {
-                        this.log.error('printer command not allowed: ' + state.val);
+                        this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
                 } else if (id === this.namespace + '.command.printjob') {
 
-                    const allowedCommands = ['start', 'cancel', 'restart', 'pause'];
+                    const allowedCommands = ['start', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending printer command: ' + state.val);
 
                         this.buildRequest(
                             'job',
-                            null,
+                            (content, status) => {
+                                if (status == 409) {
+                                    // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
+                                    this.log.error(content);
+                                }
+                            },
                             {
                                 command: state.val
                             }
                         );
                     } else {
-                        this.log.error('print job command not allowed: ' + state.val);
+                        this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
 
                 }
@@ -144,7 +149,7 @@ class OctoPrint extends utils.Adapter {
 
     setPrinterOffline(connection) {
         this.setState('info.connection', connection, true);
-        this.connected = connection;
+        this.apiConnected = connection;
 
         if (!connection) {
             this.printerStatus = 'Disconnected';
@@ -159,7 +164,9 @@ class OctoPrint extends utils.Adapter {
             'version',
             content => {
                 this.setState('info.connection', true, true);
-                this.connected = true;
+                this.apiConnected = true;
+
+                this.log.debug('connected to OctoPrint API - online!');
 
                 this.setState('meta.version', {val: content.server, ack: true});
                 this.setState('meta.api_version', {val: content.api, ack: true});
@@ -167,7 +174,7 @@ class OctoPrint extends utils.Adapter {
             null
         );
 
-        if (this.connected) {
+        if (this.apiConnected) {
             this.buildRequest(
                 'connection',
                 content => {
@@ -252,19 +259,19 @@ class OctoPrint extends utils.Adapter {
             this.buildRequest(
                 'job',
                 content => {
-                    if (content.job) {
+                    if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
                         this.setState('printjob.file.name', {val: content.job.file.name, ack: true});
                         this.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
                         this.setState('printjob.file.size', {val: content.job.file.size, ack: true});
                         this.setState('printjob.file.date', {val: content.job.file.date, ack: true});
 
-                        if (content.job.filament) {
+                        if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
                             this.setState('printjob.filament.length', {val: content.job.filament.length, ack: true});
                             this.setState('printjob.filament.volume', {val: content.job.filament.volume, ack: true});
                         }
                     }
 
-                    if (content.progress) {
+                    if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
                         this.setState('printjob.progress.completion', {val: content.progress.completion, ack: true});
                         this.setState('printjob.progress.filepos', {val: content.progress.filepos, ack: true});
                         this.setState('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
@@ -300,13 +307,13 @@ class OctoPrint extends utils.Adapter {
         }).then(function (response) {
             this.log.debug('received ' + response.status + ' response from ' + url + ' with content: ' + JSON.stringify(response.data));
 
-            if (callback && typeof callback === 'function') {
-                callback(response.data);
+            if (response && callback && typeof callback === 'function') {
+                callback(response.data, response.status);
             }
         }.bind(this)).catch(function (error) {
-            this.log.debug(error);
+            this.log.error(error);
 
-            this.setPrinterOffline(false);
+            //this.setPrinterOffline(false);
         }.bind(this));
     }
 }
