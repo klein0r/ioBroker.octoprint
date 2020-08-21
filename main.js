@@ -64,6 +64,7 @@ class OctoPrint extends utils.Adapter {
             // No ack = changed by user
             if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
+
                     this.log.debug('changing target tool temperature to ' + state.val);
 
                     // TODO: Check which tool has been changed
@@ -77,7 +78,9 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     );
+
                 } else if (id === this.namespace + '.temperature.bed.target') {
+
                     this.log.debug('changing target bed temperature to ' + state.val);
 
                     this.buildRequest(
@@ -88,6 +91,7 @@ class OctoPrint extends utils.Adapter {
                             target: state.val
                         }
                     );
+
                 } else if (id === this.namespace + '.command.printer') {
 
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
@@ -117,6 +121,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
+
                 } else if (id === this.namespace + '.command.printjob') {
 
                     const allowedCommands = ['start', 'cancel', 'restart'];
@@ -141,7 +146,7 @@ class OctoPrint extends utils.Adapter {
                     }
 
                 } else if (id === this.namespace + '.command.sd') {
-                    
+
                     const allowedCommands = ['init', 'refresh', 'release'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
@@ -162,7 +167,17 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-                    
+
+                } else if (id === this.namespace + '.command.custom') {
+
+                    this.buildRequest(
+                        'printer/command',
+                        null,
+                        {
+                            command: state.val
+                        }
+                    );
+
                 }
             } else {
                 this.log.error('OctoPrint API not connected');

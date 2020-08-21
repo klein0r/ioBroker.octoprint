@@ -32,6 +32,7 @@ Adapter to connect OctoPrint to ioBroker
 - Printer: Connect, disconnect and home
 - Job: Start, Cancel, Restart
 - SD-Card: Init, Refresh, Release
+- Custom Printer Commands
 
 ## Changelog
 
