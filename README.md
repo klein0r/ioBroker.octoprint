@@ -25,6 +25,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 0.0.5
+
+* (klein0r) Switched to axios lib (replaced request - deprecated)
+
 ### 0.0.4
 
 * (klein0r) Added missing translations

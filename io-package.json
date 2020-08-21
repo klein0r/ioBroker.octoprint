@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
+            "0.0.5": {
+                "en": "Switched to axios lib (replaced request - deprecated)",
+                "de": "Neue axios lib verwendet (request ersetzt - deprecated)"
+            },
             "0.0.4": {
                 "en": "Added missing translations",
                 "de": "Fehlende Übersetzungen hinzugefügt"

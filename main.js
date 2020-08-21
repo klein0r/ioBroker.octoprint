@@ -4,7 +4,7 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const request = require('request');
+const axios = require('axios');
 
 class OctoPrint extends utils.Adapter {
 
@@ -179,7 +179,7 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'printer',
-                async content => {
+                content => {
                     for (const key of Object.keys(content.temperature)) {
                         const obj = content.temperature[key];
 
@@ -187,7 +187,7 @@ class OctoPrint extends utils.Adapter {
 
                             // Create tool channel
                             try {
-                                await this.setObjectNotExistsAsync('temperature.' + key, {
+                                this.setObjectNotExists('temperature.' + key, {
                                     type: 'channel',
                                     common: {
                                         name: key,
@@ -196,7 +196,7 @@ class OctoPrint extends utils.Adapter {
                                 });
 
                                 // Set actual temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.actual', {
+                                this.setObjectNotExists('temperature.' + key + '.actual', {
                                     type: 'state',
                                     common: {
                                         name: 'Actual',
@@ -210,7 +210,7 @@ class OctoPrint extends utils.Adapter {
                                 });
 
                                 // Set target temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.target', {
+                                this.setObjectNotExists('temperature.' + key + '.target', {
                                     type: 'state',
                                     common: {
                                         name: 'Target',
@@ -224,7 +224,7 @@ class OctoPrint extends utils.Adapter {
                                 });
 
                                 // Set offset temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.offset', {
+                                this.setObjectNotExists('temperature.' + key + '.offset', {
                                     type: 'state',
                                     common: {
                                         name: 'Offset',
@@ -280,38 +280,34 @@ class OctoPrint extends utils.Adapter {
     }
 
     buildRequest(service, callback, data) {
-        const url = 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort + '/api/' + service;
-        const self = this;
+        const url = '/api/' + service;
+        const method = data ? 'post' : 'get';
 
-        this.log.debug('sending request to ' + url + ' with data: ' + JSON.stringify(data));
+        this.log.debug('sending ' + method + ' request to ' + url + ' with data: ' + JSON.stringify(data));
 
-        request(
-            {
-                url: url,
-                method: data ? 'POST' : 'GET',
-                json: data ? data : true,
-                headers: {
-                    'X-Api-Key': this.config.octoprintApiKey
-                }
+        axios({
+            method: method,
+            data: data,
+            baseURL: 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
+            url: url,
+            responseType: 'json',
+            headers: {
+                'X-Api-Key': this.config.octoprintApiKey
             },
-            (error, response, content) => {
-                if (!error && response.statusCode == 409) { // Printer is not operational
-                    self.setPrinterOffline(true);
-                } else if (!error && (response.statusCode == 200 || response.statusCode == 204)) {
-                    if (callback && typeof callback === 'function') {
-                        callback(content);
-                    }
-                } else if (error) {
-                    self.log.debug(error);
+            validateStatus: function (status) {
+                return [200, 204, 409].indexOf(status) > -1;
+            },
+        }).then(function (response) {
+            this.log.debug('received ' + response.status + ' response from ' + url + ' with content: ' + JSON.stringify(response.data));
 
-                    self.setPrinterOffline(false);
-                } else {
-                    self.log.debug('Status Code: ' + response.statusCode + ' / Content: ' + content);
-
-                    self.setPrinterOffline(false);
-                }
+            if (callback && typeof callback === 'function') {
+                callback(response.data);
             }
-        );
+        }.bind(this)).catch(function (error) {
+            this.log.debug(error);
+
+            this.setPrinterOffline(false);
+        }.bind(this));
     }
 }
 
