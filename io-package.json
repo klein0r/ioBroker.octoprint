@@ -133,6 +133,18 @@
             "native": {}
         },
         {
+            "_id": "command.system",
+            "type": "state",
+            "common": {
+                "name": "Execute system command",
+                "type": "string",
+                "role": "command",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
           "_id":  "info",
           "type": "channel",
           "common": {

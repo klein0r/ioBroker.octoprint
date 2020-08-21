@@ -17,6 +17,7 @@ class OctoPrint extends utils.Adapter {
         this.refreshStateTimeout = null;
         this.apiConnected = false;
         this.printerStatus = 'Disconnected';
+        this.systemCommands = [];
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -127,7 +128,7 @@ class OctoPrint extends utils.Adapter {
                     const allowedCommands = ['start', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
-                        this.log.debug('sending printer command: ' + state.val);
+                        this.log.debug('sending printjob command: ' + state.val);
 
                         this.buildRequest(
                             'job',
@@ -169,6 +170,7 @@ class OctoPrint extends utils.Adapter {
                     }
 
                 } else if (id === this.namespace + '.command.custom') {
+                    this.log.debug('sending custom command: ' + state.val);
 
                     this.buildRequest(
                         'printer/command',
@@ -177,6 +179,20 @@ class OctoPrint extends utils.Adapter {
                             command: state.val
                         }
                     );
+
+                } else if (id === this.namespace + '.command.system') {
+
+                    if (this.systemCommands.indexOf(state.val) > -1) {
+                        this.log.debug('sending system command: ' + state.val);
+
+                        this.buildRequest(
+                            'system/commands/' + state.val,
+                            null,
+                            {}
+                        );
+                    } else {
+                        this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
+                    }
 
                 }
             } else {
@@ -294,6 +310,31 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
+            /*
+            this.buildRequest(
+                'printer/command/custom',
+                content => {
+                    // Todo
+                },
+                null
+            );
+            */
+
+            this.buildRequest(
+                'system/commands',
+                content => {
+                    this.systemCommands = [];
+
+                    for (const key of Object.keys(content)) {
+                        const arr = content[key];
+                        arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
+                    }
+
+                    this.log.debug('Registered system commands: ' + this.systemCommands.join(', '));
+                },
+                null
+            );
+
             this.buildRequest(
                 'job',
                 content => {
@@ -321,7 +362,7 @@ class OctoPrint extends utils.Adapter {
         }
 
         this.log.debug('re-creating refresh state timeout');
-        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 60000);
+        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), 30000);
     }
 
     buildRequest(service, callback, data) {
