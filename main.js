@@ -62,6 +62,8 @@ class OctoPrint extends utils.Adapter {
      */
     onStateChange(id, state) {
         if (state && !state.ack) {
+            const cleanId = id.split('.').slice(2).join('.');
+
             // No ack = changed by user
             if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
@@ -71,7 +73,16 @@ class OctoPrint extends utils.Adapter {
                     // TODO: Check which tool has been changed
                     this.buildRequest(
                         'printer/tool',
-                        null,
+                        (content, status) => {
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+
+                                this.log.error(content);
+                            }
+                        },
                         {
                             command: 'target',
                             targets: {
@@ -86,7 +97,16 @@ class OctoPrint extends utils.Adapter {
 
                     this.buildRequest(
                         'printer/bed',
-                        null,
+                        (content, status) => {
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
+
+                                this.log.error(content);
+                            }
+                        },
                         {
                             command: 'target',
                             target: state.val
@@ -103,7 +123,15 @@ class OctoPrint extends utils.Adapter {
 
                         this.buildRequest(
                             'connection',
-                            null,
+                            (content, status) => {
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
+
+                                    this.log.error(content);
+                                }
+                            },
                             {
                                 command: state.val
                             }
@@ -113,7 +141,16 @@ class OctoPrint extends utils.Adapter {
 
                         this.buildRequest(
                             'printer/printhead',
-                            null,
+                            (content, status) => {
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                    // 409 Conflict – If the printer is not operational or currently printing.
+
+                                    this.log.error(content);
+                                }
+                            },
                             {
                                 command: state.val,
                                 axes: ['x', 'y', 'z']
@@ -133,11 +170,14 @@ class OctoPrint extends utils.Adapter {
                         this.buildRequest(
                             'job',
                             (content, status) => {
-                                if (status == 409) {
-                                    // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
-                                    this.log.error(content);
-                                }
-                            },
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
+
+                                this.log.error(content);
+                            }
+                        },
                             {
                                 command: state.val
                             }
@@ -156,11 +196,14 @@ class OctoPrint extends utils.Adapter {
                         this.buildRequest(
                             'printer/sd',
                             (content, status) => {
-                                if (status == 409) {
-                                    // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
-                                    this.log.error(content);
-                                }
-                            },
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
+
+                                this.log.error(content);
+                            }
+                        },
                             {
                                 command: state.val
                             }
@@ -174,7 +217,13 @@ class OctoPrint extends utils.Adapter {
 
                     this.buildRequest(
                         'printer/command',
-                        null,
+                        (content, status) => {
+                            if (status == 204) {
+                                this.setState(cleanId, {val: state.val, ack: true});
+                            } else {
+                                this.log.error(content);
+                            }
+                        },
                         {
                             command: state.val
                         }
@@ -187,7 +236,17 @@ class OctoPrint extends utils.Adapter {
 
                         this.buildRequest(
                             'system/commands/' + state.val,
-                            null,
+                            (content, status) => {
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
+                                    // 404 Not Found – If the command could not be found for source and action
+                                    // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
+
+                                    this.log.error(content);
+                                }
+                            },
                             {}
                         );
                     } else {
