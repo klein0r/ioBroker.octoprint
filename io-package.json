@@ -302,6 +302,7 @@
             "common": {
                 "name": "File origin",
                 "type": "number",
+                "unit": "KiB",
                 "role": "value",
                 "read": true,
                 "write": false
