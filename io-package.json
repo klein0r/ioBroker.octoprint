@@ -380,6 +380,7 @@
             "common": {
                 "name": "Progress filepos",
                 "type": "number",
+                "unit": "KiB",
                 "role": "value",
                 "read": true,
                 "write": false

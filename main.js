@@ -451,7 +451,7 @@ class OctoPrint extends utils.Adapter {
 
                     if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
                         this.setState('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
-                        this.setState('printjob.progress.filepos', {val: content.progress.filepos, ack: true});
+                        this.setState('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
                         this.setState('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
                         this.setState('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                     }
