@@ -291,7 +291,7 @@ class OctoPrint extends utils.Adapter {
 
                 }
             } else {
-                this.log.error('OctoPrint API not connected');
+                this.log.info('OctoPrint API not connected');
             }
         }
     }
@@ -516,7 +516,7 @@ class OctoPrint extends utils.Adapter {
                 null
             );
         } else {
-            this.log.error('OctoPrint API not connected');
+            this.log.info('OctoPrint API not connected');
         }
 
         this.log.debug('re-creating refresh state timeout');
@@ -553,7 +553,23 @@ class OctoPrint extends utils.Adapter {
             }.bind(this)
         ).catch(
             function (error) {
-                this.log.error(error);
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+
+                    this.log.warn('received error ' + error.response.status + ' response from ' + url + ' with content: ' + JSON.stringify(error.response.data));
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    this.log.info(error.message);
+
+                    this.setPrinterOffline(false);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    this.log.error(error.message);
+
+                    this.setPrinterOffline(false);
+                }
             }.bind(this)
         );
     }
