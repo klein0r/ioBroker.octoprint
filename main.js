@@ -33,7 +33,7 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setState('printer_status', {val: this.printerStatus, ack: true});
 
-        this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval);
+        this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + " (" + this.config.apiRefreshIntervalPrinting + " while printing)");
 
         await this.refreshState();
         await this.refreshFiles();
@@ -460,10 +460,14 @@ class OctoPrint extends utils.Adapter {
             );
         }
 
-        this.log.debug('re-creating refresh state timeout');
-
         clearTimeout(this.refreshStateTimeout);
-        this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshInterval * 1000);
+        if (this.printerStatus == 'Printing') {
+            this.log.debug('re-creating refresh state timeout (printing)');
+            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshIntervalPrinting * 1000);
+        } else {
+            this.log.debug('re-creating refresh state timeout');
+            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshInterval * 1000);
+        }
     }
 
     async refreshFiles() {
@@ -521,7 +525,7 @@ class OctoPrint extends utils.Adapter {
             this.log.info('OctoPrint API not connected');
         }
 
-        this.log.debug('re-creating refresh state timeout');
+        this.log.debug('re-creating refresh files timeout');
 
         clearTimeout(this.refreshFilesTimeout);
         this.refreshFilesTimeout = setTimeout(this.refreshState.bind(this), 60000 * 5); // Every 5 Minutes

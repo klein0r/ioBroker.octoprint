@@ -65,7 +65,8 @@
     },
     "native": {
         "octoprintPort": "80",
-        "apiRefreshInterval": 60
+        "apiRefreshInterval": 60,
+        "apiRefreshIntervalPrinting": 15
     },
     "objects": [],
     "instanceObjects": [

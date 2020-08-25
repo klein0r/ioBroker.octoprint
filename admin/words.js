@@ -74,6 +74,18 @@ systemDictionary = {
         "pl": "Częstotliwość odświeżania",
         "zh-cn": "刷新间隔"
     },
+    "Refresh Interval (while printing)": {
+        "en": "Refresh Interval (while printing)",
+        "de": "Aktualisierungsintervall (während des Druckvorgangs)",
+        "ru": "Интервал обновления (во время печати)",
+        "pt": "Intervalo de atualização (durante a impressão)",
+        "nl": "Vernieuwingsinterval (tijdens afdrukken)",
+        "fr": "Intervalle de rafraîchissement (pendant l'impression)",
+        "it": "Intervallo di aggiornamento (durante la stampa)",
+        "es": "Intervalo de actualización (durante la impresión)",
+        "pl": "Interwał odświeżania (podczas drukowania)",
+        "zh-cn": "刷新间隔（打印时）"
+    },
     "in Seconds": {
         "en": "in Seconds",
         "de": "in Sekunden",
