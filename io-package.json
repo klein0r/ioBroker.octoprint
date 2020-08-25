@@ -163,7 +163,7 @@
             "type": "state",
             "common": {
                 "name": "Jog X axis",
-                "type": "numeric",
+                "type": "number",
                 "role": "value",
                 "read": false,
                 "write": true
@@ -175,7 +175,7 @@
             "type": "state",
             "common": {
                 "name": "Jog Y axis",
-                "type": "numeric",
+                "type": "number",
                 "role": "value",
                 "read": false,
                 "write": true
@@ -187,7 +187,7 @@
             "type": "state",
             "common": {
                 "name": "Jog Z axis",
-                "type": "numeric",
+                "type": "number",
                 "role": "value",
                 "read": false,
                 "write": true

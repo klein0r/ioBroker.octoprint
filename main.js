@@ -552,7 +552,7 @@ class OctoPrint extends utils.Adapter {
         }).then(
             function (response) {
                 this.log.debug('received ' + response.status + ' response from ' + url + ' with content: ' + JSON.stringify(response.data));
-    
+
                 if (response && callback && typeof callback === 'function') {
                     callback(response.data, response.status);
                 }
