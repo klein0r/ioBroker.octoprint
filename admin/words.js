@@ -61,5 +61,29 @@ systemDictionary = {
         "es": "API-Key: se puede encontrar en la sección de configuración de OctoPrint",
         "pl": "Klucz API - można go znaleźć w sekcji ustawień OctoPrint",
         "zh-cn": "API密钥-可以在OctoPrint的设置部分中找到"
+    },
+    "Refresh Interval": {
+        "en": "Refresh Interval",
+        "de": "Aktualisierungsintervall",
+        "ru": "Интервал обновления",
+        "pt": "Intervalo de atualização",
+        "nl": "Vernieuwingsinterval",
+        "fr": "Intervalle de rafraîchissement",
+        "it": "Intervallo di aggiornamento",
+        "es": "Intervalo de actualización",
+        "pl": "Częstotliwość odświeżania",
+        "zh-cn": "刷新间隔"
+    },
+    "in Seconds": {
+        "en": "in Seconds",
+        "de": "in Sekunden",
+        "ru": "в секундах",
+        "pt": "em segundos",
+        "nl": "in seconden",
+        "fr": "en secondes",
+        "it": "in secondi",
+        "es": "en segundos",
+        "pl": "w sekundy",
+        "zh-cn": "马上"
     }
 };
