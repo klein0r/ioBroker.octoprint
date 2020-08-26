@@ -5,13 +5,14 @@
 
 const utils = require('@iobroker/adapter-core');
 const axios = require('axios');
+const adapterName = require('./package.json').name.split('.').pop();
 
 class OctoPrint extends utils.Adapter {
 
     constructor(options) {
         super({
             ...options,
-            name: 'octoprint',
+            name: adapterName,
         });
 
         this.apiConnected = false;
@@ -542,6 +543,7 @@ class OctoPrint extends utils.Adapter {
             data: data,
             baseURL: 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
             url: url,
+            timeout: 2000,
             responseType: 'json',
             headers: {
                 'X-Api-Key': this.config.octoprintApiKey
