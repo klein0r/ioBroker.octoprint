@@ -34,7 +34,7 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setState('printer_status', {val: this.printerStatus, ack: true});
 
-        this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + " (" + this.config.apiRefreshIntervalPrinting + " while printing)");
+        this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
 
         await this.refreshState();
         await this.refreshFiles();
@@ -60,7 +60,7 @@ class OctoPrint extends utils.Adapter {
 
             this.log.debug('cleaned everything up...');
             callback();
-        } catch {
+        } catch (e) {
             callback();
         }
     }

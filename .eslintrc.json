@@ -16,6 +16,7 @@
         "no-console": "off",
         "no-var": "error",
         "prefer-const": "error",
+        "no-trailing-spaces": "error",
         "quotes": [
             "error",
             "single",
