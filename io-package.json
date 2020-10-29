@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "0.0.6",
+        "version": "1.0.0",
         "news": {
+            "1.0.0": {
+                "en": "First stable release",
+                "de": "Erster stable release"
+            },
             "0.0.6": {
                 "en": "Improved error handling",
                 "de": "Fehlerbehandlung optimiert"
