@@ -65,7 +65,12 @@
         "materialize": true,
         "dependencies": [
             { "js-controller": ">=1.4.2" }
-        ]
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://749c6dc3f9154faa95b9831c273cc779@sentry.iobroker.net/101"
+            }
+        }
     },
     "native": {
         "octoprintPort": "80",
