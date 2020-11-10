@@ -27,9 +27,6 @@ class OctoPrint extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
-    /**
-     * Is called when databases are connected and adapter received configuration.
-     */
     async onReady() {
         this.subscribeStates('*');
         this.setState('printer_status', {val: this.printerStatus, ack: true});
@@ -40,10 +37,6 @@ class OctoPrint extends utils.Adapter {
         await this.refreshFiles();
     }
 
-    /**
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
-     * @param {() => void} callback
-     */
     onUnload(callback) {
         try {
             this.setPrinterOffline(false);
@@ -409,16 +402,6 @@ class OctoPrint extends utils.Adapter {
                 },
                 null
             );
-
-            /*
-            this.buildRequest(
-                'printer/command/custom',
-                (content, status) => {
-                    // Todo
-                },
-                null
-            );
-            */
 
             this.buildRequest(
                 'system/commands',

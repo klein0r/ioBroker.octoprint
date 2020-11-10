@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
+            "1.0.1": {
+                "en": "Added iobroker sentry",
+                "de": "iobroker sentry hinzugefügt"
+            },
             "1.0.0": {
                 "en": "First stable release",
                 "de": "Erster stable release"
