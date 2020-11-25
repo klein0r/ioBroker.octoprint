@@ -52,7 +52,7 @@ systemDictionary = {
     },
     "API-Key - can be found in the settings section of OctoPrint": {
         "en": "API-Key - can be found in the settings section of OctoPrint",
-        "de": "API-Schlüssel - diesen Wert kannst Du in den Einstellungen deiner OctoPrint-Installation finden"
+        "de": "API-Schlüssel - diesen Wert kannst Du in den Einstellungen deiner OctoPrint-Installation finden",
         "ru": "API-ключ - находится в разделе настроек OctoPrint",
         "pt": "Chave da API - pode ser encontrada na seção de configurações do OctoPrint",
         "nl": "API-sleutel - is te vinden in het instellingengedeelte van OctoPrint",
