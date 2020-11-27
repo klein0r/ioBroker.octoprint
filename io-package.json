@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "news": {
+            "1.0.2": {
+                "en": "Added name for OctoPrint Instance",
+                "de": "Name für OctoPrint-Instanz hinzugefügt"
+            },
             "1.0.1": {
                 "en": "Added iobroker sentry",
                 "de": "iobroker sentry hinzugefügt"
@@ -36,7 +40,7 @@
                 "de": "Initiale Version"
             }
         },
-		"title": "OctoPrint",
+        "title": "OctoPrint",
         "titleLang": {
             "en": "OctoPrint",
             "de": "OctoPrint"
@@ -77,12 +81,25 @@
         }
     },
     "native": {
+        "customName": "My 3D printer",
         "octoprintPort": "80",
         "apiRefreshInterval": 60,
         "apiRefreshIntervalPrinting": 15
     },
     "objects": [],
     "instanceObjects": [
+        {
+            "_id": "name",
+            "type": "state",
+            "common": {
+                "name": "Custom printer name",
+                "type": "string",
+                "role": "value",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
         {
             "_id": "printer_status",
             "type": "state",

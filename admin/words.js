@@ -97,5 +97,29 @@ systemDictionary = {
         "es": "en segundos",
         "pl": "w sekundy",
         "zh-cn": "马上"
+    },
+    "Name": {
+        "en": "Name",
+        "de": "Name",
+        "ru": "название",
+        "pt": "Nome",
+        "nl": "Naam",
+        "fr": "Nom",
+        "it": "Nome",
+        "es": "Nombre",
+        "pl": "Nazwa",
+        "zh-cn": "名称"
+    },
+    "Define your own printer name for this instance": {
+        "en": "Define your own printer name for this instance",
+        "de": "Eigener Druckername für diese Instanz",
+        "ru": "Определите собственное имя принтера для этого экземпляра",
+        "pt": "Defina seu próprio nome de impressora para esta instância",
+        "nl": "Definieer uw eigen printernaam voor deze instantie",
+        "fr": "Définissez votre propre nom d'imprimante pour cette instance",
+        "it": "Definisci il nome della tua stampante per questa istanza",
+        "es": "Defina su propio nombre de impresora para esta instancia",
+        "pl": "Zdefiniuj własną nazwę drukarki dla tej instancji",
+        "zh-cn": "为此实例定义自己的打印机名称"
     }
 };

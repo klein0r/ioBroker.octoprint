@@ -31,6 +31,10 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setState('printer_status', {val: this.printerStatus, ack: true});
 
+        if (this.config.customName) {
+            this.setState('name', {val: this.config.customName, ack: true});
+        }
+
         this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
 
         await this.refreshState();
