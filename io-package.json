@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "news": {
+            "1.0.3": {
+                "en": "Fixed filament information (volume and length)",
+                "de": "Filament-Informationen werden jetzt richtig abgeholt"
+            },
             "1.0.2": {
                 "en": "Added name for OctoPrint Instance",
                 "de": "Name für OctoPrint-Instanz hinzugefügt"
@@ -365,6 +369,7 @@
             "common": {
                 "name": "Filament length",
                 "type": "number",
+                "unit": "m",
                 "role": "value",
                 "read": true,
                 "write": false
