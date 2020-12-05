@@ -382,6 +382,7 @@
             "common": {
                 "name": "Filament volume",
                 "type": "number",
+                "unit": "cm³",
                 "role": "value",
                 "read": true,
                 "write": false
