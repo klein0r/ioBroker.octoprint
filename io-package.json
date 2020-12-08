@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.3",
+        "version": "1.0.4",
         "news": {
+            "1.0.4": {
+                "en": "Fixed .toFixed exception when no job is running",
+                "de": "Fehler .toFixed behoben, wenn keine Datei ausgewählt wurde"
+            },
             "1.0.3": {
                 "en": "Fixed filament information (volume and length)",
                 "de": "Filament-Informationen werden jetzt richtig abgeholt"

@@ -432,13 +432,22 @@ class OctoPrint extends utils.Adapter {
                         this.setState('printjob.file.date', {val: new Date(content.job.file.date * 1000).toLocaleDateString('de-DE'), ack: true});
 
                         if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
+                            let filamentLength = 0;
+                            let filamentVolume = 0;
+
                             if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
-                                this.setState('printjob.filament.length', {val: Number((content.job.filament.tool0.length / 1000).toFixed(2)), ack: true});
-                                this.setState('printjob.filament.volume', {val: Number((content.job.filament.tool0.volume).toFixed(2)), ack: true});
+                                filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
+                                filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
                             } else {
-                                this.setState('printjob.filament.length', {val: Number((content.job.filament.length / 1000).toFixed(2)), ack: true});
-                                this.setState('printjob.filament.volume', {val: Number((content.job.filament.volume).toFixed(2)), ack: true});
+                                filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
+                                filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0 ;
                             }
+
+                            this.setState('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
+                            this.setState('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
+                        } else {
+                            this.setState('printjob.filament.length', {val: 0, ack: true});
+                            this.setState('printjob.filament.volume', {val: 0, ack: true});
                         }
                     }
 
