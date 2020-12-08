@@ -86,6 +86,18 @@ systemDictionary = {
         "pl": "Interwał odświeżania (podczas drukowania)",
         "zh-cn": "刷新间隔（打印时）"
     },
+    "Refresh Interval (while operational)": {
+        "en": "Refresh Interval (while operational)",
+        "de": "Aktualisierungsintervall (während Verbindung zum Drucker)",
+        "ru": "Интервал обновления (во время работы)",
+        "pt": "Intervalo de atualização (enquanto operacional)",
+        "nl": "Vernieuwingsinterval (tijdens gebruik)",
+        "fr": "Intervalle de rafraîchissement (en fonctionnement)",
+        "it": "Intervallo di aggiornamento (durante il funzionamento)",
+        "es": "Intervalo de actualización (mientras está operativo)",
+        "pl": "Interwał odświeżania (podczas pracy)",
+        "zh-cn": "刷新间隔（运行时）"
+    },
     "in Seconds": {
         "en": "in Seconds",
         "de": "in Sekunden",

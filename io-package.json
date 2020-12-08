@@ -92,7 +92,8 @@
         "customName": "My 3D printer",
         "octoprintPort": "80",
         "apiRefreshInterval": 60,
-        "apiRefreshIntervalPrinting": 15
+        "apiRefreshIntervalOperational": 30,
+        "apiRefreshIntervalPrinting": 10
     },
     "objects": [],
     "instanceObjects": [

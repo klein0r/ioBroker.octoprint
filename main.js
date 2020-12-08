@@ -466,6 +466,9 @@ class OctoPrint extends utils.Adapter {
         if (this.printerStatus == 'Printing') {
             this.log.debug('re-creating refresh state timeout (printing)');
             this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshIntervalPrinting * 1000);
+        } else if (this.printerStatus == 'Operational') {
+            this.log.debug('re-creating refresh state timeout (operational)');
+            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshIntervalOperational * 1000);
         } else {
             this.log.debug('re-creating refresh state timeout');
             this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshInterval * 1000);
