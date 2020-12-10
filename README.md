@@ -39,6 +39,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.5
+
+* (klein0r) Fixed .toFixed exception when no job is running
+
 ### 1.0.4
 
 * (klein0r) Fixed .toFixed exception when no job is running

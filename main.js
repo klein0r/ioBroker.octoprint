@@ -443,8 +443,15 @@ class OctoPrint extends utils.Adapter {
                                 filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0 ;
                             }
 
-                            this.setState('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
-                            this.setState('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
+                            if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
+                                this.setState('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
+                                this.setState('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
+                            } else {
+                                this.log.debug('Filament length and/or volume contain no valid number');
+
+                                this.setState('printjob.filament.length', {val: 0, ack: true});
+                                this.setState('printjob.filament.volume', {val: 0, ack: true});
+                            }
                         } else {
                             this.setState('printjob.filament.length', {val: 0, ack: true});
                             this.setState('printjob.filament.volume', {val: 0, ack: true});
