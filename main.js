@@ -288,7 +288,37 @@ class OctoPrint extends utils.Adapter {
                         },
                         jogCommand
                     );
+                } else if (id.match(new RegExp(this.namespace + '.files.[0-9]+.(select|print)'))) {
+                    const matches = id.match(/.+\.files\.([0-9]+)\.(select|print)$/);
+                    const fileId = matches[1];
+                    const action = matches[2];
 
+                    this.log.debug('selecting/printing file ' + fileId + ' - action: ' + action);
+
+                    this.getState(
+                        'files.' + fileId + '.path',
+                        (err, state) => {
+                            const fullPath = state.val;
+
+                            this.log.debug('selecting/printing file with path ' + fullPath);
+
+                            this.buildRequest(
+                                'files/' + fullPath,
+                                (content, status) => {
+                                    if (status == 204) {
+                                        this.log.debug('file selection/print successful');
+                                        this.refreshState();
+                                    } else {
+                                        this.log.error(content);
+                                    }
+                                },
+                                {
+                                    command: 'select',
+                                    print: (action == 'print')
+                                }
+                            );
+                        }
+                    );
                 }
             } else {
                 this.log.info('OctoPrint API not connected');
@@ -482,6 +512,96 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
+    addFiles(fileArray, counter) {
+
+        fileArray.forEach(function(file) {
+
+            if (file.type == 'machinecode' && file.origin == 'local') {
+
+                this.setObjectNotExists('files.' + counter, {
+                    type: 'channel',
+                    common: {
+                        name: 'File ' + (counter + 1) + ' (' + file.display + ')',
+                    },
+                    native: {}
+                });
+
+                this.setObjectNotExists('files.' + counter + '.name', {
+                    type: 'state',
+                    common: {
+                        name: 'File name',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false
+                    },
+                    native: {}
+                });
+                this.setState('files.' + counter + '.name', {val: file.display, ack: true});
+
+                this.setObjectNotExists('files.' + counter + '.path', {
+                    type: 'state',
+                    common: {
+                        name: 'File path',
+                        type: 'string',
+                        role: 'value',
+                        read: true,
+                        write: false
+                    },
+                    native: {}
+                });
+                this.setState('files.' + counter + '.path', {val: file.origin + '/' + file.path, ack: true});
+
+                this.setObjectNotExists('files.' + counter + '.date', {
+                    type: 'state',
+                    common: {
+                        name: 'File date',
+                        type: 'number',
+                        role: 'date',
+                        read: true,
+                        write: false
+                    },
+                    native: {}
+                });
+                if (file.date) {
+                    this.setState('files.' + counter + '.date', {val: new Date(file.date * 1000).getTime(), ack: true});
+                }
+
+                this.setObjectNotExists('files.' + counter + '.select', {
+                    type: 'state',
+                    common: {
+                        name: 'Select file',
+                        type: 'boolean',
+                        role: 'button',
+                        read: false,
+                        write: true
+                    },
+                    native: {}
+                });
+
+                this.setObjectNotExists('files.' + counter + '.print', {
+                    type: 'state',
+                    common: {
+                        name: 'Print file',
+                        type: 'boolean',
+                        role: 'button',
+                        read: false,
+                        write: true
+                    },
+                    native: {}
+                });
+
+                counter++;
+
+            } else if (file.type == 'folder') {
+                counter = this.addFiles(file.children, counter);
+            }
+
+        }.bind(this));
+
+        return counter;
+    }
+
     async refreshFiles() {
 
         if (this.apiConnected) {
@@ -489,45 +609,18 @@ class OctoPrint extends utils.Adapter {
                 'files?recursive=true',
                 (content, status) => {
 
-                    let counter = 0;
+                    this.delObject('files', {recursive: true}, function() {
 
-                    content.files.forEach(function(file) {
-
-                        this.setObjectNotExists('files.' + counter, {
+                        this.setObjectNotExists('files', {
                             type: 'channel',
                             common: {
-                                name: 'File ' + (counter + 1),
+                                name: 'File list'
                             },
                             native: {}
                         });
 
-                        this.setObjectNotExists('files.' + counter + '.name', {
-                            type: 'state',
-                            common: {
-                                name: 'File name',
-                                type: 'string',
-                                role: 'value',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        this.setState('files.' + counter + '.name', {val: file.display, ack: true});
+                        this.addFiles(content.files, 0);
 
-                        this.setObjectNotExists('files.' + counter + '.date', {
-                            type: 'state',
-                            common: {
-                                name: 'File date',
-                                type: 'string',
-                                role: 'value',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        this.setState('files.' + counter + '.date', {val: new Date(file.date * 1000).toLocaleDateString('de-DE'), ack: true});
-
-                        counter++;
                     }.bind(this));
 
                 },

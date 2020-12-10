@@ -4,8 +4,8 @@
         "version": "1.0.5",
         "news": {
             "1.0.5": {
-                "en": "Fixed .toFixed exception when no job is running",
-                "de": "Fehler .toFixed behoben, wenn keine Datei ausgewählt wurde"
+                "en": "Allow to select and print files using objects",
+                "de": "Möglichkeit hinzugefügt, Dateien zu wählen und zu drucken"
             },
             "1.0.4": {
                 "en": "Fixed .toFixed exception when no job is running",
@@ -457,14 +457,6 @@
                 "write": false
             },
             "native": {}
-        },
-        {
-          "_id":  "files",
-          "type": "channel",
-          "common": {
-            "name": "Available files to print"
-          },
-          "native": {}
         }
     ]
 }
