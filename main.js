@@ -218,7 +218,7 @@ class OctoPrint extends utils.Adapter {
                             }
                         );
                     } else {
-                        this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
+                        this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
 
                 } else if (id === this.namespace + '.command.custom') {
