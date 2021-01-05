@@ -655,16 +655,15 @@ class OctoPrint extends utils.Adapter {
             validateStatus: function (status) {
                 return [200, 204, 409].indexOf(status) > -1;
             },
-        }).then(
-            function (response) {
+        }).then(response => {
                 this.log.debug('received ' + response.status + ' response from ' + url + ' with content: ' + JSON.stringify(response.data));
+                // no error - clear up reminder
+                delete this.lastErrorCode;
 
                 if (response && callback && typeof callback === 'function') {
                     callback(response.data, response.status);
                 }
-            }.bind(this)
-        ).catch(
-            function (error) {
+            }).catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
 
@@ -673,7 +672,14 @@ class OctoPrint extends utils.Adapter {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    this.log.info(error.message);
+
+                    // avoid spamming of the same error when stuck in a reconnection loop
+                    if (error.code === this.lastErrorCode) {
+                        this.log.debug(error.message);
+                    } else {
+                        this.log.info(error.message);
+                        this.lastErrorCode = error.code;
+                    }
 
                     this.setPrinterOffline(false);
                 } else {
@@ -682,8 +688,7 @@ class OctoPrint extends utils.Adapter {
 
                     this.setPrinterOffline(false);
                 }
-            }.bind(this)
-        );
+            });
     }
 }
 
