@@ -365,7 +365,7 @@ class OctoPrint extends utils.Adapter {
 
             this.buildRequest(
                 'printer',
-                (content, status) => {
+                async (content, status) => {
                     if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
                         for (const key of Object.keys(content.temperature)) {
                             const obj = content.temperature[key];
@@ -373,62 +373,57 @@ class OctoPrint extends utils.Adapter {
                             if (key.indexOf('tool') > -1 || key == 'bed') { // Tool + bed information
 
                                 // Create tool channel
-                                try {
-                                    this.setObjectNotExists('temperature.' + key, {
-                                        type: 'channel',
-                                        common: {
-                                            name: key,
-                                        },
-                                        native: {}
-                                    });
+                                await this.setObjectNotExistsAsync('temperature.' + key, {
+                                    type: 'channel',
+                                    common: {
+                                        name: key,
+                                    },
+                                    native: {}
+                                });
 
-                                    // Set actual temperature
-                                    this.setObjectNotExists('temperature.' + key + '.actual', {
-                                        type: 'state',
-                                        common: {
-                                            name: 'Actual',
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: false
-                                        },
-                                        native: {}
-                                    });
-
-                                    // Set target temperature
-                                    this.setObjectNotExists('temperature.' + key + '.target', {
-                                        type: 'state',
-                                        common: {
-                                            name: 'Target',
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: true
-                                        },
-                                        native: {}
-                                    });
-
-                                    // Set offset temperature
-                                    this.setObjectNotExists('temperature.' + key + '.offset', {
-                                        type: 'state',
-                                        common: {
-                                            name: 'Offset',
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: false
-                                        },
-                                        native: {}
-                                    });
-                                } catch (e) {
-                                    this.log.error(`Could not create temperature objects: ${e}`);
-                                }
-
+                                // Set actual temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.actual', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Actual temperature',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
                                 this.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
+
+                                // Set target temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.target', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Target temperature',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
                                 this.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
+
+                                // Set offset temperature
+                                await this.setObjectNotExistsAsync('temperature.' + key + '.offset', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Offset temperature',
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
                                 this.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
                             }
                         }
