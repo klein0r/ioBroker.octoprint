@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.6",
+        "version": "1.0.7",
         "news": {
+            "1.0.7": {
+                "en": "Fixed async object creation",
+                "de": "Asynchrone Objekterstellung korrigiert"
+            },
             "1.0.6": {
                 "en": "Avoid spamming the same error again and again",
                 "de": "Doppelte Fehlermeldungen unterdrücken"

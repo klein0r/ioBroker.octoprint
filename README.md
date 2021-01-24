@@ -40,6 +40,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.7
+
+* (klein0r) Fixed async object creation
+
 ### 1.0.6
 
 * (foxriver76) Avoid spamming the same error again and again

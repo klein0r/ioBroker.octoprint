@@ -512,13 +512,13 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
-    addFiles(fileArray, counter) {
+    async addFiles(files, counter) {
 
-        fileArray.forEach(function(file) {
+        for (const file of files) {
 
             if (file.type == 'machinecode' && file.origin == 'local') {
 
-                this.setObjectNotExists('files.' + counter, {
+                await this.setObjectNotExistsAsync('files.' + counter, {
                     type: 'channel',
                     common: {
                         name: 'File ' + (counter + 1) + ' (' + file.display + ')',
@@ -526,7 +526,7 @@ class OctoPrint extends utils.Adapter {
                     native: {}
                 });
 
-                this.setObjectNotExists('files.' + counter + '.name', {
+                await this.setObjectNotExistsAsync('files.' + counter + '.name', {
                     type: 'state',
                     common: {
                         name: 'File name',
@@ -539,7 +539,7 @@ class OctoPrint extends utils.Adapter {
                 });
                 this.setState('files.' + counter + '.name', {val: file.display, ack: true});
 
-                this.setObjectNotExists('files.' + counter + '.path', {
+                await this.setObjectNotExistsAsync('files.' + counter + '.path', {
                     type: 'state',
                     common: {
                         name: 'File path',
@@ -552,7 +552,7 @@ class OctoPrint extends utils.Adapter {
                 });
                 this.setState('files.' + counter + '.path', {val: file.origin + '/' + file.path, ack: true});
 
-                this.setObjectNotExists('files.' + counter + '.date', {
+                await this.setObjectNotExistsAsync('files.' + counter + '.date', {
                     type: 'state',
                     common: {
                         name: 'File date',
@@ -567,7 +567,7 @@ class OctoPrint extends utils.Adapter {
                     this.setState('files.' + counter + '.date', {val: new Date(file.date * 1000).getTime(), ack: true});
                 }
 
-                this.setObjectNotExists('files.' + counter + '.select', {
+                await this.setObjectNotExistsAsync('files.' + counter + '.select', {
                     type: 'state',
                     common: {
                         name: 'Select file',
@@ -579,7 +579,7 @@ class OctoPrint extends utils.Adapter {
                     native: {}
                 });
 
-                this.setObjectNotExists('files.' + counter + '.print', {
+                await this.setObjectNotExistsAsync('files.' + counter + '.print', {
                     type: 'state',
                     common: {
                         name: 'Print file',
@@ -594,10 +594,10 @@ class OctoPrint extends utils.Adapter {
                 counter++;
 
             } else if (file.type == 'folder') {
-                counter = this.addFiles(file.children, counter);
+                counter = await this.addFiles(file.children, counter);
             }
 
-        }.bind(this));
+        }
 
         return counter;
     }
@@ -609,9 +609,9 @@ class OctoPrint extends utils.Adapter {
                 'files?recursive=true',
                 (content, status) => {
 
-                    this.delObject('files', {recursive: true}, function() {
+                    this.delObjectAsync('files', {recursive: true}, async () => {
 
-                        this.setObjectNotExists('files', {
+                        await this.setObjectNotExistsAsync('files', {
                             type: 'channel',
                             common: {
                                 name: 'File list'
@@ -621,7 +621,7 @@ class OctoPrint extends utils.Adapter {
 
                         this.addFiles(content.files, 0);
 
-                    }.bind(this));
+                    });
 
                 },
                 null
@@ -633,7 +633,7 @@ class OctoPrint extends utils.Adapter {
         this.log.debug('re-creating refresh files timeout');
 
         clearTimeout(this.refreshFilesTimeout);
-        this.refreshFilesTimeout = setTimeout(this.refreshState.bind(this), 60000 * 5); // Every 5 Minutes
+        this.refreshFilesTimeout = setTimeout(this.refreshFiles.bind(this), 60000 * 5); // Every 5 Minutes
     }
 
     async buildRequest(service, callback, data) {
@@ -652,7 +652,7 @@ class OctoPrint extends utils.Adapter {
             headers: {
                 'X-Api-Key': this.config.octoprintApiKey
             },
-            validateStatus: function (status) {
+            validateStatus: (status) => {
                 return [200, 204, 409].indexOf(status) > -1;
             },
         }).then(response => {
