@@ -499,16 +499,24 @@ class OctoPrint extends utils.Adapter {
             );
         }
 
-        clearTimeout(this.refreshStateTimeout);
         if (this.printerStatus == 'Printing') {
             this.log.debug('re-creating refresh state timeout (printing)');
-            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshIntervalPrinting * 1000);
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshIntervalPrinting * 1000);
         } else if (this.printerStatus == 'Operational') {
             this.log.debug('re-creating refresh state timeout (operational)');
-            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshIntervalOperational * 1000);
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshIntervalOperational * 1000);
         } else {
             this.log.debug('re-creating refresh state timeout');
-            this.refreshStateTimeout = setTimeout(this.refreshState.bind(this), this.config.apiRefreshInterval * 1000);
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshInterval * 1000);
         }
     }
 
@@ -632,8 +640,10 @@ class OctoPrint extends utils.Adapter {
 
         this.log.debug('re-creating refresh files timeout');
 
-        clearTimeout(this.refreshFilesTimeout);
-        this.refreshFilesTimeout = setTimeout(this.refreshFiles.bind(this), 60000 * 5); // Every 5 Minutes
+        this.refreshFilesTimeout = this.refreshFilesTimeout || setTimeout(() => {
+            this.refreshFilesTimeout = null;
+            this.refreshFiles();
+        }, 60000 * 5); // Every 5 Minutes
     }
 
     async buildRequest(service, callback, data) {
