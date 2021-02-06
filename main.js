@@ -288,8 +288,8 @@ class OctoPrint extends utils.Adapter {
                         },
                         jogCommand
                     );
-                } else if (id.match(new RegExp(this.namespace + '.files.[0-9]+.(select|print)'))) {
-                    const matches = id.match(/.+\.files\.([0-9]+)\.(select|print)$/);
+                } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9]+.(select|print)'))) {
+                    const matches = id.match(/.+\.files\.([a-zA-Z0-9]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
 
@@ -515,117 +515,153 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
-    async addFiles(files, counter) {
+    flattenFiles(files) {
+
+        let fileArr = [];
 
         for (const file of files) {
 
             if (file.type == 'machinecode' && file.origin == 'local') {
 
-                await this.setObjectNotExistsAsync('files.' + counter, {
-                    type: 'channel',
-                    common: {
-                        name: 'File ' + (counter + 1) + ' (' + file.display + ')',
-                    },
-                    native: {}
-                });
-
-                await this.setObjectNotExistsAsync('files.' + counter + '.name', {
-                    type: 'state',
-                    common: {
-                        name: 'File name',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false
-                    },
-                    native: {}
-                });
-                this.setState('files.' + counter + '.name', {val: file.display, ack: true});
-
-                await this.setObjectNotExistsAsync('files.' + counter + '.path', {
-                    type: 'state',
-                    common: {
-                        name: 'File path',
-                        type: 'string',
-                        role: 'value',
-                        read: true,
-                        write: false
-                    },
-                    native: {}
-                });
-                this.setState('files.' + counter + '.path', {val: file.origin + '/' + file.path, ack: true});
-
-                await this.setObjectNotExistsAsync('files.' + counter + '.date', {
-                    type: 'state',
-                    common: {
-                        name: 'File date',
-                        type: 'number',
-                        role: 'date',
-                        read: true,
-                        write: false
-                    },
-                    native: {}
-                });
-                if (file.date) {
-                    this.setState('files.' + counter + '.date', {val: new Date(file.date * 1000).getTime(), ack: true});
-                }
-
-                await this.setObjectNotExistsAsync('files.' + counter + '.select', {
-                    type: 'state',
-                    common: {
-                        name: 'Select file',
-                        type: 'boolean',
-                        role: 'button',
-                        read: false,
-                        write: true
-                    },
-                    native: {}
-                });
-
-                await this.setObjectNotExistsAsync('files.' + counter + '.print', {
-                    type: 'state',
-                    common: {
-                        name: 'Print file',
-                        type: 'boolean',
-                        role: 'button',
-                        read: false,
-                        write: true
-                    },
-                    native: {}
-                });
-
-                counter++;
+                fileArr.push(
+                    {
+                        name: file.display,
+                        path: file.origin + '/' + file.path,
+                        date: (file.date) ? new Date(file.date * 1000).getTime() : 0
+                    }
+                );
 
             } else if (file.type == 'folder') {
-                counter = await this.addFiles(file.children, counter);
+                fileArr = fileArr.concat(this.flattenFiles(file.children));
             }
 
         }
 
-        return counter;
+        return fileArr;
     }
 
     async refreshFiles() {
 
         if (this.apiConnected) {
+            this.log.debug('Refreshing files list');
+
             this.buildRequest(
                 'files?recursive=true',
                 (content, status) => {
 
-                    this.delObjectAsync('files', {recursive: true}, async () => {
+                    this.getChannelsOf(
+                        'files',
+                        async (err, states) => {
 
-                        await this.setObjectNotExistsAsync('files', {
-                            type: 'channel',
-                            common: {
-                                name: 'File list'
-                            },
-                            native: {}
-                        });
+                            const filesAll = [];
+                            const filesKeep = [];
 
-                        this.addFiles(content.files, 0);
+                            // Collect all files
+                            if (states) {
+                                for (let i = 0; i < states.length; i++) {
+                                    const id = this.removeNamespace(states[i]._id);
 
-                    });
+                                    // Check if the state is a direct child (e.g. files.2)
+                                    if (id.split('.').length === 2) {
+                                        filesAll.push(id);
+                                    }
+                                }
+                            }
 
+                            const fileList = this.flattenFiles(content.files);
+                            this.log.debug('Found ' + fileList.length + ' files');
+
+                            for (const f in fileList) {
+                                const file = fileList[f];
+                                const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', ''));
+
+                                filesKeep.push('files.' + fileNameClean);
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean, {
+                                    type: 'channel',
+                                    common: {
+                                        name: 'File ' + file.name,
+                                    },
+                                    native: {}
+                                });
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.name', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'File name',
+                                        type: 'string',
+                                        role: 'value',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                this.setState('files.' + fileNameClean + '.name', {val: file.name, ack: true});
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.path', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'File path',
+                                        type: 'string',
+                                        role: 'value',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                this.setState('files.' + fileNameClean + '.path', {val: file.path, ack: true});
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'File date',
+                                        type: 'number',
+                                        role: 'date',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                this.setState('files.' + fileNameClean + '.date', {val: file.date, ack: true});
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Select file',
+                                        type: 'boolean',
+                                        role: 'button',
+                                        read: false,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.print', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Print file',
+                                        type: 'boolean',
+                                        role: 'button',
+                                        read: false,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
+
+                            }
+
+                            // Delete non existent files
+                            for (let i = 0; i < filesAll.length; i++) {
+                                const id = filesAll[i];
+
+                                if (filesKeep.indexOf(id) === -1) {
+                                    this.delObject(id, {recursive: true}, () => {
+                                        this.log.debug('File deleted: "' + id + '"');
+                                    });
+                                }
+                            }
+                        }
+                    );
                 },
                 null
             );
@@ -639,6 +675,25 @@ class OctoPrint extends utils.Adapter {
             this.refreshFilesTimeout = null;
             this.refreshFiles();
         }, 60000 * 5); // Every 5 Minutes
+    }
+
+    cleanNamespace(id) {
+        return id
+            .trim()
+            .replace(/\s/g, '_') // Replace whitespaces with underscores
+            .replace(/[^\p{Ll}\p{Lu}\p{Nd}]+/gu, '_') // Replace not allowed chars with underscore
+            .replace(/[_]+$/g, '') // Remove underscores end
+            .replace(/^[_]+/g, '') // Remove underscores beginning
+            .replace(/_+/g, '_') // Replace multiple underscores with one
+            .toLowerCase()
+            .replace(/_([a-z])/g, (m, w) => {
+                return w.toUpperCase();
+            });
+    }
+
+    removeNamespace(id) {
+        const re = new RegExp(this.namespace + '*\.', 'g');
+        return id.replace(re, '');
     }
 
     async buildRequest(service, callback, data) {

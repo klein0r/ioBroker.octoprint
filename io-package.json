@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.7",
+        "version": "1.0.8",
         "news": {
+            "1.0.8": {
+                "en": "Avoid constant refresh of file list",
+                "de": "Ständige Aktualisierung der Datei-Liste vermeiden"
+            },
             "1.0.7": {
                 "en": "Fixed async object creation",
                 "de": "Asynchrone Objekterstellung korrigiert"
@@ -88,8 +92,8 @@
         "mode": "daemon",
         "type": "hardware",
         "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "local",
+        "connectionType": "local",
+        "dataSource": "poll",
         "materialize": true,
         "dependencies": [
             {
@@ -467,6 +471,14 @@
                 "write": false
             },
             "native": {}
+        },
+        {
+          "_id":  "files",
+          "type": "channel",
+          "common": {
+            "name": "Printer file list"
+          },
+          "native": {}
         }
     ]
 }
