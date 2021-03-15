@@ -339,7 +339,7 @@ class OctoPrint extends utils.Adapter {
     async refreshState() {
         this.log.debug('refreshing OctoPrint state');
 
-        await this.buildRequest(
+        this.buildRequest(
             'version',
             (content, status) => {
                 this.setState('info.connection', true, true);
@@ -702,7 +702,7 @@ class OctoPrint extends utils.Adapter {
 
         this.log.debug('sending ' + method + ' request to ' + url + ' with data: ' + JSON.stringify(data));
 
-        await axios({
+        axios({
             method: method,
             data: data,
             baseURL: 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort,

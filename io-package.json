@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.8",
+        "version": "1.0.9",
         "news": {
+            "1.0.9": {
+                "en": "Nodejs 12 required",
+                "de": "Nodejs 12 erforderlich"
+            },
             "1.0.8": {
                 "en": "Avoid constant refresh of file list",
                 "de": "Ständige Aktualisierung der Datei-Liste vermeiden"
