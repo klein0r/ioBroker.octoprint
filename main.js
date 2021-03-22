@@ -43,7 +43,7 @@ class OctoPrint extends utils.Adapter {
 
     onUnload(callback) {
         try {
-            this.setPrinterOffline(false);
+            this.setPrinterState(false);
 
             if (this.refreshStateTimeout) {
                 this.log.debug('clearing refresh state timeout');
@@ -321,13 +321,13 @@ class OctoPrint extends utils.Adapter {
                     );
                 }
             } else {
-                this.log.info('OctoPrint API not connected');
+                this.log.debug('OctoPrint API not connected');
             }
         }
     }
 
-    setPrinterOffline(connection) {
-        this.setState('info.connection', connection, true);
+    setPrinterState(connection) {
+        this.setState('info.connection', {val: connection, ack: true});
         this.apiConnected = connection;
 
         if (!connection) {
@@ -342,8 +342,7 @@ class OctoPrint extends utils.Adapter {
         this.buildRequest(
             'version',
             (content, status) => {
-                this.setState('info.connection', true, true);
-                this.apiConnected = true;
+                this.setPrinterState(true);
 
                 this.log.debug('connected to OctoPrint API - online!');
 
@@ -743,12 +742,12 @@ class OctoPrint extends utils.Adapter {
                     this.lastErrorCode = error.code;
                 }
 
-                this.setPrinterOffline(false);
+                this.setPrinterState(false);
             } else {
                 // Something happened in setting up the request that triggered an Error
                 this.log.error(error.message);
 
-                this.setPrinterOffline(false);
+                this.setPrinterState(false);
             }
         });
     }
