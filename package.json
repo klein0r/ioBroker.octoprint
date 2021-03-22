@@ -4,7 +4,8 @@
   "description": "ioBroker OctoPrint Adapter",
   "author": {
     "name": "Matthias Kleine",
-    "email": "info@haus-automatisierung.com"
+    "email": "info@haus-automatisierung.com",
+    "url" : "https://haus-automatisierung.com/"
   },
   "homepage": "https://github.com/klein0r/ioBroker.octoprint",
   "license": "MIT",

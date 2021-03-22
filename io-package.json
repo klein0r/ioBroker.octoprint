@@ -42,30 +42,6 @@
             "1.0.0": {
                 "en": "First stable release",
                 "de": "Erster stable release"
-            },
-            "0.0.6": {
-                "en": "Improved error handling",
-                "de": "Fehlerbehandlung optimiert"
-            },
-            "0.0.5": {
-                "en": "Switched to axios lib (replaced request - deprecated)",
-                "de": "Neue axios lib verwendet (request ersetzt - deprecated)"
-            },
-            "0.0.4": {
-                "en": "Added missing translations",
-                "de": "Fehlende Übersetzungen hinzugefügt"
-            },
-            "0.0.3": {
-                "en": "Updated depencencies",
-                "de": "Abhängigkeiten aktualisiert"
-            },
-            "0.0.2": {
-                "en": "fixed several issues, new class based structure",
-                "de": "Viele kleine Bugs behoben, neue Struktur des Adapters"
-            },
-            "0.0.1": {
-                "en": "initial adapter",
-                "de": "Initiale Version"
             }
         },
         "title": "OctoPrint",

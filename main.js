@@ -519,22 +519,24 @@ class OctoPrint extends utils.Adapter {
 
         let fileArr = [];
 
-        for (const file of files) {
+        if (Array.isArray(files)) {
+            for (const file of files) {
 
-            if (file.type == 'machinecode' && file.origin == 'local') {
+                if (file.type == 'machinecode' && file.origin == 'local') {
 
-                fileArr.push(
-                    {
-                        name: file.display,
-                        path: file.origin + '/' + file.path,
-                        date: (file.date) ? new Date(file.date * 1000).getTime() : 0
-                    }
-                );
+                    fileArr.push(
+                        {
+                            name: file.display,
+                            path: file.origin + '/' + file.path,
+                            date: (file.date) ? new Date(file.date * 1000).getTime() : 0
+                        }
+                    );
 
-            } else if (file.type == 'folder') {
-                fileArr = fileArr.concat(this.flattenFiles(file.children));
+                } else if (file.type == 'folder') {
+                    fileArr = fileArr.concat(this.flattenFiles(file.children));
+                }
+
             }
-
         }
 
         return fileArr;
