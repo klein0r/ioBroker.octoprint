@@ -612,17 +612,18 @@ class OctoPrint extends utils.Adapter {
                                 });
                                 this.setState('files.' + fileNameClean + '.path', {val: file.path, ack: true});
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
+                                // we need to update the type, thus extend but preserve name
+                                await this.extendForeignObjectAsync('files.' + fileNameClean + '.date', {
                                     type: 'state',
                                     common: {
                                         name: 'File date',
-                                        type: 'number',
+                                        type: 'string',
                                         role: 'date',
                                         read: true,
                                         write: false
                                     },
                                     native: {}
-                                });
+                                }, {preserve: {common: ['name']}});
                                 this.setState('files.' + fileNameClean + '.date', {val: file.date, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
