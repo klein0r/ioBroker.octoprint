@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.9",
+        "version": "1.0.10",
         "news": {
+            "1.0.10": {
+                "en": "Fixed printjob state format issues",
+                "de": "Datumsformat des aktuellen Printjob korrigiert"
+            },
             "1.0.9": {
                 "en": "Nodejs 12 required",
                 "de": "Nodejs 12 erforderlich"
@@ -352,7 +356,7 @@
             "common": {
                 "name": "File origin",
                 "type": "number",
-                "role": "value",
+                "role": "date",
                 "read": true,
                 "write": false
             },

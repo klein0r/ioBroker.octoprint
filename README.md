@@ -40,6 +40,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.10
+
+* (klein0r) Fixed printjob state format issues
+
 ### 1.0.9
 
 * (klein0r) nodejs 12 required
