@@ -453,7 +453,7 @@ class OctoPrint extends utils.Adapter {
                         this.setState('printjob.file.name', {val: content.job.file.name, ack: true});
                         this.setState('printjob.file.origin', {val: content.job.file.origin, ack: true});
                         this.setState('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
-                        this.setState('printjob.file.date', {val: new Date(content.job.file.date * 1000).toLocaleDateString('de-DE'), ack: true});
+                        this.setState('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
 
                         if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
                             let filamentLength = 0;
