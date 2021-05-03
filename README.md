@@ -14,6 +14,8 @@
 
 Adapter to connect OctoPrint to ioBroker
 
+Tested with OctoPrint 1.6.0
+
 ## Features
 
 ### Information
@@ -39,6 +41,10 @@ Adapter to connect OctoPrint to ioBroker
 - Select a file or print it
 
 ## Changelog
+
+### 1.1.0
+
+* (klein0r) Encrypt sensitive information
 
 ### 1.0.10
 

@@ -348,10 +348,14 @@ class OctoPrint extends utils.Adapter {
 
                 this.setState('meta.version', {val: content.server, ack: true});
                 this.setState('meta.api_version', {val: content.api, ack: true});
+
+                this.refreshStateDetails();
             },
             null
         );
+    }
 
+    async refreshStateDetails() {
         if (this.apiConnected) {
             this.buildRequest(
                 'connection',

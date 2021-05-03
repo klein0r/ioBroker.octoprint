@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.0.10",
+        "version": "1.1.0",
         "news": {
+            "1.1.0": {
+                "en": "Encrypt sensitive information",
+                "de": "Verschlüsselung von sensiblen Daten"
+            },
             "1.0.10": {
                 "en": "Fixed printjob state format issues",
                 "de": "Datumsformat des aktuellen Printjob korrigiert"
@@ -90,8 +94,15 @@
             }
         }
     },
+    "protectedNative": [
+        "octoprintApiKey"
+    ],
+    "encryptedNative": [
+        "octoprintApiKey"
+    ],
     "native": {
         "customName": "My 3D printer",
+        "octoprintApiKey": "",
         "octoprintPort": "80",
         "apiRefreshInterval": 60,
         "apiRefreshIntervalOperational": 30,
