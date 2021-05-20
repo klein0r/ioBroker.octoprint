@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "news": {
+            "1.1.1": {
+                "en": "Minor fixes",
+                "de": "Kleine Verbesserungen"
+            },
             "1.1.0": {
                 "en": "Encrypt sensitive information",
                 "de": "Verschlüsselung von sensiblen Daten"
