@@ -29,7 +29,11 @@ class OctoPrint extends utils.Adapter {
 
     async onReady() {
         this.subscribeStates('*');
-        this.setState('printer_status', {val: this.printerStatus, ack: true});
+        this.setPrinterState(false);
+
+        if (!this.config.octoprintApiKey) {
+            this.log.warn('API key not configured. Check configuration of instance ' + this.namespace);
+        }
 
         if (this.config.customName) {
             this.setState('name', {val: this.config.customName, ack: true});
@@ -670,8 +674,6 @@ class OctoPrint extends utils.Adapter {
                 },
                 null
             );
-        } else {
-            this.log.info('OctoPrint API not connected');
         }
 
         this.log.debug('re-creating refresh files timeout');
