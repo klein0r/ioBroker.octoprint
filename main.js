@@ -357,6 +357,32 @@ class OctoPrint extends utils.Adapter {
             },
             null
         );
+
+        if (!this.apiConnected) {
+            this.log.debug('re-creating refresh state timeout (api not connected)');
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, 10 * 1000);
+        } else if (this.printerStatus == 'Printing') {
+            this.log.debug('re-creating refresh state timeout (printing)');
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
+        } else if (this.printerStatus == 'Operational') {
+            this.log.debug('re-creating refresh state timeout (operational)');
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
+        } else {
+            this.log.debug('re-creating refresh state timeout');
+            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+                this.refreshStateTimeout = null;
+                this.refreshState();
+            }, this.config.apiRefreshInterval * 1000); // Default 60 sec
+        }
     }
 
     async refreshStateDetails() {
@@ -499,26 +525,6 @@ class OctoPrint extends utils.Adapter {
                 },
                 null
             );
-        }
-
-        if (this.printerStatus == 'Printing') {
-            this.log.debug('re-creating refresh state timeout (printing)');
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
-                this.refreshStateTimeout = null;
-                this.refreshState();
-            }, this.config.apiRefreshIntervalPrinting * 1000);
-        } else if (this.printerStatus == 'Operational') {
-            this.log.debug('re-creating refresh state timeout (operational)');
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
-                this.refreshStateTimeout = null;
-                this.refreshState();
-            }, this.config.apiRefreshIntervalOperational * 1000);
-        } else {
-            this.log.debug('re-creating refresh state timeout');
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
-                this.refreshStateTimeout = null;
-                this.refreshState();
-            }, this.config.apiRefreshInterval * 1000);
         }
     }
 
