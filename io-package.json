@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.1.1",
+        "version": "1.1.2",
         "news": {
+            "1.1.2": {
+                "en": "Updated file refresh handling",
+                "de": "Datei-Aktualisierung verbessert"
+            },
             "1.1.1": {
                 "en": "Minor fixes",
                 "de": "Kleine Verbesserungen"
@@ -89,7 +93,12 @@
         "materialize": true,
         "dependencies": [
             {
-                "js-controller": ">=2.0.0"
+                "js-controller": ">=3.3.0"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.19"
             }
         ],
         "plugins": {

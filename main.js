@@ -20,7 +20,6 @@ class OctoPrint extends utils.Adapter {
         this.systemCommands = [];
 
         this.refreshStateTimeout = null;
-        this.refreshFilesTimeout = null;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -41,8 +40,7 @@ class OctoPrint extends utils.Adapter {
 
         this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
 
-        await this.refreshState();
-        await this.refreshFiles();
+        this.refreshState('onReady', true);
     }
 
     onUnload(callback) {
@@ -52,11 +50,6 @@ class OctoPrint extends utils.Adapter {
             if (this.refreshStateTimeout) {
                 this.log.debug('clearing refresh state timeout');
                 clearTimeout(this.refreshStateTimeout);
-            }
-
-            if (this.refreshFilesTimeout) {
-                this.log.debug('clearing refresh files timeout');
-                clearTimeout(this.refreshFilesTimeout);
             }
 
             this.log.debug('cleaned everything up...');
@@ -137,7 +130,7 @@ class OctoPrint extends utils.Adapter {
                             (content, status) => {
                                 if (status == 204) {
                                     this.setState(cleanId, {val: state.val, ack: true});
-                                    this.refreshState();
+                                    this.refreshState('onStateChange command.printer', false);
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
@@ -292,8 +285,8 @@ class OctoPrint extends utils.Adapter {
                         },
                         jogCommand
                     );
-                } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9]+.(select|print)'))) {
-                    const matches = id.match(/.+\.files\.([a-zA-Z0-9]+)\.(select|print)$/);
+                } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9_]+.(select|print)'))) {
+                    const matches = id.match(/.+\.files\.([a-zA-Z0-9_]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
 
@@ -310,8 +303,8 @@ class OctoPrint extends utils.Adapter {
                                 'files/' + fullPath,
                                 (content, status) => {
                                     if (status == 204) {
-                                        this.log.debug('file selection/print successful');
-                                        this.refreshState();
+                                        this.log.debug('selection/print file successful');
+                                        this.refreshState('onStateChange file.' + action, false);
                                     } else {
                                         this.log.error(content);
                                     }
@@ -324,8 +317,6 @@ class OctoPrint extends utils.Adapter {
                         }
                     );
                 }
-            } else {
-                this.log.debug('OctoPrint API not connected');
             }
         }
     }
@@ -340,8 +331,8 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
-    async refreshState() {
-        this.log.debug('refreshing OctoPrint state');
+    async refreshState(source, refreshFileList) {
+        this.log.debug('refreshing state: started from ' + source);
 
         this.buildRequest(
             'version',
@@ -354,33 +345,39 @@ class OctoPrint extends utils.Adapter {
                 this.setState('meta.api_version', {val: content.api, ack: true});
 
                 this.refreshStateDetails();
+
+                if (refreshFileList) {
+                    this.refreshFiles();
+                } else {
+                    this.log.debug('skipped file list refresh');
+                }
             },
             null
         );
 
         if (!this.apiConnected) {
-            this.log.debug('re-creating refresh state timeout (api not connected)');
+            this.log.debug('refreshing state: re-creating refresh timeout (API not connected)');
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState();
+                this.refreshState('timeout (API not connected)', true);
             }, 10 * 1000);
         } else if (this.printerStatus == 'Printing') {
-            this.log.debug('re-creating refresh state timeout (printing)');
+            this.log.debug('refreshing state: re-creating refresh timeout (printing)');
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState();
+                this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
         } else if (this.printerStatus == 'Operational') {
-            this.log.debug('re-creating refresh state timeout (operational)');
+            this.log.debug('refreshing state: re-creating refresh timeout (operational)');
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState();
+                this.refreshState('timeout (operational)', true);
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
         } else {
-            this.log.debug('re-creating refresh state timeout');
+            this.log.debug('refreshing state: re-creating state timeout (default)');
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState();
+                this.refreshState('timeout (default)', true);
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
         }
     }
@@ -505,7 +502,7 @@ class OctoPrint extends utils.Adapter {
                                 this.setState('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
                                 this.setState('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
                             } else {
-                                this.log.debug('Filament length and/or volume contain no valid number');
+                                this.log.debug('Filament length and/or volume contains no valid number');
 
                                 this.setState('printjob.filament.length', {val: 0, ack: true});
                                 this.setState('printjob.filament.volume', {val: 0, ack: true});
@@ -525,6 +522,8 @@ class OctoPrint extends utils.Adapter {
                 },
                 null
             );
+        } else {
+            this.log.debug('refreshing state: skipped detail refresh (API not connected)');
         }
     }
 
@@ -558,7 +557,7 @@ class OctoPrint extends utils.Adapter {
     async refreshFiles() {
 
         if (this.apiConnected) {
-            this.log.debug('Refreshing files list');
+            this.log.debug('refreshing file list: started');
 
             this.buildRequest(
                 'files?recursive=true',
@@ -588,8 +587,9 @@ class OctoPrint extends utils.Adapter {
 
                             for (const f in fileList) {
                                 const file = fileList[f];
-                                const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', ''));
+                                const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
 
+                                this.log.debug('Found file (clean name): ' + fileNameClean + ' - from: ' + file.path);
                                 filesKeep.push('files.' + fileNameClean);
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean, {
@@ -680,14 +680,9 @@ class OctoPrint extends utils.Adapter {
                 },
                 null
             );
+        } else {
+            this.log.debug('refreshing file list: skipped (API not connected)');
         }
-
-        this.log.debug('re-creating refresh files timeout');
-
-        this.refreshFilesTimeout = this.refreshFilesTimeout || setTimeout(() => {
-            this.refreshFilesTimeout = null;
-            this.refreshFiles();
-        }, 60000 * 5); // Every 5 Minutes
     }
 
     cleanNamespace(id) {
@@ -697,11 +692,7 @@ class OctoPrint extends utils.Adapter {
             .replace(/[^\p{Ll}\p{Lu}\p{Nd}]+/gu, '_') // Replace not allowed chars with underscore
             .replace(/[_]+$/g, '') // Remove underscores end
             .replace(/^[_]+/g, '') // Remove underscores beginning
-            .replace(/_+/g, '_') // Replace multiple underscores with one
-            .toLowerCase()
-            .replace(/_([a-z])/g, (m, w) => {
-                return w.toUpperCase();
-            });
+            .replace(/_+/g, '_'); // Replace multiple underscores with one
     }
 
     removeNamespace(id) {
