@@ -1,0 +1,15 @@
+{
+    "API-Key": "Klucz API",
+    "Define your own printer name for this instance": "Zdefiniuj własną nazwę drukarki dla tej instancji",
+    "Extended options": "Rozszerzone opcje",
+    "IP": "Adres IP",
+    "IP of your OctoPrint installation": "IP twojej instalacji OctoPrint",
+    "Name": "Nazwa",
+    "Options": "Opcje",
+    "Port": "Port",
+    "Refresh Interval": "Częstotliwość odświeżania",
+    "Refresh Interval (while operational)": "Interwał odświeżania (podczas pracy)",
+    "Refresh Interval (while printing)": "Interwał odświeżania (podczas drukowania)",
+    "can be found in the settings section of OctoPrint": "można go znaleźć w sekcji ustawień OctoPrint",
+    "in Seconds": "w sekundy"
+}

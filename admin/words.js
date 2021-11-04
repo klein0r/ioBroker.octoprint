@@ -2,6 +2,30 @@
 'use strict';
 
 systemDictionary = {
+    "Options": {
+        "en": "Options",
+        "de": "Einstellungen",
+        "ru": "Настройки",
+        "pt": "Opções",
+        "nl": "opties",
+        "fr": "Options",
+        "it": "Opzioni",
+        "es": "Opciones",
+        "pl": "Opcje",
+        "zh-cn": "选项"
+    },
+    "Extended options": {
+        "en": "Extended options",
+        "de": "Erweiterte Einstellungen",
+        "ru": "Расширенные настройки",
+        "pt": "Opções estendidas",
+        "nl": "Uitgebreide opties",
+        "fr": "Options étendues",
+        "it": "Opzioni estese",
+        "es": "Opciones extendidas",
+        "pl": "Rozszerzone opcje",
+        "zh-cn": "延长选择"
+    },
     "IP": {
         "en": "IP-Address",
         "de": "IP Adresse",
@@ -50,17 +74,17 @@ systemDictionary = {
         "pl": "Klucz API",
         "zh-cn": "API密钥"
     },
-    "API-Key - can be found in the settings section of OctoPrint": {
-        "en": "API-Key - can be found in the settings section of OctoPrint",
-        "de": "API-Schlüssel - diesen Wert kannst Du in den Einstellungen deiner OctoPrint-Installation finden",
-        "ru": "API-ключ - находится в разделе настроек OctoPrint",
-        "pt": "Chave da API - pode ser encontrada na seção de configurações do OctoPrint",
-        "nl": "API-sleutel - is te vinden in het instellingengedeelte van OctoPrint",
-        "fr": "API-Key - se trouve dans la section des paramètres d'OctoPrint",
-        "it": "Chiave API: è disponibile nella sezione delle impostazioni di OctoPrint",
-        "es": "API-Key: se puede encontrar en la sección de configuración de OctoPrint",
-        "pl": "Klucz API - można go znaleźć w sekcji ustawień OctoPrint",
-        "zh-cn": "API密钥-可以在OctoPrint的设置部分中找到"
+    "can be found in the settings section of OctoPrint": {
+        "en": "can be found in the settings section of OctoPrint",
+        "de": "diesen Wert kannst Du in den Einstellungen deiner OctoPrint-Installation finden",
+        "ru": "находится в разделе настроек OctoPrint",
+        "pt": "pode ser encontrada na seção de configurações do OctoPrint",
+        "nl": "is te vinden in het instellingengedeelte van OctoPrint",
+        "fr": "se trouve dans la section des paramètres d'OctoPrint",
+        "it": "è disponibile nella sezione delle impostazioni di OctoPrint",
+        "es": "se puede encontrar en la sección de configuración de OctoPrint",
+        "pl": "można go znaleźć w sekcji ustawień OctoPrint",
+        "zh-cn": "可以在 OctoPrint 的设置部分找到"
     },
     "Refresh Interval": {
         "en": "Refresh Interval",

@@ -1,0 +1,84 @@
+{
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "_options": {
+            "type": "panel",
+            "label": "Options",
+            "items": {
+                "octoprintIp": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "IP",
+                    "help": "IP of your OctoPrint installation"
+                },
+                "octoprintPort": {
+                    "type": "number",
+                    "min": 0,
+                    "max": 65535,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "Port"
+                },
+                "customName": {
+                    "newLine": true,
+                    "type": "text",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "Name",
+                    "help": "Define your own printer name for this instance"
+                },
+                "octoprintApiKey": {
+                    "type": "text",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "API-Key",
+                    "help": "can be found in the settings section of OctoPrint"
+                }
+            }
+        },
+        "_advanced": {
+            "type": "panel",
+            "label": "Extended options",
+            "items": {
+                "apiRefreshInterval": {
+                    "type": "number",
+                    "min": 10,
+                    "max": 100000,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "Refresh Interval",
+                    "help": "in Seconds"
+                },
+                "apiRefreshIntervalOperational": {
+                    "newLine": true,
+                    "type": "number",
+                    "min": 10,
+                    "max": 100000,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "Refresh Interval (while operational)",
+                    "help": "in Seconds"
+                },
+                "apiRefreshIntervalPrinting": {
+                    "newLine": true,
+                    "type": "number",
+                    "min": 10,
+                    "max": 100000,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "Refresh Interval (while printing)",
+                    "help": "in Seconds"
+                }
+            }
+        }
+    }
+}

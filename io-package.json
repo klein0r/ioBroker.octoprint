@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "1.1.2",
+        "version": "2.0.0",
         "news": {
+            "2.0.0": {
+                "en": "Admin 5 Support",
+                "de": "Admin 5 Support"
+            },
             "1.1.2": {
                 "en": "Updated file refresh handling",
                 "de": "Datei-Aktualisierung verbessert"
@@ -47,6 +51,9 @@
         "connectionType": "local",
         "dataSource": "poll",
         "materialize": true,
+        "adminUI": {
+            "config": "json"
+        },
         "dependencies": [
             {
                 "js-controller": ">=3.3.0"
