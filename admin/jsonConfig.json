@@ -39,6 +39,15 @@
                     "lg": 6,
                     "label": "API-Key",
                     "help": "can be found in the settings section of OctoPrint"
+                },
+                "_ioBrokerKursBanner": {
+                    "newLine": true,
+                    "type": "staticImage",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "href": "https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-lametric",
+                    "src": "https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png"
                 }
             }
         },
