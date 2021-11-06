@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "news": {
+            "2.0.1": {
+                "en": "Fixed missing translations",
+                "de": "Fehlende Übersetzungen hinzugefügt"
+            },
             "2.0.0": {
                 "en": "Admin 5 Support",
                 "de": "Admin 5 Support"

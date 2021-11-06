@@ -64,6 +64,10 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
 
 ## Changelog
 
+### 2.0.1
+
+* (klein0r) Fixed missing translations
+
 ### 2.0.0
 
 * (klein0r) Admin 5 Support
