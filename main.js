@@ -67,15 +67,20 @@ class OctoPrint extends utils.Adapter {
      */
     onStateChange(id, state) {
         if (state && !state.ack) {
-            const cleanId = id.split('.').slice(2).join('.');
+            const cleanId = this.removeNamespace(id);
 
             // No ack = changed by user
             if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
 
-                    this.log.debug('changing target tool temperature to ' + state.val);
+                    const matches = id.match(/.+\.temperature\.(tool[0-9]{1})\.target$/);
+                    const toolId = matches[1];
 
-                    // TODO: Check which tool has been changed
+                    this.log.debug('changing target "' + toolId + '" temperature to ' + state.val);
+
+                    let targetObj = {};
+                    targetObj[toolId] = state.val;
+
                     this.buildRequest(
                         'printer/tool',
                         (content, status) => {
@@ -90,9 +95,7 @@ class OctoPrint extends utils.Adapter {
                         },
                         {
                             command: 'target',
-                            targets: {
-                                tool0: state.val
-                            }
+                            targets: targetObj
                         }
                     );
 
