@@ -41,6 +41,9 @@ class OctoPrint extends utils.Adapter {
 
         this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
 
+        // Delete old (unused) namespace on startup
+        await this.delObjectAsync('temperature', {recursive: true});
+
         this.refreshState('onReady', true);
     }
 
@@ -71,35 +74,58 @@ class OctoPrint extends utils.Adapter {
 
             // No ack = changed by user
             if (this.apiConnected) {
-                if (id.match(new RegExp(this.namespace + '.temperature.tool[0-9]{1}.target'))) {
+                if (id.match(new RegExp(this.namespace + '.tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
 
-                    const matches = id.match(/.+\.temperature\.(tool[0-9]{1})\.target$/);
+                    const matches = id.match(/.+\.tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
                     const toolId = matches[1];
+                    const command = matches[2];
 
-                    this.log.debug('changing target "' + toolId + '" temperature to ' + state.val);
+                    if (command === 'targetTemperature') {
+                        this.log.debug('changing target "' + toolId + '" temperature to ' + state.val);
 
-                    let targetObj = {};
-                    targetObj[toolId] = state.val;
+                        let targetObj = {};
+                        targetObj[toolId] = state.val;
 
-                    this.buildRequest(
-                        'printer/tool',
-                        (content, status) => {
-                            if (status == 204) {
-                                this.setState(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
-
-                                this.log.error(content);
+                        this.buildRequest(
+                            'printer/tool',
+                            (content, status) => {
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+    
+                                    this.log.error(content);
+                                }
+                            },
+                            {
+                                command: 'target',
+                                targets: targetObj
                             }
-                        },
-                        {
-                            command: 'target',
-                            targets: targetObj
-                        }
-                    );
+                        );
+                    } else if (command === 'extrude') {
+                        this.log.debug('extruding ' + state.val + 'mm');
 
-                } else if (id === this.namespace + '.temperature.bed.target') {
+                        this.buildRequest(
+                            'printer/tool',
+                            (content, status) => {
+                                if (status == 204) {
+                                    this.setState(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+    
+                                    this.log.error(content);
+                                }
+                            },
+                            {
+                                command: 'extrude',
+                                amount: state.val
+                            }
+                        );
+                    }
+
+                } else if (id === this.namespace + '.tools.bed.targetTemperature') {
 
                     this.log.debug('changing target bed temperature to ' + state.val);
 
@@ -408,10 +434,13 @@ class OctoPrint extends utils.Adapter {
                         for (const key of Object.keys(content.temperature)) {
                             const obj = content.temperature[key];
 
-                            if (key.indexOf('tool') > -1 || key == 'bed') { // Tool + bed information
+                            const isTool = key.indexOf('tool') > -1;
+                            const isBed = key == 'bed';
+
+                            if (isTool || isBed) { // Tool + bed information
 
                                 // Create tool channel
-                                await this.setObjectNotExistsAsync('temperature.' + key, {
+                                await this.setObjectNotExistsAsync('tools.' + key, {
                                     type: 'channel',
                                     common: {
                                         name: key,
@@ -420,7 +449,7 @@ class OctoPrint extends utils.Adapter {
                                 });
 
                                 // Set actual temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.actual', {
+                                await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
                                     type: 'state',
                                     common: {
                                         name: 'Actual temperature',
@@ -432,10 +461,10 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setState('temperature.' + key + '.actual', {val: obj.actual, ack: true});
+                                this.setState('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
 
                                 // Set target temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.target', {
+                                await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
                                     type: 'state',
                                     common: {
                                         name: 'Target temperature',
@@ -447,10 +476,10 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setState('temperature.' + key + '.target', {val: obj.target, ack: true});
+                                this.setState('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
 
                                 // Set offset temperature
-                                await this.setObjectNotExistsAsync('temperature.' + key + '.offset', {
+                                await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
                                     type: 'state',
                                     common: {
                                         name: 'Offset temperature',
@@ -462,7 +491,23 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setState('temperature.' + key + '.offset', {val: obj.target, ack: true});
+                                this.setState('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
+                            }
+
+                            if (isTool) {
+                                // Set extrude
+                                await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
+                                    type: 'state',
+                                    common: {
+                                        name: 'Extrude',
+                                        type: 'number',
+                                        role: 'value',
+                                        unit: 'mm',
+                                        read: true,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
                             }
                         }
                     }

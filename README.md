@@ -33,10 +33,11 @@ iobroker add octoprint
 - Get current print job information
 - Get file list information
 
-### Temperatures
+### Tools
 
 - Set tool temperature
 - Set bed temperature
+- Extrude / Retract
 
 ### Commands
 

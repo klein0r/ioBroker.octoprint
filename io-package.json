@@ -285,10 +285,10 @@
             "native": {}
         },
         {
-          "_id":  "temperature",
+          "_id":  "tools",
           "type": "channel",
           "common": {
-            "name": "Temperature information"
+            "name": "Tool information"
           },
           "native": {}
         },
