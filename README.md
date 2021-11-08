@@ -75,7 +75,7 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
 
 ### 2.0.0
 
-* (klein0r) Admin 5 Support
+* (klein0r) Admin 5 Support **(BREAKING CHANGE - RENAMED TEMPERATURE NAMESPACE)**
 
 ### 1.1.2
 
