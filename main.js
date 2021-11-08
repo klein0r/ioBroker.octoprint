@@ -15,6 +15,7 @@ class OctoPrint extends utils.Adapter {
             name: adapterName,
         });
 
+        this.supportedVersion = "1.7.2";
         this.apiConnected = false;
         this.printerStatus = 'API not connected';
         this.systemCommands = [];
@@ -343,6 +344,10 @@ class OctoPrint extends utils.Adapter {
 
                 this.setState('meta.version', {val: content.server, ack: true});
                 this.setState('meta.api_version', {val: content.api, ack: true});
+
+                if (this.isNewerVersion(content.server, this.supportedVersion)) {
+                    this.log.warn("You should update your OctoPrint installation - supported version of this adapter is " + this.supportedVersion + " (or later). Your current version is " + content.server);
+                }
 
                 this.refreshStateDetails();
 
@@ -753,6 +758,18 @@ class OctoPrint extends utils.Adapter {
                 this.setPrinterState(false);
             }
         });
+    }
+
+    isNewerVersion(oldVer, newVer) {
+        const oldParts = oldVer.split('.');
+        const newParts = newVer.split('.');
+        for (var i = 0; i < newParts.length; i++) {
+            const a = ~~newParts[i]; // parse int
+            const b = ~~oldParts[i]; // parse int
+            if (a > b) return true;
+            if (a < b) return false;
+        }
+        return false;
     }
 }
 

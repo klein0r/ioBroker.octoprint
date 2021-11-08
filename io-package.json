@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "2.0.1",
+        "version": "2.0.2",
         "news": {
+            "2.0.2": {
+                "en": "Extrude commands",
+                "de": "Extrude Kommandos"
+            },
             "2.0.1": {
                 "en": "Fixed missing translations",
                 "de": "Fehlende Übersetzungen hinzugefügt"

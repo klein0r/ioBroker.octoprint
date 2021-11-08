@@ -14,7 +14,7 @@
 
 Adapter to connect OctoPrint to ioBroker
 
-Tested with OctoPrint 1.6.0
+**Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.2**
 
 ## Installation
 
@@ -63,6 +63,10 @@ Since the `API key` is a protected attribute since version 1.1.0, this will remo
 Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
 
 ## Changelog
+
+### 2.0.2
+
+* (klein0r) Extrude commands
 
 ### 2.0.1
 
