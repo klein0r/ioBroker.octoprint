@@ -28,7 +28,9 @@
     "axios": "^0.24.0"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^2.2.1",
+    "@alcalzone/release-script": "^3.4.1",
+    "@alcalzone/release-script-plugin-iobroker": "^3.4.1",
+    "@alcalzone/release-script-plugin-license": "^3.4.1",
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
     "@iobroker/adapter-react": "2.0.13",
@@ -80,7 +82,9 @@
     "test": "npm run test:js && npm run test:package",
     "check": "tsc --noEmit -p tsconfig.check.json",
     "lint": "eslint --ext .js,.jsx",
-    "release": "release-script"
+    "release": "release-script patch --yes",
+    "release-minor": "release-script minor --yes",
+    "release-major": "release-script major --yes"
   },
   "bugs": {
     "url": "https://github.com/klein0r/ioBroker.octoprint/issues"
