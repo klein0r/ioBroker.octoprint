@@ -119,6 +119,16 @@ gulp.task('translate', async function (done) {
             await translateNotExisting(iopackage.common.desc, null, yandex);
         }
 
+        if (iopackage.instanceObjects) {
+            for (var j = 0; j < iopackage.instanceObjects.length; j++) {
+                if (iopackage.instanceObjects[j].common.name && typeof iopackage.instanceObjects[j].common.name === 'string') {
+                    iopackage.instanceObjects[j].common.name = {en: iopackage.instanceObjects[j].common.name};
+                }
+
+                await translateNotExisting(iopackage.instanceObjects[j].common.name, null, yandex);
+            }
+        }
+
         if (fs.existsSync('./admin/i18n/en/translations.json')) {
             let enTranslations = require('./admin/i18n/en/translations.json');
             for (let l in languages) {
