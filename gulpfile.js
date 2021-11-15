@@ -1,6 +1,6 @@
 /*!
  * ioBroker gulpfile
- * Date: 2019-01-28
+ * Date: 2021-11-15
  */
 'use strict';
 
@@ -35,8 +35,12 @@ async function translateNotExisting(obj, baseText, yandex) {
         for (let l in languages) {
             if (!obj[l]) {
                 const time = new Date().getTime();
-                obj[l] = await translate(t, l, yandex);
-                console.log('en -> ' + l + ' ' + (new Date().getTime() - time) + ' ms');
+                try {
+                    obj[l] = await translate(t, l, yandex);
+                    console.log('en -> ' + l + ' ' + (new Date().getTime() - time) + ' ms');
+                } catch (ex) {
+                    console.log('err: ' + ex.message);
+                }
             }
         }
     }
