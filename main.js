@@ -452,7 +452,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
                                     type: 'state',
                                     common: {
-                                        name: 'Actual temperature',
+                                        name: {
+                                            en: 'Actual temperature',
+                                            de: 'Tatsächliche Temperatur',
+                                            ru: 'Фактическая температура',
+                                            pt: 'Temperatura real',
+                                            nl: 'Werkelijke temperatuur',
+                                            fr: 'Température réelle',
+                                            it: 'Temperatura effettiva',
+                                            es: 'Temperatura real',
+                                            pl: 'Rzeczywista temperatura',
+                                            'zh-cn': '实际温度'
+                                        },
                                         type: 'number',
                                         role: 'value.temperature',
                                         unit: '°C',
@@ -467,7 +478,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
                                     type: 'state',
                                     common: {
-                                        name: 'Target temperature',
+                                        name: {
+                                            en: 'Target temperature',
+                                            de: 'Zieltemperatur',
+                                            ru: 'Целевая температура',
+                                            pt: 'Temperatura alvo',
+                                            nl: 'Doeltemperatuur',
+                                            fr: 'Température cible',
+                                            it: 'Temperatura obiettivo',
+                                            es: 'Temperatura objetivo',
+                                            pl: 'Temperatura docelowa',
+                                            'zh-cn': '目标温度'
+                                        },
                                         type: 'number',
                                         role: 'value.temperature',
                                         unit: '°C',
@@ -482,7 +504,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
                                     type: 'state',
                                     common: {
-                                        name: 'Offset temperature',
+                                        name: {
+                                            en: 'Offset temperature',
+                                            de: 'Offset-Temperatur',
+                                            ru: 'Смещение температуры',
+                                            pt: 'Temperatura compensada',
+                                            nl: 'Offset temperatuur',
+                                            fr: 'Température de décalage',
+                                            it: 'Temperatura di compensazione',
+                                            es: 'Temperatura de compensación',
+                                            pl: 'Temperatura przesunięcia',
+                                            'zh-cn': '偏移温度'
+                                        },
                                         type: 'number',
                                         role: 'value.temperature',
                                         unit: '°C',
@@ -499,7 +532,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
                                     type: 'state',
                                     common: {
-                                        name: 'Extrude',
+                                        name: {
+                                            en: 'Extrude',
+                                            de: 'Extrudieren',
+                                            ru: 'Выдавливание',
+                                            pt: 'Extrudar',
+                                            nl: 'extruderen',
+                                            fr: 'Extruder',
+                                            it: 'Estrudere',
+                                            es: 'Extrudir',
+                                            pl: 'Wyrzucać',
+                                            'zh-cn': '拉伸'
+                                        },
                                         type: 'number',
                                         role: 'value',
                                         unit: 'mm',
@@ -648,7 +692,7 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean, {
                                     type: 'channel',
                                     common: {
-                                        name: 'File ' + file.name,
+                                        name: file.name,
                                     },
                                     native: {}
                                 });
@@ -656,7 +700,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.name', {
                                     type: 'state',
                                     common: {
-                                        name: 'File name',
+                                        name: {
+                                            en: 'File name',
+                                            de: 'Dateiname',
+                                            ru: 'Имя файла',
+                                            pt: 'Nome do arquivo',
+                                            nl: 'Bestandsnaam',
+                                            fr: 'Nom de fichier',
+                                            it: 'Nome del file',
+                                            es: 'Nombre del archivo',
+                                            pl: 'Nazwa pliku',
+                                            'zh-cn': '文档名称'
+                                        },
                                         type: 'string',
                                         role: 'value',
                                         read: true,
@@ -669,7 +724,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.path', {
                                     type: 'state',
                                     common: {
-                                        name: 'File path',
+                                        name: {
+                                            en: 'File path',
+                                            de: 'Dateipfad',
+                                            ru: 'Путь файла',
+                                            pt: 'Caminho de arquivo',
+                                            nl: 'Bestandspad',
+                                            fr: 'Chemin du fichier',
+                                            it: 'Percorso del file',
+                                            es: 'Ruta de archivo',
+                                            pl: 'Ścieżka pliku',
+                                            'zh-cn': '文件路径'
+                                        },
                                         type: 'string',
                                         role: 'value',
                                         read: true,
@@ -682,7 +748,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
                                     type: 'state',
                                     common: {
-                                        name: 'File date',
+                                        name: {
+                                            en: 'File date',
+                                            de: 'Dateidatum',
+                                            ru: 'Дата файла',
+                                            pt: 'Data do arquivo',
+                                            nl: 'Bestandsdatum',
+                                            fr: 'Date du fichier',
+                                            it: 'Data file',
+                                            es: 'Fecha de archivo',
+                                            pl: 'Data pliku',
+                                            'zh-cn': '文件日期'
+                                        },
                                         type: 'number',
                                         role: 'date',
                                         read: true,
@@ -695,7 +772,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
                                     type: 'state',
                                     common: {
-                                        name: 'Select file',
+                                        name: {
+                                            en: 'Select file',
+                                            de: 'Datei auswählen',
+                                            ru: 'Выберите файл',
+                                            pt: 'Selecione o arquivo',
+                                            nl: 'Selecteer bestand',
+                                            fr: 'Choisir le dossier',
+                                            it: 'Seleziona il file',
+                                            es: 'Seleccione Archivo',
+                                            pl: 'Wybierz plik',
+                                            'zh-cn': '选择文件'
+                                        },
                                         type: 'boolean',
                                         role: 'button',
                                         read: false,
@@ -707,7 +795,18 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.print', {
                                     type: 'state',
                                     common: {
-                                        name: 'Print file',
+                                        name: {
+                                            en: 'Print',
+                                            de: 'Drucken',
+                                            ru: 'Распечатать',
+                                            pt: 'Imprimir',
+                                            nl: 'Afdrukken',
+                                            fr: 'Imprimer',
+                                            it: 'Stampa',
+                                            es: 'Impresión',
+                                            pl: 'Wydrukować',
+                                            'zh-cn': '打印'
+                                        },
                                         type: 'boolean',
                                         role: 'button',
                                         read: false,
