@@ -36,7 +36,7 @@ class OctoPrint extends utils.Adapter {
         }
 
         if (this.config.customName) {
-            this.setStateAsync('name', this.config.customName, true);
+            this.setStateAsync('name', {val: this.config.customName, ack: true});
         }
 
         this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
@@ -90,7 +90,7 @@ class OctoPrint extends utils.Adapter {
                             'printer/tool',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
@@ -110,7 +110,7 @@ class OctoPrint extends utils.Adapter {
                             'printer/tool',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
@@ -133,7 +133,7 @@ class OctoPrint extends utils.Adapter {
                         'printer/bed',
                         (content, status) => {
                             if (status == 204) {
-                                this.setStateAsync(cleanId, state.val, true);
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                 // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
@@ -159,7 +159,7 @@ class OctoPrint extends utils.Adapter {
                             'connection',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                     this.refreshState('onStateChange command.printer', false);
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
@@ -179,7 +179,7 @@ class OctoPrint extends utils.Adapter {
                             'printer/printhead',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
@@ -207,7 +207,7 @@ class OctoPrint extends utils.Adapter {
                             'job',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
@@ -233,7 +233,7 @@ class OctoPrint extends utils.Adapter {
                             'printer/sd',
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
@@ -256,7 +256,7 @@ class OctoPrint extends utils.Adapter {
                         'printer/command',
                         (content, status) => {
                             if (status == 204) {
-                                this.setStateAsync(cleanId, state.val, true);
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
                                 this.log.error(content);
                             }
@@ -275,7 +275,7 @@ class OctoPrint extends utils.Adapter {
                             'system/commands/' + state.val,
                             (content, status) => {
                                 if (status == 204) {
-                                    this.setStateAsync(cleanId, state.val, true);
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
                                     // 404 Not Found – If the command could not be found for source and action
@@ -305,7 +305,7 @@ class OctoPrint extends utils.Adapter {
                         'printer/printhead',
                         (content, status) => {
                             if (status == 204) {
-                                this.setStateAsync(cleanId, state.val, true);
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
                                 // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                 // 409 Conflict – If the printer is not operational or currently printing.
@@ -357,7 +357,7 @@ class OctoPrint extends utils.Adapter {
 
         if (!connection) {
             this.printerStatus = 'API not connected';
-            this.setStateAsync('printer_status', this.printerStatus, true);
+            this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
         }
     }
 
@@ -371,8 +371,8 @@ class OctoPrint extends utils.Adapter {
 
                 this.log.debug('connected to OctoPrint API - online!');
 
-                this.setStateAsync('meta.version', content.server, true);
-                this.setStateAsync('meta.api_version', content.api, true);
+                this.setStateAsync('meta.version', {val: content.server, ack: true});
+                this.setStateAsync('meta.api_version', {val: content.api, ack: true});
 
                 if (this.isNewerVersion(content.server, this.supportedVersion)) {
                     this.log.warn('You should update your OctoPrint installation - supported version of this adapter is ' + this.supportedVersion + ' (or later). Your current version is ' + content.server);
@@ -422,7 +422,7 @@ class OctoPrint extends utils.Adapter {
                 'connection',
                 (content, status) => {
                     this.printerStatus = content.current.state;
-                    this.setStateAsync('printer_status', this.printerStatus, true);
+                    this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
                 },
                 null
             );
@@ -472,7 +472,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('tools.' + key + '.actualTemperature', obj.actual, true);
+                                await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
 
                                 // Set target temperature
                                 await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
@@ -498,7 +498,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('tools.' + key + '.targetTemperature', obj.target, true);
+                                await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
 
                                 // Set offset temperature
                                 await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
@@ -524,7 +524,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('tools.' + key + '.offsetTemperature', obj.target, true);
+                                await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
                             }
 
                             if (isTool) {
@@ -578,10 +578,10 @@ class OctoPrint extends utils.Adapter {
                 'job',
                 (content, status) => {
                     if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
-                        this.setStateAsync('printjob.file.name', content.job.file.name, true);
-                        this.setStateAsync('printjob.file.origin', content.job.file.origin, true);
-                        this.setStateAsync('printjob.file.size', Number((content.job.file.size / 1024).toFixed(2)), true);
-                        this.setStateAsync('printjob.file.date', new Date(content.job.file.date * 1000).getTime(), true);
+                        this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
+                        this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
+                        this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
+                        this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
 
                         if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
                             let filamentLength = 0;
@@ -596,8 +596,8 @@ class OctoPrint extends utils.Adapter {
                             }
 
                             if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                this.setStateAsync('printjob.filament.length', Number((filamentLength / 1000).toFixed(2)), true);
-                                this.setStateAsync('printjob.filament.volume', Number((filamentVolume).toFixed(2)), true);
+                                this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
+                                this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
                             } else {
                                 this.log.debug('Filament length and/or volume contains no valid number');
 
@@ -611,10 +611,10 @@ class OctoPrint extends utils.Adapter {
                     }
 
                     if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
-                        this.setStateAsync('printjob.progress.completion', Math.round(content.progress.completion), true);
-                        this.setStateAsync('printjob.progress.filepos', Number((content.progress.filepos / 1024).toFixed(2)), true);
-                        this.setStateAsync('printjob.progress.printtime', content.progress.printTime, true);
-                        this.setStateAsync('printjob.progress.printtime_left', content.progress.printTimeLeft, true);
+                        this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
+                        this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
+                        this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
+                        this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                     }
                 },
                 null
@@ -719,7 +719,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.name', file.name, true);
+                                this.setStateAsync('files.' + fileNameClean + '.name', {val: file.name, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.path', {
                                     type: 'state',
@@ -743,7 +743,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.path', file.path, true);
+                                this.setStateAsync('files.' + fileNameClean + '.path', {val: file.path, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
                                     type: 'state',
@@ -767,7 +767,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.date', file.date, true);
+                                this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
                                     type: 'state',
