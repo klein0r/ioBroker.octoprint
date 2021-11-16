@@ -45,6 +45,8 @@ class OctoPrint extends utils.Adapter {
 
         if (this.config.customName) {
             this.setStateAsync('name', {val: this.config.customName, ack: true});
+        } else {
+            this.setStateAsync('name', {val: '', ack: true});
         }
 
         this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
@@ -415,25 +417,26 @@ class OctoPrint extends utils.Adapter {
         );
 
         if (!this.apiConnected) {
-            this.log.debug('refreshing state: re-creating refresh timeout (API not connected)');
+            const notConnectedTimeout = 10;
+            this.log.debug('refreshing state: re-creating refresh timeout (API not connected) - seconds: ' + notConnectedTimeout);
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (API not connected)', true);
-            }, 10 * 1000);
+            }, notConnectedTimeout * 1000);
         } else if (this.printerStatus == 'Printing') {
-            this.log.debug('refreshing state: re-creating refresh timeout (printing)');
+            this.log.debug('refreshing state: re-creating refresh timeout (printing) - seconds: ' + this.config.apiRefreshIntervalPrinting);
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
         } else if (this.printerStatus == 'Operational') {
-            this.log.debug('refreshing state: re-creating refresh timeout (operational)');
+            this.log.debug('refreshing state: re-creating refresh timeout (operational) - seconds: ' + this.config.apiRefreshIntervalOperational);
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)', true);
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
         } else {
-            this.log.debug('refreshing state: re-creating state timeout (default)');
+            this.log.debug('refreshing state: re-creating state timeout (default) - seconds: ' + this.config.apiRefreshInterval);
             this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (default)', true);
@@ -765,7 +768,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.name', {val: file.name, ack: true});
+                                await this.setStateAsync('files.' + fileNameClean + '.name', {val: file.name, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.path', {
                                     type: 'state',
@@ -789,7 +792,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.path', {val: file.path, ack: true});
+                                await this.setStateAsync('files.' + fileNameClean + '.path', {val: file.path, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
                                     type: 'state',
@@ -813,7 +816,7 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
+                                await this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
                                     type: 'state',
@@ -869,7 +872,7 @@ class OctoPrint extends utils.Adapter {
 
                                 if (filesKeep.indexOf(id) === -1) {
                                     this.delObject(id, {recursive: true}, () => {
-                                        this.log.debug('File deleted: "' + id + '"');
+                                        this.log.debug('refreshing file list: file deleted: "' + id + '"');
                                     });
                                 }
                             }
@@ -902,7 +905,7 @@ class OctoPrint extends utils.Adapter {
         const url = '/api/' + service;
         const method = data ? 'post' : 'get';
 
-        this.log.debug('sending ' + method + ' request to ' + url + ' with data: ' + JSON.stringify(data));
+        this.log.debug('sending "' + method + '" request to "' + url + '" with data: ' + JSON.stringify(data));
 
         axios({
             method: method,
