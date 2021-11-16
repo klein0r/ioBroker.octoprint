@@ -49,8 +49,6 @@ class OctoPrint extends utils.Adapter {
             this.setStateAsync('name', {val: '', ack: true});
         }
 
-        this.log.debug('Starting with API refresh interval: ' + this.config.apiRefreshInterval + ' (' + this.config.apiRefreshIntervalPrinting + ' while printing)');
-
         // Delete old (unused) namespace on startup
         await this.delObjectAsync('temperature', {recursive: true});
 
@@ -309,6 +307,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
                     }
+
                 } else if (id.indexOf(this.namespace + '.command.jog.') === 0) {
 
                     const axis = id.split('.').pop(); // Last element of the id is the axis
@@ -336,7 +335,9 @@ class OctoPrint extends utils.Adapter {
                         },
                         jogCommand
                     );
+
                 } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9_]+.(select|print)'))) {
+
                     const matches = id.match(/.+\.files\.([a-zA-Z0-9_]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
@@ -363,11 +364,12 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 {
                                     command: 'select',
-                                    print: (action == 'print')
+                                    print: (action === 'print')
                                 }
                             );
                         }
                     );
+
                 }
             }
         }
@@ -615,19 +617,19 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            if (this.printerStatus == 'Printing') {
+            if (this.printerStatus == 'Printing' || this.printerStatus == 'Operational') {
                 this.buildRequest(
                     'job',
-                    (content, status) => {
+                    async (content, status) => {
                         if (Object.prototype.hasOwnProperty.call(content, 'error')) {
                             this.log.warn('print job error: ' + content.error);
                         }
 
                         if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
-                            this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
-                            this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
-                            this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
-                            this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
+                            await this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
+                            await this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
+                            await this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
+                            await this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
 
                             if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
                                 let filamentLength = 0;
@@ -642,31 +644,45 @@ class OctoPrint extends utils.Adapter {
                                 }
 
                                 if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                    this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
-                                    this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
+                                    await this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
+                                    await this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
                                 } else {
                                     this.log.debug('Filament length and/or volume contains no valid number');
 
-                                    this.setStateAsync('printjob.filament.length', 0, true);
-                                    this.setStateAsync('printjob.filament.volume', 0, true);
+                                    await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
+                                    await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
                                 }
                             } else {
-                                this.setStateAsync('printjob.filament.length', 0, true);
-                                this.setStateAsync('printjob.filament.volume', 0, true);
+                                await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
+                                await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
                             }
                         }
 
                         if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
-                            this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
-                            this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
-                            this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
-                            this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
+                            await this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
+                            await this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
+                            await this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
+                            await this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                         }
                     },
                     null
                 );
             } else {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
+
+                // Reset all values
+                await this.setStateAsync('printjob.file.name', {val: '', ack: true});
+                await this.setStateAsync('printjob.file.origin', {val: '', ack: true});
+                await this.setStateAsync('printjob.file.size', {val: 0, ack: true});
+                await this.setStateAsync('printjob.file.date', {val: 0, ack: true});
+
+                await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
+                await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
+
+                await this.setStateAsync('printjob.progress.completion', {val: 0, ack: true});
+                await this.setStateAsync('printjob.progress.filepos', {val: 0, ack: true});
+                await this.setStateAsync('printjob.progress.printtime', {val: 0, ack: true});
+                await this.setStateAsync('printjob.progress.printtime_left', {val: 0, ack: true});
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
@@ -687,7 +703,7 @@ class OctoPrint extends utils.Adapter {
                             name: file.display,
                             path: file.origin + '/' + file.path,
                             date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
-                            size: (file.size) ? Math.round(file.size / 1024) : 0
+                            size: (file.size) ? Math.round(file.size / 1024).toFixed(2) : 0
                         }
                     );
 
@@ -812,7 +828,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         type: 'number',
                                         role: 'value',
-                                        unit: 'kB',
+                                        unit: 'KiB',
                                         read: true,
                                         write: false
                                     },
