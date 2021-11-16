@@ -95,7 +95,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -115,7 +115,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -138,7 +138,7 @@ class OctoPrint extends utils.Adapter {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                 // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
 
-                                this.log.error(content);
+                                this.log.error(status + ': ' + JSON.stringify(content));
                             }
                         },
                         {
@@ -164,7 +164,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -172,7 +172,6 @@ class OctoPrint extends utils.Adapter {
                             }
                         );
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
-
                         this.log.debug('sending printer command: ' + state.val);
 
                         this.buildRequest(
@@ -184,7 +183,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -211,7 +210,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -237,7 +236,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -258,7 +257,9 @@ class OctoPrint extends utils.Adapter {
                             if (status == 204) {
                                 this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
-                                this.log.error(content);
+                                // 409 Conflict – If the printer is not operational
+
+                                this.log.error(status + ': ' + JSON.stringify(content));
                             }
                         },
                         {
@@ -281,7 +282,7 @@ class OctoPrint extends utils.Adapter {
                                     // 404 Not Found – If the command could not be found for source and action
                                     // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
 
-                                    this.log.error(content);
+                                    this.log.error(status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {}
@@ -310,7 +311,7 @@ class OctoPrint extends utils.Adapter {
                                 // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                 // 409 Conflict – If the printer is not operational or currently printing.
 
-                                this.log.error(content);
+                                this.log.error(status + ': ' + JSON.stringify(content));
                             }
                         },
                         jogCommand
@@ -336,7 +337,7 @@ class OctoPrint extends utils.Adapter {
                                         this.log.debug('selection/print file successful');
                                         this.refreshState('onStateChange file.' + action, false);
                                     } else {
-                                        this.log.error(content);
+                                        this.log.error(status + ': ' + JSON.stringify(content));
                                     }
                                 },
                                 {
@@ -574,51 +575,59 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            this.buildRequest(
-                'job',
-                (content, status) => {
-                    if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
-                        this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
-                        this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
-                        this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
-                        this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
+            if (this.printerStatus == 'Printing') {
+                this.buildRequest(
+                    'job',
+                    (content, status) => {
+                        if (Object.prototype.hasOwnProperty.call(content, 'error')) {
+                            this.log.warn('print job error: ' + content.error);
+                        }
 
-                        if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
-                            let filamentLength = 0;
-                            let filamentVolume = 0;
+                        if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
+                            this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
+                            this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
+                            this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
+                            this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
 
-                            if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
-                                filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
-                                filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
+                            if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
+                                let filamentLength = 0;
+                                let filamentVolume = 0;
+
+                                if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
+                                    filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
+                                    filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
+                                } else {
+                                    filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
+                                    filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0 ;
+                                }
+
+                                if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
+                                    this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
+                                    this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
+                                } else {
+                                    this.log.debug('Filament length and/or volume contains no valid number');
+
+                                    this.setStateAsync('printjob.filament.length', 0, true);
+                                    this.setStateAsync('printjob.filament.volume', 0, true);
+                                }
                             } else {
-                                filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
-                                filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0 ;
-                            }
-
-                            if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
-                                this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
-                            } else {
-                                this.log.debug('Filament length and/or volume contains no valid number');
-
                                 this.setStateAsync('printjob.filament.length', 0, true);
                                 this.setStateAsync('printjob.filament.volume', 0, true);
                             }
-                        } else {
-                            this.setStateAsync('printjob.filament.length', 0, true);
-                            this.setStateAsync('printjob.filament.volume', 0, true);
                         }
-                    }
 
-                    if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
-                        this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
-                        this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
-                        this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
-                        this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
-                    }
-                },
-                null
-            );
+                        if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
+                            this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
+                            this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
+                            this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
+                            this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
+                        }
+                    },
+                    null
+                );
+            } else {
+                this.log.debug('refreshing job state: skipped detail refresh (not printing)');
+            }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
         }
