@@ -686,7 +686,8 @@ class OctoPrint extends utils.Adapter {
                         {
                             name: file.display,
                             path: file.origin + '/' + file.path,
-                            date: (file.date) ? new Date(file.date * 1000).getTime() : 0
+                            date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
+                            size: (file.size) ? Math.round(file.size / 1024) : 0
                         }
                     );
 
@@ -793,6 +794,31 @@ class OctoPrint extends utils.Adapter {
                                     native: {}
                                 });
                                 await this.setStateAsync('files.' + fileNameClean + '.path', {val: file.path, ack: true});
+
+                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.size', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'File size',
+                                            de: 'Dateigröße',
+                                            ru: 'Размер файла',
+                                            pt: 'Tamanho do arquivo',
+                                            nl: 'Bestandsgrootte',
+                                            fr: 'Taille du fichier',
+                                            it: 'Dimensione del file',
+                                            es: 'Tamaño del archivo',
+                                            pl: 'Rozmiar pliku',
+                                            'zh-cn': '文件大小'
+                                        },
+                                        type: 'number',
+                                        role: 'value',
+                                        unit: 'kB',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                await this.setStateAsync('files.' + fileNameClean + '.size', {val: file.size, ack: true});
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
                                     type: 'state',
