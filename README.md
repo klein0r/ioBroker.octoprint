@@ -16,6 +16,10 @@ Adapter to connect OctoPrint to ioBroker
 
 **Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.2**
 
+## Sponsored by
+
+[![ioBroker Master Kurs](https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png)](https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-octoprint)
+
 ## Installation
 
 Please use the "adapter list" in ioBroker to install a stable version of this adapter. You can also use the CLI to install this adapter:
