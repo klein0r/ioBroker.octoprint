@@ -613,7 +613,7 @@ class OctoPrint extends utils.Adapter {
                         arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
                     }
 
-                    this.log.debug('Registered system commands: ' + this.systemCommands.join(', '));
+                    this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
                 },
                 null
             );
@@ -747,13 +747,13 @@ class OctoPrint extends utils.Adapter {
                             }
 
                             const fileList = this.flattenFiles(content.files);
-                            this.log.debug('Found ' + fileList.length + ' files');
+                            this.log.debug('found ' + fileList.length + ' files');
 
                             for (const f in fileList) {
                                 const file = fileList[f];
                                 const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
 
-                                this.log.debug('Found file (clean name): ' + fileNameClean + ' - from: ' + file.path);
+                                this.log.debug('refreshing file list:  found file "' + fileNameClean + '" (clean name) - location: ' + file.path);
                                 filesKeep.push('files.' + fileNameClean);
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean, {
