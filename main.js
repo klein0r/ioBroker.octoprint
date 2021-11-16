@@ -59,11 +59,6 @@ class OctoPrint extends utils.Adapter {
         try {
             this.setPrinterState(false);
 
-            if (this.refreshStateTimeout) {
-                this.log.debug('clearing refresh state timeout');
-                clearTimeout(this.refreshStateTimeout);
-            }
-
             this.log.debug('cleaned everything up...');
             callback();
         } catch (e) {
@@ -418,28 +413,34 @@ class OctoPrint extends utils.Adapter {
             null
         );
 
+        // Delete old timer
+        if (this.refreshStateTimeout) {
+            this.log.debug('refreshStateTimeout: CLEARED');
+            this.clearTimeout(this.refreshStateTimeout);
+        }
+
         if (!this.apiConnected) {
             const notConnectedTimeout = 10;
-            this.log.debug('refreshing state: re-creating refresh timeout (API not connected) - seconds: ' + notConnectedTimeout);
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+            this.log.debug('refreshStateTimeout: re-creating refresh timeout (API not connected) - seconds: ' + notConnectedTimeout);
+            this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (API not connected)', true);
             }, notConnectedTimeout * 1000);
         } else if (this.printerStatus == 'Printing') {
-            this.log.debug('refreshing state: re-creating refresh timeout (printing) - seconds: ' + this.config.apiRefreshIntervalPrinting);
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+            this.log.debug('refreshStateTimeout: re-creating refresh timeout (printing) - seconds: ' + this.config.apiRefreshIntervalPrinting);
+            this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
         } else if (this.printerStatus == 'Operational') {
-            this.log.debug('refreshing state: re-creating refresh timeout (operational) - seconds: ' + this.config.apiRefreshIntervalOperational);
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+            this.log.debug('refreshStateTimeout: re-creating refresh timeout (operational) - seconds: ' + this.config.apiRefreshIntervalOperational);
+            this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)', true);
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
         } else {
-            this.log.debug('refreshing state: re-creating state timeout (default) - seconds: ' + this.config.apiRefreshInterval);
-            this.refreshStateTimeout = this.refreshStateTimeout || setTimeout(() => {
+            this.log.debug('refreshStateTimeout: re-creating state timeout (default) - seconds: ' + this.config.apiRefreshInterval);
+            this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (default)', true);
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
@@ -696,14 +697,14 @@ class OctoPrint extends utils.Adapter {
         if (Array.isArray(files)) {
             for (const file of files) {
 
-                if (file.type == 'machinecode' && (file.origin == 'local' || file.origin == 'sdcard')) {
+                if (file.type == 'machinecode' && file.origin == 'local') {
 
                     fileArr.push(
                         {
                             name: file.display,
                             path: file.origin + '/' + file.path,
                             date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
-                            size: (file.size) ? Math.round(file.size / 1024).toFixed(2) : 0
+                            size: (file.size) ? Number(Math.round(file.size / 1024).toFixed(2)) : 0
                         }
                     );
 
