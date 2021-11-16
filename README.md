@@ -74,6 +74,10 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
   ### **WORK IN PROGRESS**
 -->
 
+### 2.0.4
+
+* (klein0r) Improved API request handling
+
 ### 2.0.3
 
 * (klein0r) Translated all objects

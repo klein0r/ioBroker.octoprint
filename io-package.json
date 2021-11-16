@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "octoprint",
-        "version": "2.0.3",
+        "version": "2.0.4",
         "news": {
+            "2.0.4": {
+                "en": "Improved API request handling"
+            },
             "2.0.3": {
                 "en": "Translated all objects",
                 "de": "Alle Objekte übersetzt",
@@ -143,7 +146,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.1.19"
+                "admin": ">=5.1.28"
             }
         ],
         "plugins": {
