@@ -4,7 +4,16 @@
         "version": "2.0.4",
         "news": {
             "2.0.4": {
-                "en": "Improved API request handling"
+                "en": "Improved API request handling",
+                "de": "Verbesserte Handhabung von API-Anfragen",
+                "ru": "Улучшенная обработка запросов API.",
+                "pt": "Tratamento aprimorado de solicitações de API",
+                "nl": "Verbeterde verwerking van API-verzoeken",
+                "fr": "Amélioration de la gestion des demandes d'API",
+                "it": "Gestione delle richieste API migliorata",
+                "es": "Manejo mejorado de solicitudes de API",
+                "pl": "Ulepszona obsługa żądań API",
+                "zh-cn": "改进的 API 请求处理"
             },
             "2.0.3": {
                 "en": "Translated all objects",
