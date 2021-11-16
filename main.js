@@ -17,8 +17,16 @@ class OctoPrint extends utils.Adapter {
 
         this.supportedVersion = '1.7.2';
         this.apiConnected = false;
-        this.printerStatus = 'API not connected';
         this.systemCommands = [];
+
+        /*
+            - API not connected
+            - Closed
+            - Detecting serial connection
+            - Operational
+            - Printing
+        */
+        this.printerStatus = 'API not connected';
 
         this.refreshStateTimeout = null;
 
@@ -86,6 +94,7 @@ class OctoPrint extends utils.Adapter {
                         let targetObj = {};
                         targetObj[toolId] = state.val;
 
+                        // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
                         this.buildRequest(
                             'printer/tool',
                             (content, status) => {
@@ -95,7 +104,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(printer/tool): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -106,6 +115,7 @@ class OctoPrint extends utils.Adapter {
                     } else if (command === 'extrude') {
                         this.log.debug('extruding ' + state.val + 'mm');
 
+                        // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
                         this.buildRequest(
                             'printer/tool',
                             (content, status) => {
@@ -115,7 +125,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(printer/tool): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -129,6 +139,7 @@ class OctoPrint extends utils.Adapter {
 
                     this.log.debug('changing target bed temperature to ' + state.val);
 
+                    // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
                     this.buildRequest(
                         'printer/bed',
                         (content, status) => {
@@ -138,7 +149,7 @@ class OctoPrint extends utils.Adapter {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                 // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
 
-                                this.log.error(status + ': ' + JSON.stringify(content));
+                                this.log.error('(printer/bed): ' + status + ': ' + JSON.stringify(content));
                             }
                         },
                         {
@@ -155,6 +166,7 @@ class OctoPrint extends utils.Adapter {
                     if (allowedCommandsConnection.indexOf(state.val) > -1) {
                         this.log.debug('sending printer connection command: ' + state.val);
 
+                        // https://docs.octoprint.org/en/master/api/connection.html#issue-a-connection-command
                         this.buildRequest(
                             'connection',
                             (content, status) => {
@@ -164,7 +176,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(connection): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -174,6 +186,7 @@ class OctoPrint extends utils.Adapter {
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug('sending printer command: ' + state.val);
 
+                        // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
                         this.buildRequest(
                             'printer/printhead',
                             (content, status) => {
@@ -183,7 +196,7 @@ class OctoPrint extends utils.Adapter {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(printer/printhead): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -202,6 +215,7 @@ class OctoPrint extends utils.Adapter {
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending printjob command: ' + state.val);
 
+                        // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
                         this.buildRequest(
                             'job',
                             (content, status) => {
@@ -210,7 +224,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(job): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -228,6 +242,7 @@ class OctoPrint extends utils.Adapter {
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending sd card command: ' + state.val);
 
+                        // https://docs.octoprint.org/en/master/api/printer.html#issue-an-sd-command
                         this.buildRequest(
                             'printer/sd',
                             (content, status) => {
@@ -236,7 +251,7 @@ class OctoPrint extends utils.Adapter {
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(printer/sd): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {
@@ -251,6 +266,7 @@ class OctoPrint extends utils.Adapter {
 
                     this.log.debug('sending custom command: ' + state.val);
 
+                    // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
                     this.buildRequest(
                         'printer/command',
                         (content, status) => {
@@ -259,7 +275,7 @@ class OctoPrint extends utils.Adapter {
                             } else {
                                 // 409 Conflict – If the printer is not operational
 
-                                this.log.error(status + ': ' + JSON.stringify(content));
+                                this.log.error('(printer/command): ' + status + ': ' + JSON.stringify(content));
                             }
                         },
                         {
@@ -272,6 +288,7 @@ class OctoPrint extends utils.Adapter {
                     if (this.systemCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending system command: ' + state.val);
 
+                        // https://docs.octoprint.org/en/master/api/system.html#execute-a-registered-system-command
                         this.buildRequest(
                             'system/commands/' + state.val,
                             (content, status) => {
@@ -282,7 +299,7 @@ class OctoPrint extends utils.Adapter {
                                     // 404 Not Found – If the command could not be found for source and action
                                     // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
 
-                                    this.log.error(status + ': ' + JSON.stringify(content));
+                                    this.log.error('(system/commands): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
                             {}
@@ -302,6 +319,7 @@ class OctoPrint extends utils.Adapter {
 
                     this.log.debug('sending jog ' + axis + ' command: ' + state.val);
 
+                    // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
                     this.buildRequest(
                         'printer/printhead',
                         (content, status) => {
@@ -311,7 +329,7 @@ class OctoPrint extends utils.Adapter {
                                 // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                 // 409 Conflict – If the printer is not operational or currently printing.
 
-                                this.log.error(status + ': ' + JSON.stringify(content));
+                                this.log.error('(printer/printhead): ' + status + ': ' + JSON.stringify(content));
                             }
                         },
                         jogCommand
@@ -330,6 +348,7 @@ class OctoPrint extends utils.Adapter {
 
                             this.log.debug('selecting/printing file with path ' + fullPath);
 
+                            // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
                             this.buildRequest(
                                 'files/' + fullPath,
                                 (content, status) => {
@@ -337,7 +356,7 @@ class OctoPrint extends utils.Adapter {
                                         this.log.debug('selection/print file successful');
                                         this.refreshState('onStateChange file.' + action, false);
                                     } else {
-                                        this.log.error(status + ': ' + JSON.stringify(content));
+                                        this.log.error('(files): ' + status + ': ' + JSON.stringify(content));
                                     }
                                 },
                                 {
@@ -365,26 +384,31 @@ class OctoPrint extends utils.Adapter {
     async refreshState(source, refreshFileList) {
         this.log.debug('refreshing state: started from ' + source);
 
+        // https://docs.octoprint.org/en/master/api/version.html
         this.buildRequest(
             'version',
             (content, status) => {
-                this.setPrinterState(true);
+                if (status == 200) {
+                    this.setPrinterState(true);
 
-                this.log.debug('connected to OctoPrint API - online!');
+                    this.log.debug('connected to OctoPrint API - online! - status: ' + status);
 
-                this.setStateAsync('meta.version', {val: content.server, ack: true});
-                this.setStateAsync('meta.api_version', {val: content.api, ack: true});
+                    this.setStateAsync('meta.version', {val: content.server, ack: true});
+                    this.setStateAsync('meta.api_version', {val: content.api, ack: true});
 
-                if (this.isNewerVersion(content.server, this.supportedVersion)) {
-                    this.log.warn('You should update your OctoPrint installation - supported version of this adapter is ' + this.supportedVersion + ' (or later). Your current version is ' + content.server);
-                }
+                    if (this.isNewerVersion(content.server, this.supportedVersion)) {
+                        this.log.warn('You should update your OctoPrint installation - supported version of this adapter is ' + this.supportedVersion + ' (or later). Your current version is ' + content.server);
+                    }
 
-                this.refreshStateDetails();
+                    this.refreshStateDetails();
 
-                if (refreshFileList) {
-                    this.refreshFiles();
+                    if (refreshFileList) {
+                        this.refreshFiles();
+                    } else {
+                        this.log.debug('skipped file list refresh');
+                    }
                 } else {
-                    this.log.debug('skipped file list refresh');
+                    this.log.error('(version): ' + status + ': ' + JSON.stringify(content));
                 }
             },
             null
@@ -419,11 +443,24 @@ class OctoPrint extends utils.Adapter {
 
     async refreshStateDetails() {
         if (this.apiConnected) {
+
+            // https://docs.octoprint.org/en/master/api/connection.html
             this.buildRequest(
                 'connection',
                 (content, status) => {
-                    this.printerStatus = content.current.state;
-                    this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
+                    if (status == 200) {
+                        this.printerStatus = content.current.state;
+                        this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
+
+                        // Try again in 2 seconds
+                        if (this.printerStatus === 'Detecting serial connection') {
+                            setTimeout(() => {
+                                this.refreshState('detecting serial connection', false);
+                            }, 2000);
+                        }
+                    } else {
+                        this.log.error('(connection): ' + status + ': ' + JSON.stringify(content));
+                    }
                 },
                 null
             );
