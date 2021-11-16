@@ -696,7 +696,7 @@ class OctoPrint extends utils.Adapter {
         if (Array.isArray(files)) {
             for (const file of files) {
 
-                if (file.type == 'machinecode' && file.origin == 'local') {
+                if (file.type == 'machinecode' && (file.origin == 'local' || file.origin == 'sdcard')) {
 
                     fileArr.push(
                         {
