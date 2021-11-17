@@ -8,17 +8,12 @@
 [![installed](http://iobroker.live/badges/octoprint-installed.svg)](http://iobroker.live/badges/octoprint-installed.svg)
 [![Dependency Status](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)](https://david-dm.org/klein0r/iobroker.octoprint)
 [![Known Vulnerabilities](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)](https://snyk.io/test/github/klein0r/ioBroker.octoprint)
-[![Build Status](http://img.shields.io/travis/klein0r/ioBroker.octoprint.svg)](https://travis-ci.com/klein0r/ioBroker.octoprint)
 
 [![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)](https://nodei.co/npm/iobroker.octoprint/)
 
 Adapter to connect OctoPrint to ioBroker
 
 **Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.2**
-
-## Sponsored by
-
-[![ioBroker Master Kurs](https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png)](https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-octoprint)
 
 ## Installation
 
