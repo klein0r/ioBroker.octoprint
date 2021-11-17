@@ -24,11 +24,8 @@ jobs:
       - uses: ioBroker/testing-action-check@v1
         with:
           node-version: '14.x'
-          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
           lint: true
 
-  # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
 
@@ -43,9 +40,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
-          # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
-          build: false
 
   deploy:
     needs: [check-and-lint, adapter-tests]
@@ -74,6 +68,5 @@ jobs:
           sentry-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
           sentry-project: "iobroker-octoprint"
           sentry-version-prefix: "iobroker.octoprint"
-          sentry-sourcemap-paths: "admin/build/"
           # If your sentry project is linked to a GitHub repository, you can enable the following option
           # sentry-github-integration: true

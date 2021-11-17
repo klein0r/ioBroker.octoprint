@@ -8,6 +8,8 @@
 [![installed](http://iobroker.live/badges/octoprint-installed.svg)](http://iobroker.live/badges/octoprint-installed.svg)
 [![Dependency Status](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)](https://david-dm.org/klein0r/iobroker.octoprint)
 [![Known Vulnerabilities](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)](https://snyk.io/test/github/klein0r/ioBroker.octoprint)
+![Test and Release](https://github.com/klein0r/ioBroker.octoprint/workflows/Test%20and%20Release/badge.svg)
+
 
 [![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)](https://nodei.co/npm/iobroker.octoprint/)
 
