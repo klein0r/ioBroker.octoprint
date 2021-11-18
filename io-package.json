@@ -1,912 +1,900 @@
 {
-    "common": {
-        "name": "octoprint",
-        "version": "2.0.4",
-        "news": {
-            "2.0.4": {
-                "en": "Improved API request handling",
-                "de": "Verbesserte Handhabung von API-Anfragen",
-                "ru": "Улучшенная обработка запросов API.",
-                "pt": "Tratamento aprimorado de solicitações de API",
-                "nl": "Verbeterde verwerking van API-verzoeken",
-                "fr": "Amélioration de la gestion des demandes d'API",
-                "it": "Gestione delle richieste API migliorata",
-                "es": "Manejo mejorado de solicitudes de API",
-                "pl": "Ulepszona obsługa żądań API",
-                "zh-cn": "改进的 API 请求处理"
-            },
-            "2.0.3": {
-                "en": "Translated all objects",
-                "de": "Alle Objekte übersetzt",
-                "ru": "Переведены все объекты",
-                "pt": "Todos os objetos traduzidos",
-                "nl": "Alle objecten vertaald",
-                "fr": "Traduit tous les objets",
-                "it": "Tradotto tutti gli oggetti",
-                "es": "Traducido todos los objetos",
-                "pl": "Przetłumaczono wszystkie obiekty",
-                "zh-cn": "翻译所有对象"
-            },
-            "2.0.2": {
-                "en": "Extrude commands",
-                "de": "Extrude Kommandos",
-                "ru": "Команды выдавливания",
-                "pt": "Comandos de extrusão",
-                "nl": "Extrudeer commando's",
-                "fr": "Commandes d'extrusion",
-                "it": "Comandi di estrusione",
-                "es": "Extruir comandos",
-                "pl": "Wyciągnij polecenia",
-                "zh-cn": "挤出命令"
-            },
-            "2.0.1": {
-                "en": "Fixed missing translations",
-                "de": "Fehlende Übersetzungen hinzugefügt",
-                "ru": "Исправлены отсутствующие переводы",
-                "pt": "Traduções em falta corrigidas",
-                "nl": "Ontbrekende vertalingen verholpen",
-                "fr": "Correction des traductions manquantes",
-                "it": "Risolte le traduzioni mancanti",
-                "es": "Se corrigieron las traducciones faltantes",
-                "pl": "Naprawiono brakujące tłumaczenia",
-                "zh-cn": "修复了丢失的翻译"
-            },
-            "2.0.0": {
-                "en": "Admin 5 Support",
-                "de": "Admin 5 Support",
-                "ru": "Admin 5 Поддержка",
-                "pt": "Suporte Admin 5",
-                "nl": "Beheerder 5 Ondersteuning",
-                "fr": "Assistance administrateur 5",
-                "it": "Supporto amministratore 5",
-                "es": "Soporte Admin 5",
-                "pl": "Wsparcie administratora 5",
-                "zh-cn": "管理员 5 支持"
-            },
-            "1.1.2": {
-                "en": "Updated file refresh handling",
-                "de": "Datei-Aktualisierung verbessert",
-                "ru": "Обновленная обработка обновления файла",
-                "pt": "Manipulação de atualização de arquivo atualizado",
-                "nl": "Bijgewerkte verwerking van bestandsvernieuwing",
-                "fr": "Gestion de l'actualisation des fichiers mise à jour",
-                "it": "Aggiornata la gestione dell'aggiornamento dei file",
-                "es": "Manejo de actualización de archivos actualizado",
-                "pl": "Zaktualizowano obsługę odświeżania plików",
-                "zh-cn": "更新的文件刷新处理"
-            },
-            "1.1.1": {
-                "en": "Minor fixes",
-                "de": "Kleine Verbesserungen",
-                "ru": "Мелкие исправления",
-                "pt": "Pequenas correções",
-                "nl": "Kleine reparaties",
-                "fr": "Corrections mineures",
-                "it": "Correzioni minori",
-                "es": "Correcciones menores",
-                "pl": "Drobne poprawki",
-                "zh-cn": "小修正"
-            },
-            "1.1.0": {
-                "en": "Encrypt sensitive information",
-                "de": "Verschlüsselung von sensiblen Daten",
-                "ru": "Шифровать конфиденциальную информацию",
-                "pt": "Criptografar informações confidenciais",
-                "nl": "Versleutel gevoelige informatie",
-                "fr": "Crypter les informations sensibles",
-                "it": "Cripta le informazioni sensibili",
-                "es": "Cifre la información confidencial",
-                "pl": "Szyfruj poufne informacje",
-                "zh-cn": "加密敏感信息"
-            }
-        },
-        "title": "OctoPrint",
-        "titleLang": {
-            "en": "OctoPrint",
-            "de": "OctoPrint",
-            "ru": "OctoPrint",
-            "pt": "OctoPrint",
-            "nl": "OctoPrint",
-            "fr": "OctoPrint",
-            "it": "OctoPrint",
-            "es": "OctoPrint",
-            "pl": "Ośmiodruk",
-            "zh-cn": "八印"
-        },
-        "desc": {
-            "en": "Manage your OctoPrint instance",
-            "de": "Verwalte Deine OctoPrint-Instanz",
-            "ru": "Управляйте своим экземпляром OctoPrint",
-            "pt": "Gerenciar sua instância OctoPrint",
-            "nl": "Beheer uw OctoPrint-instantie",
-            "fr": "Gérez votre instance OctoPrint",
-            "it": "Gestisci la tua istanza OctoPrint",
-            "es": "Administre su instancia de OctoPrint",
-            "pl": "Zarządzaj instancją OctoPrint",
-            "zh-cn": "管理您的 OctoPrint 实例"
-        },
-        "authors": [
-            "Matthias Kleine <info@haus-automatisierung.com>"
-        ],
-        "keywords": [
-            "octoprint",
-            "3d printing",
-            "hardware"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "icon": "octoprint.png",
-        "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
-        "enabled": true,
-        "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "hardware",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.19"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.28"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://749c6dc3f9154faa95b9831c273cc779@sentry.iobroker.net/101"
-            }
-        }
+  "common": {
+    "name": "octoprint",
+    "version": "2.0.5",
+    "news": {
+      "2.0.5": {
+        "en": "Require new version for translated instance objects\nFixed timeout issues",
+        "de": "Neue Version für übersetzte Instanzobjekte erforderlich\nTimeout-Probleme behoben",
+        "ru": "Требовать новую версию для переведенных экземпляров объектов\nИсправлены проблемы с тайм-аутом",
+        "pt": "Requer nova versão para objetos de instância traduzidos\nProblemas de tempo limite corrigidos",
+        "nl": "Nieuwe versie vereisen voor vertaalde instantieobjecten\nTime-outproblemen opgelost",
+        "fr": "Exiger une nouvelle version pour les objets d'instance traduits\nCorrection des problèmes de délai d'attente",
+        "it": "Richiedi una nuova versione per gli oggetti istanza tradotti\nRisolti problemi di timeout",
+        "es": "Requerir una nueva versión para los objetos de instancia traducidos\nProblemas de tiempo de espera solucionados",
+        "pl": "Wymagaj nowej wersji dla przetłumaczonych obiektów instancji\nNaprawiono problemy z limitem czasu",
+        "zh-cn": "需要新版本的翻译实例对象\n修复超时问题"
+      },
+      "2.0.4": {
+        "en": "Improved API request handling",
+        "de": "Verbesserte Handhabung von API-Anfragen",
+        "ru": "Улучшенная обработка запросов API.",
+        "pt": "Tratamento aprimorado de solicitações de API",
+        "nl": "Verbeterde verwerking van API-verzoeken",
+        "fr": "Amélioration de la gestion des demandes d'API",
+        "it": "Gestione delle richieste API migliorata",
+        "es": "Manejo mejorado de solicitudes de API",
+        "pl": "Ulepszona obsługa żądań API",
+        "zh-cn": "改进的 API 请求处理"
+      },
+      "2.0.3": {
+        "en": "Translated all objects",
+        "de": "Alle Objekte übersetzt",
+        "ru": "Переведены все объекты",
+        "pt": "Todos os objetos traduzidos",
+        "nl": "Alle objecten vertaald",
+        "fr": "Traduit tous les objets",
+        "it": "Tradotto tutti gli oggetti",
+        "es": "Traducido todos los objetos",
+        "pl": "Przetłumaczono wszystkie obiekty",
+        "zh-cn": "翻译所有对象"
+      },
+      "2.0.2": {
+        "en": "Extrude commands",
+        "de": "Extrude Kommandos",
+        "ru": "Команды выдавливания",
+        "pt": "Comandos de extrusão",
+        "nl": "Extrudeer commando's",
+        "fr": "Commandes d'extrusion",
+        "it": "Comandi di estrusione",
+        "es": "Extruir comandos",
+        "pl": "Wyciągnij polecenia",
+        "zh-cn": "挤出命令"
+      },
+      "2.0.1": {
+        "en": "Fixed missing translations",
+        "de": "Fehlende Übersetzungen hinzugefügt",
+        "ru": "Исправлены отсутствующие переводы",
+        "pt": "Traduções em falta corrigidas",
+        "nl": "Ontbrekende vertalingen verholpen",
+        "fr": "Correction des traductions manquantes",
+        "it": "Risolte le traduzioni mancanti",
+        "es": "Se corrigieron las traducciones faltantes",
+        "pl": "Naprawiono brakujące tłumaczenia",
+        "zh-cn": "修复了丢失的翻译"
+      },
+      "2.0.0": {
+        "en": "Admin 5 Support",
+        "de": "Admin 5 Support",
+        "ru": "Admin 5 Поддержка",
+        "pt": "Suporte Admin 5",
+        "nl": "Beheerder 5 Ondersteuning",
+        "fr": "Assistance administrateur 5",
+        "it": "Supporto amministratore 5",
+        "es": "Soporte Admin 5",
+        "pl": "Wsparcie administratora 5",
+        "zh-cn": "管理员 5 支持"
+      },
+      "1.1.2": {
+        "en": "Updated file refresh handling",
+        "de": "Datei-Aktualisierung verbessert",
+        "ru": "Обновленная обработка обновления файла",
+        "pt": "Manipulação de atualização de arquivo atualizado",
+        "nl": "Bijgewerkte verwerking van bestandsvernieuwing",
+        "fr": "Gestion de l'actualisation des fichiers mise à jour",
+        "it": "Aggiornata la gestione dell'aggiornamento dei file",
+        "es": "Manejo de actualización de archivos actualizado",
+        "pl": "Zaktualizowano obsługę odświeżania plików",
+        "zh-cn": "更新的文件刷新处理"
+      }
     },
-    "protectedNative": [
-        "octoprintApiKey"
-    ],
-    "encryptedNative": [
-        "octoprintApiKey"
-    ],
-    "native": {
-        "customName": "My 3D printer",
-        "octoprintApiKey": "",
-        "octoprintPort": "80",
-        "apiRefreshInterval": 60,
-        "apiRefreshIntervalOperational": 30,
-        "apiRefreshIntervalPrinting": 10
+    "title": "OctoPrint",
+    "titleLang": {
+      "en": "OctoPrint",
+      "de": "OctoPrint",
+      "ru": "OctoPrint",
+      "pt": "OctoPrint",
+      "nl": "OctoPrint",
+      "fr": "OctoPrint",
+      "it": "OctoPrint",
+      "es": "OctoPrint",
+      "pl": "Ośmiodruk",
+      "zh-cn": "八印"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "name",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Custom printer name",
-                    "de": "Benutzerdefinierter Druckername",
-                    "ru": "Пользовательское имя принтера",
-                    "pt": "Nome de impressora personalizado",
-                    "nl": "Aangepaste printernaam",
-                    "fr": "Nom d'imprimante personnalisé",
-                    "it": "Nome stampante personalizzato",
-                    "es": "Nombre de impresora personalizado",
-                    "pl": "Niestandardowa nazwa drukarki",
-                    "zh-cn": "自定义打印机名称"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
+    "desc": {
+      "en": "Manage your OctoPrint instance",
+      "de": "Verwalte Deine OctoPrint-Instanz",
+      "ru": "Управляйте своим экземпляром OctoPrint",
+      "pt": "Gerenciar sua instância OctoPrint",
+      "nl": "Beheer uw OctoPrint-instantie",
+      "fr": "Gérez votre instance OctoPrint",
+      "it": "Gestisci la tua istanza OctoPrint",
+      "es": "Administre su instancia de OctoPrint",
+      "pl": "Zarządzaj instancją OctoPrint",
+      "zh-cn": "管理您的 OctoPrint 实例"
+    },
+    "authors": [
+      "Matthias Kleine <info@haus-automatisierung.com>"
+    ],
+    "keywords": [
+      "octoprint",
+      "3d printing",
+      "hardware"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "icon": "octoprint.png",
+    "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
+    "enabled": true,
+    "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "hardware",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.28"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://749c6dc3f9154faa95b9831c273cc779@sentry.iobroker.net/101"
+      }
+    }
+  },
+  "protectedNative": [
+    "octoprintApiKey"
+  ],
+  "encryptedNative": [
+    "octoprintApiKey"
+  ],
+  "native": {
+    "customName": "My 3D printer",
+    "octoprintApiKey": "",
+    "octoprintPort": "80",
+    "apiRefreshInterval": 60,
+    "apiRefreshIntervalOperational": 30,
+    "apiRefreshIntervalPrinting": 10
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "name",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Custom printer name",
+          "de": "Benutzerdefinierter Druckername",
+          "ru": "Пользовательское имя принтера",
+          "pt": "Nome de impressora personalizado",
+          "nl": "Aangepaste printernaam",
+          "fr": "Nom d'imprimante personnalisé",
+          "it": "Nome stampante personalizzato",
+          "es": "Nombre de impresora personalizado",
+          "pl": "Niestandardowa nazwa drukarki",
+          "zh-cn": "自定义打印机名称"
         },
-        {
-            "_id": "printer_status",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Printer Status",
-                    "de": "Druckerstatus",
-                    "ru": "Состояние принтера",
-                    "pt": "Status da impressora",
-                    "nl": "Printerstatus",
-                    "fr": "État de l'imprimante",
-                    "it": "Stato della stampante",
-                    "es": "Estado de la impresora",
-                    "pl": "Stan drukarki",
-                    "zh-cn": "打印机状态"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printer_status",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Printer Status",
+          "de": "Druckerstatus",
+          "ru": "Состояние принтера",
+          "pt": "Status da impressora",
+          "nl": "Printerstatus",
+          "fr": "État de l'imprimante",
+          "it": "Stato della stampante",
+          "es": "Estado de la impresora",
+          "pl": "Stan drukarki",
+          "zh-cn": "打印机状态"
         },
-        {
-            "_id": "command",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Command",
-                    "de": "Befehl",
-                    "ru": "Командование",
-                    "pt": "Comando",
-                    "nl": "Opdracht",
-                    "fr": "Commander",
-                    "it": "Comando",
-                    "es": "Mando",
-                    "pl": "Komenda",
-                    "zh-cn": "命令"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.printer",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Printer command",
-                    "de": "Drucker-Befehl",
-                    "ru": "Команда принтера",
-                    "pt": "Comando da impressora",
-                    "nl": "Printeropdracht",
-                    "fr": "Commande d'imprimante",
-                    "it": "Comando stampante",
-                    "es": "Comando de impresora",
-                    "pl": "Polecenie drukarki",
-                    "zh-cn": "打印机命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.printjob",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print job command",
-                    "de": "Druckauftragsbefehl",
-                    "ru": "Команда задания на печать",
-                    "pt": "Comando de trabalho de impressão",
-                    "nl": "Opdracht afdruktaak",
-                    "fr": "Commande de travail d'impression",
-                    "it": "Comando lavoro di stampa",
-                    "es": "Comando de trabajo de impresión",
-                    "pl": "Polecenie drukowania zadania",
-                    "zh-cn": "打印作业命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.sd",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "SD card command",
-                    "de": "SD-Karten-Befehl",
-                    "ru": "Команда SD-карты",
-                    "pt": "Comando do cartão SD",
-                    "nl": "SD-kaartopdracht",
-                    "fr": "Commande de carte SD",
-                    "it": "Comando della scheda SD",
-                    "es": "Comando de la tarjeta SD",
-                    "pl": "Polecenie karty SD",
-                    "zh-cn": "SD卡指令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.custom",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Custom printer command",
-                    "de": "Benutzerdefinierter Drucker-Befehl",
-                    "ru": "Пользовательская команда принтера",
-                    "pt": "Comando de impressora personalizado",
-                    "nl": "Aangepaste printeropdracht",
-                    "fr": "Commande d'imprimante personnalisée",
-                    "it": "Comando stampante personalizzata",
-                    "es": "Comando de impresora personalizado",
-                    "pl": "Niestandardowe polecenie drukarki",
-                    "zh-cn": "自定义打印机命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.system",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Execute system command",
-                    "de": "Systembefehl ausführen",
-                    "ru": "Выполнить системную команду",
-                    "pt": "Execute o comando do sistema",
-                    "nl": "Systeemopdracht uitvoeren",
-                    "fr": "Exécuter la commande système",
-                    "it": "Esegui comando di sistema",
-                    "es": "Ejecutar comando del sistema",
-                    "pl": "Wykonaj polecenie systemowe",
-                    "zh-cn": "执行系统命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Jog Commands",
-                    "de": "Jog-Befehle",
-                    "ru": "Команды бега трусцой",
-                    "pt": "Comandos Jog",
-                    "nl": "Jog-opdrachten",
-                    "fr": "Commandes de jogging",
-                    "it": "Comandi Jog",
-                    "es": "Comandos de jog",
-                    "pl": "Polecenia impulsowania",
-                    "zh-cn": "点动命令"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.x",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog X axis",
-                    "de": "Jog-X-Achse",
-                    "ru": "Ось X Jog",
-                    "pt": "Eixo Jog X",
-                    "nl": "Jog X-as",
-                    "fr": "Jogger l'axe X",
-                    "it": "Spostamento asse X",
-                    "es": "Eje Jog X",
-                    "pl": "Skok osi X",
-                    "zh-cn": "点动 X 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.y",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog Y axis",
-                    "de": "Jog-Y-Achse",
-                    "ru": "Перемещение по оси Y",
-                    "pt": "Eixo Y de jog",
-                    "nl": "Jog Y-as",
-                    "fr": "Jogger l'axe Y",
-                    "it": "Jog asse Y",
-                    "es": "Eje Jog Y",
-                    "pl": "Jog oś Y",
-                    "zh-cn": "点动 Y 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.z",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog Z axis",
-                    "de": "Jog-Z-Achse",
-                    "ru": "Перемещение оси Z",
-                    "pt": "Eixo Z jog",
-                    "nl": "Jog Z-as",
-                    "fr": "Jogger l'axe Z",
-                    "it": "Avanzamento dell'asse Z",
-                    "es": "Eje Jog Z",
-                    "pl": "Jog oś Z",
-                    "zh-cn": "点动 Z 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Information",
-                    "de": "Information",
-                    "ru": "Информация",
-                    "pt": "Em formação",
-                    "nl": "Informatie",
-                    "fr": "Informations",
-                    "it": "Informazione",
-                    "es": "Información",
-                    "pl": "Informacja",
-                    "zh-cn": "信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.reachable",
-                "name": {
-                    "en": "Connected to OctoPrint",
-                    "de": "Mit OctoPrint verbunden",
-                    "ru": "При подключении к OctoPrint",
-                    "pt": "Se conectado ao OctoPrint",
-                    "nl": "Indien verbonden met OctoPrint",
-                    "fr": "Si connecté à OctoPrint",
-                    "it": "Se connesso a OctoPrint",
-                    "es": "Si está conectado a OctoPrint",
-                    "pl": "W przypadku połączenia z OctoPrint",
-                    "zh-cn": "如果连接到 OctoPrint"
-                },
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta",
-            "type": "channel",
-            "common": {
-                "role": "",
-                "name": {
-                    "en": "Meta information",
-                    "de": "Meta-Informationen",
-                    "ru": "Мета информация",
-                    "pt": "Meta informação",
-                    "nl": "Meta informatie",
-                    "fr": "Méta-information",
-                    "it": "Meta informazioni",
-                    "es": "Meta informacion",
-                    "pl": "Metainformacje",
-                    "zh-cn": "元信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta.version",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Version",
-                    "de": "Version",
-                    "ru": "Версия",
-                    "pt": "Versão",
-                    "nl": "Versie",
-                    "fr": "Version",
-                    "it": "Versione",
-                    "es": "Versión",
-                    "pl": "Wersja",
-                    "zh-cn": "版本"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta.api_version",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "API Version",
-                    "de": "API-Version",
-                    "ru": "Версия API",
-                    "pt": "Versão API",
-                    "nl": "API-versie",
-                    "fr": "Version API",
-                    "it": "Versione API",
-                    "es": "Versión API",
-                    "pl": "Wersja API",
-                    "zh-cn": "接口版本"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "tools",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Tool information",
-                    "de": "Werkzeuginformationen",
-                    "ru": "Информация об инструменте",
-                    "pt": "Informação da ferramenta",
-                    "nl": "Gereedschapsinformatie",
-                    "fr": "Informations sur l'outil",
-                    "it": "Informazioni sullo strumento",
-                    "es": "Información de la herramienta",
-                    "pl": "Informacje o narzędziu",
-                    "zh-cn": "刀具信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job",
-                    "de": "Druckauftrag",
-                    "ru": "Распечатать задание",
-                    "pt": "Trabalho de impressão",
-                    "nl": "Afdruktaak",
-                    "fr": "Travail d'impression",
-                    "it": "Lavoro di stampa",
-                    "es": "Trabajo de impresión",
-                    "pl": "Zadanie drukowania",
-                    "zh-cn": "打印作业"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job file information",
-                    "de": "Informationen zur Druckauftragsdatei",
-                    "ru": "Информация о файле задания на печать",
-                    "pt": "Informações do arquivo de trabalho de impressão",
-                    "nl": "Informatie over taakbestand afdrukken",
-                    "fr": "Imprimer les informations du fichier de travail",
-                    "it": "Informazioni sul file di lavoro di stampa",
-                    "es": "Imprimir información del archivo del trabajo",
-                    "pl": "Drukuj informacje o pliku zadania",
-                    "zh-cn": "打印作业文件信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.name",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File name",
-                    "de": "Dateiname",
-                    "ru": "Имя файла",
-                    "pt": "Nome do arquivo",
-                    "nl": "Bestandsnaam",
-                    "fr": "Nom de fichier",
-                    "it": "Nome del file",
-                    "es": "Nombre del archivo",
-                    "pl": "Nazwa pliku",
-                    "zh-cn": "文档名称"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.origin",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File origin",
-                    "de": "Dateiursprung",
-                    "ru": "Источник файла",
-                    "pt": "Origem do arquivo",
-                    "nl": "Oorsprong van bestand",
-                    "fr": "Origine du fichier",
-                    "it": "Origine del file",
-                    "es": "Origen del archivo",
-                    "pl": "Pochodzenie pliku",
-                    "zh-cn": "文件来源"
-                },
-                "type": "string",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.size",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File size",
-                    "de": "Dateigröße",
-                    "ru": "Размер файла",
-                    "pt": "Tamanho do arquivo",
-                    "nl": "Bestandsgrootte",
-                    "fr": "Taille du fichier",
-                    "it": "Dimensione del file",
-                    "es": "Tamaño del archivo",
-                    "pl": "Rozmiar pliku",
-                    "zh-cn": "文件大小"
-                },
-                "type": "number",
-                "unit": "KiB",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.date",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File date",
-                    "de": "Dateidatum",
-                    "ru": "Дата файла",
-                    "pt": "Data do arquivo",
-                    "nl": "Bestandsdatum",
-                    "fr": "Date du fichier",
-                    "it": "Data file",
-                    "es": "Fecha de archivo",
-                    "pl": "Data pliku",
-                    "zh-cn": "文件日期"
-                },
-                "type": "number",
-                "role": "date",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job filament information",
-                    "de": "Filamentinformationen für Druckaufträge",
-                    "ru": "Информация о нити для задания на печать",
-                    "pt": "Informações de filamento do trabalho de impressão",
-                    "nl": "Informatie over afdruktaak filament",
-                    "fr": "Imprimer les informations sur le filament de travail",
-                    "it": "Informazioni sul filamento del lavoro di stampa",
-                    "es": "Imprimir información sobre el filamento del trabajo",
-                    "pl": "Drukowanie informacji o filamentach",
-                    "zh-cn": "打印作业耗材信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament.length",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Filament length",
-                    "de": "Filamentlänge",
-                    "ru": "Длина нити",
-                    "pt": "Comprimento do filamento",
-                    "nl": "filament lengte",
-                    "fr": "Longueur des filaments",
-                    "it": "Lunghezza del filamento",
-                    "es": "Longitud del filamento",
-                    "pl": "Długość żarnika",
-                    "zh-cn": "灯丝长度"
-                },
-                "type": "number",
-                "unit": "m",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Filament volume",
-                    "de": "Filamentvolumen",
-                    "ru": "Объем нити",
-                    "pt": "Volume do filamento",
-                    "nl": "Filamentvolume",
-                    "fr": "Volume de filament",
-                    "it": "Volume del filamento",
-                    "es": "Volumen de filamento",
-                    "pl": "Objętość żarnika",
-                    "zh-cn": "灯丝体积"
-                },
-                "type": "number",
-                "unit": "cm³",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job progress",
-                    "de": "Fortschritt des Druckauftrags",
-                    "ru": "Ход выполнения задания на печать",
-                    "pt": "Progresso do trabalho de impressão",
-                    "nl": "Voortgang afdruktaak",
-                    "fr": "Progression du travail d'impression",
-                    "it": "Avanzamento del lavoro di stampa",
-                    "es": "Progreso del trabajo de impresión",
-                    "pl": "Postęp zadania drukowania",
-                    "zh-cn": "打印作业进度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.completion",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Progress",
-                    "de": "Fortschritt",
-                    "ru": "Прогресс",
-                    "pt": "Progresso",
-                    "nl": "Voortgang",
-                    "fr": "Le progrès",
-                    "it": "Progresso",
-                    "es": "Progreso",
-                    "pl": "Postęp",
-                    "zh-cn": "进步"
-                },
-                "type": "number",
-                "unit": "%",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.filepos",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File position",
-                    "de": "Dateiposition",
-                    "ru": "Положение файла",
-                    "pt": "Posição do arquivo",
-                    "nl": "Bestandspositie",
-                    "fr": "Emplacement du fichier",
-                    "it": "Posizione file",
-                    "es": "Posición de archivo",
-                    "pl": "Pozycja pliku",
-                    "zh-cn": "文件位置"
-                },
-                "type": "number",
-                "unit": "KiB",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtime",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time",
-                    "de": "Druckzeit",
-                    "ru": "Время печати",
-                    "pt": "Tempo de impressão",
-                    "nl": "Afdruktijd",
-                    "fr": "Temps d'impression",
-                    "it": "Tempo di stampa",
-                    "es": "Tiempo de impresión",
-                    "pl": "Czas drukowania",
-                    "zh-cn": "打印时间"
-                },
-                "type": "number",
-                "unit": "s",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtime_left",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time left",
-                    "de": "Druckzeit übrig",
-                    "ru": "Оставшееся время печати",
-                    "pt": "Tempo restante de impressão",
-                    "nl": "Resterende afdruktijd",
-                    "fr": "Temps d'impression restant",
-                    "it": "Tempo di stampa rimasto",
-                    "es": "Tiempo de impresión restante",
-                    "pl": "Pozostały czas drukowania",
-                    "zh-cn": "剩余打印时间"
-                },
-                "type": "number",
-                "unit": "s",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "files",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "File list",
-                    "de": "Dateiliste",
-                    "ru": "Список файлов",
-                    "pt": "Lista de arquivos",
-                    "nl": "Bestandslijst",
-                    "fr": "Liste des fichiers",
-                    "it": "Elenco file",
-                    "es": "Lista de archivos",
-                    "pl": "Lista plików",
-                    "zh-cn": "文件清单"
-                }
-            },
-            "native": {}
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "command",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Command",
+          "de": "Befehl",
+          "ru": "Командование",
+          "pt": "Comando",
+          "nl": "Opdracht",
+          "fr": "Commander",
+          "it": "Comando",
+          "es": "Mando",
+          "pl": "Komenda",
+          "zh-cn": "命令"
         }
-    ]
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.printer",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Printer command",
+          "de": "Drucker-Befehl",
+          "ru": "Команда принтера",
+          "pt": "Comando da impressora",
+          "nl": "Printeropdracht",
+          "fr": "Commande d'imprimante",
+          "it": "Comando stampante",
+          "es": "Comando de impresora",
+          "pl": "Polecenie drukarki",
+          "zh-cn": "打印机命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.printjob",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print job command",
+          "de": "Druckauftragsbefehl",
+          "ru": "Команда задания на печать",
+          "pt": "Comando de trabalho de impressão",
+          "nl": "Opdracht afdruktaak",
+          "fr": "Commande de travail d'impression",
+          "it": "Comando lavoro di stampa",
+          "es": "Comando de trabajo de impresión",
+          "pl": "Polecenie drukowania zadania",
+          "zh-cn": "打印作业命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.sd",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "SD card command",
+          "de": "SD-Karten-Befehl",
+          "ru": "Команда SD-карты",
+          "pt": "Comando do cartão SD",
+          "nl": "SD-kaartopdracht",
+          "fr": "Commande de carte SD",
+          "it": "Comando della scheda SD",
+          "es": "Comando de la tarjeta SD",
+          "pl": "Polecenie karty SD",
+          "zh-cn": "SD卡指令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.custom",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Custom printer command",
+          "de": "Benutzerdefinierter Drucker-Befehl",
+          "ru": "Пользовательская команда принтера",
+          "pt": "Comando de impressora personalizado",
+          "nl": "Aangepaste printeropdracht",
+          "fr": "Commande d'imprimante personnalisée",
+          "it": "Comando stampante personalizzata",
+          "es": "Comando de impresora personalizado",
+          "pl": "Niestandardowe polecenie drukarki",
+          "zh-cn": "自定义打印机命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.system",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Execute system command",
+          "de": "Systembefehl ausführen",
+          "ru": "Выполнить системную команду",
+          "pt": "Execute o comando do sistema",
+          "nl": "Systeemopdracht uitvoeren",
+          "fr": "Exécuter la commande système",
+          "it": "Esegui comando di sistema",
+          "es": "Ejecutar comando del sistema",
+          "pl": "Wykonaj polecenie systemowe",
+          "zh-cn": "执行系统命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Jog Commands",
+          "de": "Jog-Befehle",
+          "ru": "Команды бега трусцой",
+          "pt": "Comandos Jog",
+          "nl": "Jog-opdrachten",
+          "fr": "Commandes de jogging",
+          "it": "Comandi Jog",
+          "es": "Comandos de jog",
+          "pl": "Polecenia impulsowania",
+          "zh-cn": "点动命令"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.x",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog X axis",
+          "de": "Jog-X-Achse",
+          "ru": "Ось X Jog",
+          "pt": "Eixo Jog X",
+          "nl": "Jog X-as",
+          "fr": "Jogger l'axe X",
+          "it": "Spostamento asse X",
+          "es": "Eje Jog X",
+          "pl": "Skok osi X",
+          "zh-cn": "点动 X 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.y",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog Y axis",
+          "de": "Jog-Y-Achse",
+          "ru": "Перемещение по оси Y",
+          "pt": "Eixo Y de jog",
+          "nl": "Jog Y-as",
+          "fr": "Jogger l'axe Y",
+          "it": "Jog asse Y",
+          "es": "Eje Jog Y",
+          "pl": "Jog oś Y",
+          "zh-cn": "点动 Y 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.z",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog Z axis",
+          "de": "Jog-Z-Achse",
+          "ru": "Перемещение оси Z",
+          "pt": "Eixo Z jog",
+          "nl": "Jog Z-as",
+          "fr": "Jogger l'axe Z",
+          "it": "Avanzamento dell'asse Z",
+          "es": "Eje Jog Z",
+          "pl": "Jog oś Z",
+          "zh-cn": "点动 Z 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Information",
+          "ru": "Информация",
+          "pt": "Em formação",
+          "nl": "Informatie",
+          "fr": "Informations",
+          "it": "Informazione",
+          "es": "Información",
+          "pl": "Informacja",
+          "zh-cn": "信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.reachable",
+        "name": {
+          "en": "Connected to OctoPrint",
+          "de": "Mit OctoPrint verbunden",
+          "ru": "При подключении к OctoPrint",
+          "pt": "Se conectado ao OctoPrint",
+          "nl": "Indien verbonden met OctoPrint",
+          "fr": "Si connecté à OctoPrint",
+          "it": "Se connesso a OctoPrint",
+          "es": "Si está conectado a OctoPrint",
+          "pl": "W przypadku połączenia z OctoPrint",
+          "zh-cn": "如果连接到 OctoPrint"
+        },
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta",
+      "type": "channel",
+      "common": {
+        "role": "",
+        "name": {
+          "en": "Meta information",
+          "de": "Meta-Informationen",
+          "ru": "Мета информация",
+          "pt": "Meta informação",
+          "nl": "Meta informatie",
+          "fr": "Méta-information",
+          "it": "Meta informazioni",
+          "es": "Meta informacion",
+          "pl": "Metainformacje",
+          "zh-cn": "元信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta.version",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Version",
+          "de": "Version",
+          "ru": "Версия",
+          "pt": "Versão",
+          "nl": "Versie",
+          "fr": "Version",
+          "it": "Versione",
+          "es": "Versión",
+          "pl": "Wersja",
+          "zh-cn": "版本"
+        },
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta.api_version",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "API Version",
+          "de": "API-Version",
+          "ru": "Версия API",
+          "pt": "Versão API",
+          "nl": "API-versie",
+          "fr": "Version API",
+          "it": "Versione API",
+          "es": "Versión API",
+          "pl": "Wersja API",
+          "zh-cn": "接口版本"
+        },
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "tools",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Tool information",
+          "de": "Werkzeuginformationen",
+          "ru": "Информация об инструменте",
+          "pt": "Informação da ferramenta",
+          "nl": "Gereedschapsinformatie",
+          "fr": "Informations sur l'outil",
+          "it": "Informazioni sullo strumento",
+          "es": "Información de la herramienta",
+          "pl": "Informacje o narzędziu",
+          "zh-cn": "刀具信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job",
+          "de": "Druckauftrag",
+          "ru": "Распечатать задание",
+          "pt": "Trabalho de impressão",
+          "nl": "Afdruktaak",
+          "fr": "Travail d'impression",
+          "it": "Lavoro di stampa",
+          "es": "Trabajo de impresión",
+          "pl": "Zadanie drukowania",
+          "zh-cn": "打印作业"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job file information",
+          "de": "Informationen zur Druckauftragsdatei",
+          "ru": "Информация о файле задания на печать",
+          "pt": "Informações do arquivo de trabalho de impressão",
+          "nl": "Informatie over taakbestand afdrukken",
+          "fr": "Imprimer les informations du fichier de travail",
+          "it": "Informazioni sul file di lavoro di stampa",
+          "es": "Imprimir información del archivo del trabajo",
+          "pl": "Drukuj informacje o pliku zadania",
+          "zh-cn": "打印作业文件信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.name",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File name",
+          "de": "Dateiname",
+          "ru": "Имя файла",
+          "pt": "Nome do arquivo",
+          "nl": "Bestandsnaam",
+          "fr": "Nom de fichier",
+          "it": "Nome del file",
+          "es": "Nombre del archivo",
+          "pl": "Nazwa pliku",
+          "zh-cn": "文档名称"
+        },
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.origin",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File origin",
+          "de": "Dateiursprung",
+          "ru": "Источник файла",
+          "pt": "Origem do arquivo",
+          "nl": "Oorsprong van bestand",
+          "fr": "Origine du fichier",
+          "it": "Origine del file",
+          "es": "Origen del archivo",
+          "pl": "Pochodzenie pliku",
+          "zh-cn": "文件来源"
+        },
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.size",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File size",
+          "de": "Dateigröße",
+          "ru": "Размер файла",
+          "pt": "Tamanho do arquivo",
+          "nl": "Bestandsgrootte",
+          "fr": "Taille du fichier",
+          "it": "Dimensione del file",
+          "es": "Tamaño del archivo",
+          "pl": "Rozmiar pliku",
+          "zh-cn": "文件大小"
+        },
+        "type": "number",
+        "unit": "KiB",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.date",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File date",
+          "de": "Dateidatum",
+          "ru": "Дата файла",
+          "pt": "Data do arquivo",
+          "nl": "Bestandsdatum",
+          "fr": "Date du fichier",
+          "it": "Data file",
+          "es": "Fecha de archivo",
+          "pl": "Data pliku",
+          "zh-cn": "文件日期"
+        },
+        "type": "number",
+        "role": "date",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job filament information",
+          "de": "Filamentinformationen für Druckaufträge",
+          "ru": "Информация о нити для задания на печать",
+          "pt": "Informações de filamento do trabalho de impressão",
+          "nl": "Informatie over afdruktaak filament",
+          "fr": "Imprimer les informations sur le filament de travail",
+          "it": "Informazioni sul filamento del lavoro di stampa",
+          "es": "Imprimir información sobre el filamento del trabajo",
+          "pl": "Drukowanie informacji o filamentach",
+          "zh-cn": "打印作业耗材信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament.length",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Filament length",
+          "de": "Filamentlänge",
+          "ru": "Длина нити",
+          "pt": "Comprimento do filamento",
+          "nl": "filament lengte",
+          "fr": "Longueur des filaments",
+          "it": "Lunghezza del filamento",
+          "es": "Longitud del filamento",
+          "pl": "Długość żarnika",
+          "zh-cn": "灯丝长度"
+        },
+        "type": "number",
+        "unit": "m",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Filament volume",
+          "de": "Filamentvolumen",
+          "ru": "Объем нити",
+          "pt": "Volume do filamento",
+          "nl": "Filamentvolume",
+          "fr": "Volume de filament",
+          "it": "Volume del filamento",
+          "es": "Volumen de filamento",
+          "pl": "Objętość żarnika",
+          "zh-cn": "灯丝体积"
+        },
+        "type": "number",
+        "unit": "cm³",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job progress",
+          "de": "Fortschritt des Druckauftrags",
+          "ru": "Ход выполнения задания на печать",
+          "pt": "Progresso do trabalho de impressão",
+          "nl": "Voortgang afdruktaak",
+          "fr": "Progression du travail d'impression",
+          "it": "Avanzamento del lavoro di stampa",
+          "es": "Progreso del trabajo de impresión",
+          "pl": "Postęp zadania drukowania",
+          "zh-cn": "打印作业进度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.completion",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Progress",
+          "de": "Fortschritt",
+          "ru": "Прогресс",
+          "pt": "Progresso",
+          "nl": "Voortgang",
+          "fr": "Le progrès",
+          "it": "Progresso",
+          "es": "Progreso",
+          "pl": "Postęp",
+          "zh-cn": "进步"
+        },
+        "type": "number",
+        "unit": "%",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.filepos",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File position",
+          "de": "Dateiposition",
+          "ru": "Положение файла",
+          "pt": "Posição do arquivo",
+          "nl": "Bestandspositie",
+          "fr": "Emplacement du fichier",
+          "it": "Posizione file",
+          "es": "Posición de archivo",
+          "pl": "Pozycja pliku",
+          "zh-cn": "文件位置"
+        },
+        "type": "number",
+        "unit": "KiB",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtime",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time",
+          "de": "Druckzeit",
+          "ru": "Время печати",
+          "pt": "Tempo de impressão",
+          "nl": "Afdruktijd",
+          "fr": "Temps d'impression",
+          "it": "Tempo di stampa",
+          "es": "Tiempo de impresión",
+          "pl": "Czas drukowania",
+          "zh-cn": "打印时间"
+        },
+        "type": "number",
+        "unit": "s",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtime_left",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time left",
+          "de": "Druckzeit übrig",
+          "ru": "Оставшееся время печати",
+          "pt": "Tempo restante de impressão",
+          "nl": "Resterende afdruktijd",
+          "fr": "Temps d'impression restant",
+          "it": "Tempo di stampa rimasto",
+          "es": "Tiempo de impresión restante",
+          "pl": "Pozostały czas drukowania",
+          "zh-cn": "剩余打印时间"
+        },
+        "type": "number",
+        "unit": "s",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "files",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "File list",
+          "de": "Dateiliste",
+          "ru": "Список файлов",
+          "pt": "Lista de arquivos",
+          "nl": "Bestandslijst",
+          "fr": "Liste des fichiers",
+          "it": "Elenco file",
+          "es": "Lista de archivos",
+          "pl": "Lista plików",
+          "zh-cn": "文件清单"
+        }
+      },
+      "native": {}
+    }
+  ]
 }
