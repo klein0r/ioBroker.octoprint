@@ -59,6 +59,12 @@ class OctoPrint extends utils.Adapter {
         try {
             this.setPrinterState(false);
 
+            // Delete old timer
+            if (this.refreshStateTimeout) {
+                this.log.debug('refreshStateTimeout: UNLOAD');
+                this.clearTimeout(this.refreshStateTimeout);
+            }
+
             this.log.debug('cleaned everything up...');
             callback();
         } catch (e) {
@@ -381,7 +387,7 @@ class OctoPrint extends utils.Adapter {
     }
 
     async refreshState(source, refreshFileList) {
-        this.log.debug('refreshing state: started from ' + source);
+        this.log.debug(`refreshState: started from "${source}"`);
 
         // https://docs.octoprint.org/en/master/api/version.html
         this.buildRequest(
@@ -390,7 +396,7 @@ class OctoPrint extends utils.Adapter {
                 if (status == 200) {
                     this.setPrinterState(true);
 
-                    this.log.debug('connected to OctoPrint API - online! - status: ' + status);
+                    this.log.debug(`connected to OctoPrint API - online! - status: ${status}`);
 
                     this.setStateAsync('meta.version', {val: content.server, ack: true});
                     this.setStateAsync('meta.api_version', {val: content.api, ack: true});
@@ -415,35 +421,35 @@ class OctoPrint extends utils.Adapter {
 
         // Delete old timer
         if (this.refreshStateTimeout) {
-            this.log.debug('refreshStateTimeout: CLEARED');
+            this.log.debug('refreshStateTimeout: CLEARED OLD');
             this.clearTimeout(this.refreshStateTimeout);
         }
 
         if (!this.apiConnected) {
             const notConnectedTimeout = 10;
-            this.log.debug('refreshStateTimeout: re-creating refresh timeout (API not connected) - seconds: ' + notConnectedTimeout);
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (API not connected)', true);
             }, notConnectedTimeout * 1000);
+            this.log.debug(`refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`);
         } else if (this.printerStatus == 'Printing') {
-            this.log.debug('refreshStateTimeout: re-creating refresh timeout (printing) - seconds: ' + this.config.apiRefreshIntervalPrinting);
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
+            this.log.debug(`refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`);
         } else if (this.printerStatus == 'Operational') {
-            this.log.debug('refreshStateTimeout: re-creating refresh timeout (operational) - seconds: ' + this.config.apiRefreshIntervalOperational);
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)', true);
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
+            this.log.debug(`refreshStateTimeout: re-created refresh timeout (operational): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalOperational}`);
         } else {
-            this.log.debug('refreshStateTimeout: re-creating state timeout (default) - seconds: ' + this.config.apiRefreshInterval);
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (default)', true);
+                this.refreshState('timeout (default)', false);
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
+            this.log.debug(`refreshStateTimeout: re-created refresh timeout (default): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshInterval}`);
         }
     }
 
@@ -460,7 +466,7 @@ class OctoPrint extends utils.Adapter {
 
                         // Try again in 2 seconds
                         if (this.printerStatus === 'Detecting serial connection') {
-                            setTimeout(() => {
+                            this.setTimeout(() => {
                                 this.refreshState('detecting serial connection', false);
                             }, 2000);
                         }
