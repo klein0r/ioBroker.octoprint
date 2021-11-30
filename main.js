@@ -211,10 +211,24 @@ class OctoPrint extends utils.Adapter {
 
                 } else if (id === this.namespace + '.command.printjob') {
 
-                    const allowedCommands = ['start', 'cancel', 'restart'];
+                    const allowedCommands = ['start', 'pause', 'resume', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug('sending printjob command: ' + state.val);
+                        const printjobCommand = {
+                            command: state.val
+                        };
+
+                        // Pause command needs an action
+                        if (state.val === 'pause') {
+                            printjobCommand.action = 'pause';
+                        }
+
+                        // Workaround: Resume is a pause command with resume action
+                        if (state.val === 'resume') {
+                            printjobCommand.command = 'pause';
+                            printjobCommand.action = 'resume';
+                        }
 
                         // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
                         this.buildRequest(
@@ -228,9 +242,7 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error('(job): ' + status + ': ' + JSON.stringify(content));
                                 }
                             },
-                            {
-                                command: state.val
-                            }
+                            printjobCommand
                         );
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
@@ -313,7 +325,7 @@ class OctoPrint extends utils.Adapter {
 
                     const axis = id.split('.').pop(); // Last element of the id is the axis
                     const jogCommand = {
-                        command: 'jog',
+                        command: 'jog'
                     };
 
                     // Add axis
