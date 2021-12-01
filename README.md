@@ -74,8 +74,7 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 2.0.6 (2021-12-01)
 
 * (klein0r) Allow to pause/resume printjob
 

@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "news": {
+      "2.0.6": {
+        "en": "Allow to pause/resume printjob",
+        "de": "Druckauftrag anhalten/fortsetzen lassen",
+        "ru": "Разрешить приостановить / возобновить задание печати",
+        "pt": "Permitir pausar / retomar o trabalho de impressão",
+        "nl": "Sta toe om afdruktaak te pauzeren/hervatten",
+        "fr": "Permet de suspendre/reprendre le travail d'impression",
+        "it": "Consenti di mettere in pausa/riprendere il lavoro di stampa",
+        "es": "Permitir pausar / reanudar el trabajo de impresión",
+        "pl": "Zezwól na wstrzymanie/wznowienie zadania drukowania",
+        "zh-cn": "允许暂停/恢复打印作业"
+      },
       "2.0.5": {
         "en": "Require new version for translated instance objects\nFixed timeout issues",
         "de": "Neue Version für übersetzte Instanzobjekte erforderlich\nTimeout-Probleme behoben",
@@ -74,18 +86,6 @@
         "es": "Soporte Admin 5",
         "pl": "Wsparcie administratora 5",
         "zh-cn": "管理员 5 支持"
-      },
-      "1.1.2": {
-        "en": "Updated file refresh handling",
-        "de": "Datei-Aktualisierung verbessert",
-        "ru": "Обновленная обработка обновления файла",
-        "pt": "Manipulação de atualização de arquivo atualizado",
-        "nl": "Bijgewerkte verwerking van bestandsvernieuwing",
-        "fr": "Gestion de l'actualisation des fichiers mise à jour",
-        "it": "Aggiornata la gestione dell'aggiornamento dei file",
-        "es": "Manejo de actualización de archivos actualizado",
-        "pl": "Zaktualizowano obsługę odświeżania plików",
-        "zh-cn": "更新的文件刷新处理"
       }
     },
     "title": "OctoPrint",
