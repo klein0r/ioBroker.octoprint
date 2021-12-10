@@ -1,6 +1,7 @@
 name: Bug report
 title: "Bug report"
 description: "Create a report to help improve this ioBroker adapter"
+labels: bug
 body:
   - type: markdown
     attributes:
@@ -37,6 +38,12 @@ body:
     attributes:
       value: |
         ## Environment
+  - type: input
+    attributes:
+      label: Version of nodejs
+      description: Can be found in the host section of ioBroker admin
+    validations:
+      required: true
   - type: input
     attributes:
       label: Version of ioBroker js-controller
