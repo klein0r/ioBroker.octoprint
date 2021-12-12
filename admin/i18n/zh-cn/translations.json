@@ -11,5 +11,6 @@
     "Refresh Interval (while operational)": "刷新间隔（运行时）",
     "Refresh Interval (while printing)": "刷新间隔（打印时）",
     "can be found in the settings section of OctoPrint": "可以在 OctoPrint 的设置部分找到",
-    "in Seconds": "马上"
+    "in Seconds": "马上",
+    "Enable plugin: Display Layer Progress": "启用插件：Display Layer Progress"
 }

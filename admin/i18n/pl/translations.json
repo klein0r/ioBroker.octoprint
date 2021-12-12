@@ -11,5 +11,6 @@
     "Refresh Interval (while operational)": "Interwał odświeżania (podczas pracy)",
     "Refresh Interval (while printing)": "Interwał odświeżania (podczas drukowania)",
     "can be found in the settings section of OctoPrint": "można go znaleźć w sekcji ustawień OctoPrint",
-    "in Seconds": "w sekundy"
+    "in Seconds": "w sekundy",
+    "Enable plugin: Display Layer Progress": "Włącz wtyczkę: Display Layer Progress"
 }

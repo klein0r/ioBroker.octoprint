@@ -20,12 +20,30 @@ class OctoPrint extends utils.Adapter {
         this.systemCommands = [];
 
         /*
-            - API not connected
-            - Closed
+            Available states from OctoPrint:
+
+            - Offline
+            - Offline after error
+            - Error
+            - Opening serial connection
             - Detecting serial connection
+            - Connecting
             - Operational
+            - Starting
+            - Starting print from SD
+            - Starting to send file to SD
+            - Printing from SD
+            - Sending file to SD
             - Printing
+            - Paused
+            - Closed
+            - Transferring file to SD
+            - Pausing
+            - Resuming
+            - Cancelling
+            - Finishing
         */
+
         this.printerStatus = 'API not connected';
 
         this.refreshStateTimeout = null;
@@ -96,10 +114,10 @@ class OctoPrint extends utils.Adapter {
                         targetObj[toolId] = state.val;
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'printer/tool',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
@@ -117,10 +135,10 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug('extruding ' + state.val + 'mm');
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'printer/tool',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
@@ -141,10 +159,10 @@ class OctoPrint extends utils.Adapter {
                     this.log.debug('changing target bed temperature to ' + state.val);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
-                    this.buildRequest(
+                    this.buildServiceRequest(
                         'printer/bed',
                         (content, status) => {
-                            if (status == 204) {
+                            if (status === 204) {
                                 this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
@@ -168,10 +186,10 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug('sending printer connection command: ' + state.val);
 
                         // https://docs.octoprint.org/en/master/api/connection.html#issue-a-connection-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'connection',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                     this.refreshState('onStateChange command.printer', false);
                                 } else {
@@ -188,10 +206,10 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug('sending printer command: ' + state.val);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'printer/printhead',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
@@ -231,10 +249,10 @@ class OctoPrint extends utils.Adapter {
                         }
 
                         // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'job',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
@@ -256,10 +274,10 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug('sending sd card command: ' + state.val);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-an-sd-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'printer/sd',
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
@@ -280,10 +298,10 @@ class OctoPrint extends utils.Adapter {
                     this.log.debug('sending custom command: ' + state.val);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
-                    this.buildRequest(
+                    this.buildServiceRequest(
                         'printer/command',
                         (content, status) => {
-                            if (status == 204) {
+                            if (status === 204) {
                                 this.setStateAsync(cleanId, {val: state.val, ack: true});
                             } else {
                                 // 409 Conflict – If the printer is not operational
@@ -302,10 +320,10 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug('sending system command: ' + state.val);
 
                         // https://docs.octoprint.org/en/master/api/system.html#execute-a-registered-system-command
-                        this.buildRequest(
+                        this.buildServiceRequest(
                             'system/commands/' + state.val,
                             (content, status) => {
-                                if (status == 204) {
+                                if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
                                 } else {
                                     // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
@@ -323,31 +341,36 @@ class OctoPrint extends utils.Adapter {
 
                 } else if (id.indexOf(this.namespace + '.command.jog.') === 0) {
 
-                    const axis = id.split('.').pop(); // Last element of the id is the axis
-                    const jogCommand = {
-                        command: 'jog'
-                    };
+                    // Validate jog value
+                    if (state.val !== 0) {
+                        const axis = id.split('.').pop(); // Last element of the object id is the axis
+                        const jogCommand = {
+                            command: 'jog'
+                        };
 
-                    // Add axis
-                    jogCommand[axis] = state.val;
+                        // Add axis
+                        jogCommand[axis] = state.val;
 
-                    this.log.debug('sending jog ' + axis + ' command: ' + state.val);
+                        this.log.debug('sending jog ' + axis + ' command: ' + state.val);
 
-                    // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
-                    this.buildRequest(
-                        'printer/printhead',
-                        (content, status) => {
-                            if (status == 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
-                                // 409 Conflict – If the printer is not operational or currently printing.
+                        // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
+                        this.buildServiceRequest(
+                            'printer/printhead',
+                            (content, status) => {
+                                if (status === 204) {
+                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
+                                } else {
+                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                    // 409 Conflict – If the printer is not operational or currently printing.
 
-                                this.log.error('(printer/printhead): ' + status + ': ' + JSON.stringify(content));
-                            }
-                        },
-                        jogCommand
-                    );
+                                    this.log.error('(printer/printhead): ' + status + ': ' + JSON.stringify(content));
+                                }
+                            },
+                            jogCommand
+                        );
+                    } else {
+                        this.log.error('Jog: Provide non-zero value');
+                    }
 
                 } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9_]+.(select|print)'))) {
 
@@ -365,10 +388,10 @@ class OctoPrint extends utils.Adapter {
                             this.log.debug('selecting/printing file with path ' + fullPath);
 
                             // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
-                            this.buildRequest(
+                            this.buildServiceRequest(
                                 'files/' + fullPath,
                                 (content, status) => {
-                                    if (status == 204) {
+                                    if (status === 204) {
                                         this.log.debug('selection/print file successful');
                                         this.refreshState('onStateChange file.' + action, false);
                                     } else {
@@ -402,10 +425,10 @@ class OctoPrint extends utils.Adapter {
         this.log.debug(`refreshState: started from "${source}"`);
 
         // https://docs.octoprint.org/en/master/api/version.html
-        this.buildRequest(
+        this.buildServiceRequest(
             'version',
             (content, status) => {
-                if (status == 200) {
+                if (status === 200) {
                     this.setPrinterState(true);
 
                     this.log.debug(`connected to OctoPrint API - online! - status: ${status}`);
@@ -437,6 +460,7 @@ class OctoPrint extends utils.Adapter {
             this.clearTimeout(this.refreshStateTimeout);
         }
 
+        // Start a new timeout in any case
         if (!this.apiConnected) {
             const notConnectedTimeout = 10;
             this.refreshStateTimeout = this.setTimeout(() => {
@@ -444,13 +468,13 @@ class OctoPrint extends utils.Adapter {
                 this.refreshState('timeout (API not connected)', true);
             }, notConnectedTimeout * 1000);
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`);
-        } else if (this.printerStatus == 'Printing') {
+        } else if (this.printerStatus === 'Printing' || this.printerStatus === 'Finishing') {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`);
-        } else if (this.printerStatus == 'Operational') {
+        } else if (this.printerStatus === 'Operational') {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)', true);
@@ -469,10 +493,10 @@ class OctoPrint extends utils.Adapter {
         if (this.apiConnected) {
 
             // https://docs.octoprint.org/en/master/api/connection.html
-            this.buildRequest(
+            this.buildServiceRequest(
                 'connection',
                 (content, status) => {
-                    if (status == 200) {
+                    if (status === 200) {
                         this.printerStatus = content.current.state;
                         this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
 
@@ -489,7 +513,7 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            this.buildRequest(
+            this.buildServiceRequest(
                 'printer',
                 async (content, status) => {
                     if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
@@ -621,7 +645,7 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            this.buildRequest(
+            this.buildServiceRequest(
                 'system/commands',
                 (content, status) => {
                     this.systemCommands = [];
@@ -636,8 +660,109 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            if (this.printerStatus == 'Printing' || this.printerStatus == 'Operational') {
-                this.buildRequest(
+            // Plugin Display Layer Progress
+            // https://github.com/OllisGit/OctoPrint-DisplayLayerProgress
+            if (this.config.pluginDisplayLayerProgress) {
+                this.log.debug('Plugin "Display Layer Progress" is activated - fetching details');
+
+                await this.setObjectNotExistsAsync('plugins.displayLayerProgress', {
+                    type: 'channel',
+                    common: {
+                        name: 'Display Layer Progress',
+                    },
+                    native: {}
+                });
+
+                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer', {
+                    type: 'channel',
+                    common: {
+                        name: {
+                            en: 'Layer',
+                            de: 'Schicht',
+                            ru: 'Слой',
+                            pt: 'Camada',
+                            nl: 'Laag',
+                            fr: 'Couche',
+                            it: 'Strato',
+                            es: 'Capa',
+                            pl: 'Warstwa',
+                            'zh-cn': '层'
+                        },
+                    },
+                    native: {}
+                });
+
+                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer.current', {
+                    type: 'state',
+                    common: {
+                        name: {
+                            en: 'Current layer',
+                            de: 'Aktuelle Ebene',
+                            ru: 'Текущий слой',
+                            pt: 'Camada atual',
+                            nl: 'Huidige laag',
+                            fr: 'Couche actuelle',
+                            it: 'Livello attuale',
+                            es: 'Capa actual',
+                            pl: 'Aktualna warstwa',
+                            'zh-cn': '当前层'
+                        },
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                        def: -1
+                    },
+                    native: {}
+                });
+
+                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer.total', {
+                    type: 'state',
+                    common: {
+                        name: {
+                            en: 'Total Layers',
+                            de: 'Gesamtebenen',
+                            ru: 'Всего слоев',
+                            pt: 'Camadas totais',
+                            nl: 'Totaal aantal lagen',
+                            fr: 'Couches totales',
+                            it: 'Strati totali',
+                            es: 'Capas totales',
+                            pl: 'Całkowita liczba warstw',
+                            'zh-cn': '总层数'
+                        },
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                        def: -1
+                    },
+                    native: {}
+                });
+
+                this.buildPluginRequest(
+                    'DisplayLayerProgress/values',
+                    (content, status) => {
+                        if (status === 200) {
+                            if (content.layer.current != '-') {
+                                await this.setStateAsync('plugins.displayLayerProgress.layer.current', {val: parseInt(content.layer.current), ack: true});
+                            }
+
+                            if (content.layer.total != '-') {
+                                await this.setStateAsync('plugins.displayLayerProgress.layer.current', {val: parseInt(content.layer.total), ack: true});
+                            }
+                        } else {
+                            this.log.error('(DisplayLayerProgress/values): ' + status + ': ' + JSON.stringify(content));
+                        }
+                    }
+                );
+            } else {
+                // this.delObject('plugins.displayLayerProgress', {recursive: true});
+            }
+
+            if (this.printerStatus === 'Printing' || this.printerStatus === 'Operational' || this.printerStatus === 'Finishing') {
+
+                this.buildServiceRequest(
                     'job',
                     async (content, status) => {
                         if (Object.prototype.hasOwnProperty.call(content, 'error')) {
@@ -741,7 +866,7 @@ class OctoPrint extends utils.Adapter {
         if (this.apiConnected) {
             this.log.debug('refreshing file list: started');
 
-            this.buildRequest(
+            this.buildServiceRequest(
                 'files?recursive=true',
                 (content, status) => {
 
@@ -962,8 +1087,19 @@ class OctoPrint extends utils.Adapter {
         return id.replace(re, '');
     }
 
-    async buildRequest(service, callback, data) {
+    async buildServiceRequest(service, callback, data) {
         const url = '/api/' + service;
+
+        this.buildRequest(url, callback, data);
+    }
+
+    async buildPluginRequest(plugin, callback, data) {
+        const url = '/plugin/' + plugin;
+
+        this.buildRequest(url, callback, data);
+    }
+
+    async buildRequest(url, callback, data) {
         const method = data ? 'post' : 'get';
 
         this.log.debug('sending "' + method + '" request to "' + url + '" with data: ' + JSON.stringify(data));
