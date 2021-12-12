@@ -210,7 +210,8 @@
         "type": "string",
         "role": "value",
         "read": true,
-        "write": false
+        "write": false,
+        "def": "API not connected"
       },
       "native": {}
     },
@@ -386,7 +387,8 @@
         "type": "number",
         "role": "value",
         "read": false,
-        "write": true
+        "write": true,
+        "def": 0
       },
       "native": {}
     },
@@ -409,7 +411,8 @@
         "type": "number",
         "role": "value",
         "read": false,
-        "write": true
+        "write": true,
+        "def": 0
       },
       "native": {}
     },
@@ -432,7 +435,8 @@
         "type": "number",
         "role": "value",
         "read": false,
-        "write": true
+        "write": true,
+        "def": 0
       },
       "native": {}
     },
