@@ -7,6 +7,8 @@ const utils = require('@iobroker/adapter-core');
 const axios = require('axios');
 const adapterName = require('./package.json').name.split('.').pop();
 
+const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
+
 class OctoPrint extends utils.Adapter {
 
     constructor(options) {
@@ -665,97 +667,7 @@ class OctoPrint extends utils.Adapter {
             if (this.config.pluginDisplayLayerProgress) {
                 this.log.debug('Plugin "Display Layer Progress" is activated - fetching details');
 
-                await this.setObjectNotExistsAsync('plugins.displayLayerProgress', {
-                    type: 'channel',
-                    common: {
-                        name: 'Display Layer Progress',
-                    },
-                    native: {}
-                });
-
-                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer', {
-                    type: 'channel',
-                    common: {
-                        name: {
-                            en: 'Layer',
-                            de: 'Schicht',
-                            ru: 'Слой',
-                            pt: 'Camada',
-                            nl: 'Laag',
-                            fr: 'Couche',
-                            it: 'Strato',
-                            es: 'Capa',
-                            pl: 'Warstwa',
-                            'zh-cn': '层'
-                        },
-                    },
-                    native: {}
-                });
-
-                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer.current', {
-                    type: 'state',
-                    common: {
-                        name: {
-                            en: 'Current layer',
-                            de: 'Aktuelle Ebene',
-                            ru: 'Текущий слой',
-                            pt: 'Camada atual',
-                            nl: 'Huidige laag',
-                            fr: 'Couche actuelle',
-                            it: 'Livello attuale',
-                            es: 'Capa actual',
-                            pl: 'Aktualna warstwa',
-                            'zh-cn': '当前层'
-                        },
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                        def: -1
-                    },
-                    native: {}
-                });
-
-                await this.setObjectNotExistsAsync('plugins.displayLayerProgress.layer.total', {
-                    type: 'state',
-                    common: {
-                        name: {
-                            en: 'Total Layers',
-                            de: 'Gesamtebenen',
-                            ru: 'Всего слоев',
-                            pt: 'Camadas totais',
-                            nl: 'Totaal aantal lagen',
-                            fr: 'Couches totales',
-                            it: 'Strati totali',
-                            es: 'Capas totales',
-                            pl: 'Całkowita liczba warstw',
-                            'zh-cn': '总层数'
-                        },
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                        def: -1
-                    },
-                    native: {}
-                });
-
-                this.buildPluginRequest(
-                    'DisplayLayerProgress/values',
-                    (content, status) => {
-                        if (status === 200) {
-                            if (content.layer.current != '-') {
-                                await this.setStateAsync('plugins.displayLayerProgress.layer.current', {val: parseInt(content.layer.current), ack: true});
-                            }
-
-                            if (content.layer.total != '-') {
-                                await this.setStateAsync('plugins.displayLayerProgress.layer.current', {val: parseInt(content.layer.total), ack: true});
-                            }
-                        } else {
-                            this.log.error('(DisplayLayerProgress/values): ' + status + ': ' + JSON.stringify(content));
-                        }
-                    }
-                );
+                pluginDisplayLayerProgress.refreshValues(this);
             } else {
                 // this.delObject('plugins.displayLayerProgress', {recursive: true});
             }
