@@ -12,5 +12,6 @@
     "Refresh Interval (while printing)": "Refresh Interval (while printing)",
     "can be found in the settings section of OctoPrint": "can be found in the settings section of OctoPrint",
     "in Seconds": "in Seconds",
-    "Enable plugin: Display Layer Progress": "Enable plugin: Display Layer Progress"
+    "Enable plugin: Display Layer Progress": "Enable plugin: Display Layer Progress",
+    "use HTTPS": "use HTTPS"
 }

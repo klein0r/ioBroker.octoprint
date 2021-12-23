@@ -458,7 +458,7 @@ class OctoPrint extends utils.Adapter {
 
         // Delete old timer
         if (this.refreshStateTimeout) {
-            this.log.debug('refreshStateTimeout: CLEARED OLD');
+            this.log.debug(`refreshStateTimeout: CLEARED id ${this.refreshStateTimeout}`);
             this.clearTimeout(this.refreshStateTimeout);
         }
 
@@ -1012,14 +1012,19 @@ class OctoPrint extends utils.Adapter {
     }
 
     async buildRequest(url, callback, data) {
+        const prefix = this.config.useHttps ? 'https' : 'http';
         const method = data ? 'post' : 'get';
 
-        this.log.debug('sending "' + method + '" request to "' + url + '" with data: ' + JSON.stringify(data));
+        if (data) {
+            this.log.debug('sending "' + method + '" request to "' + url + '" (' + prefix + ') with data: ' + JSON.stringify(data));
+        } else {
+            this.log.debug('sending "' + method + '" request to "' + url + '" (' + prefix + ') without data');
+        }
 
         axios({
             method: method,
             data: data,
-            baseURL: 'http://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
+            baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
             url: url,
             timeout: 2000,
             responseType: 'json',
