@@ -1,0 +1,43 @@
+{
+    "cli": true,
+    "target": "directory",
+    "adapterName": "octoprint",
+    "title": "OctoPrint",
+    "description": "Manage your OctoPrint instance",
+    "keywords": [
+        "octoprint",
+        "3d printing",
+        "hardware"
+    ],
+    "expert": "yes",
+    "features": [
+        "adapter"
+    ],
+    "adminFeatures": [],
+    "type": "hardware",
+    "startMode": "daemon",
+    "connectionType": "local",
+    "dataSource": "poll",
+    "connectionIndicator": "yes",
+    "language": "JavaScript",
+    "adminReact": "no",
+    "tools": [
+        "ESLint",
+        "type checking"
+    ],
+    "releaseScript": "yes",
+    "devServer": "yes",
+    "devServerPort": 8081,
+    "indentation": "Space (4)",
+    "quotes": "single",
+    "es6class": "yes",
+    "authorName": "Matthias Kleine",
+    "authorGithub": "klein0r",
+    "authorEmail": "info@haus-automatisierung.com",
+    "gitRemoteProtocol": "SSH",
+    "gitCommit": "no",
+    "defaultBranch": "master",
+    "license": "MIT License",
+    "dependabot": "no",
+    "creatorVersion": "2.0.1"
+}
