@@ -13,5 +13,6 @@
     "can be found in the settings section of OctoPrint": "se puede encontrar en la sección de configuración de OctoPrint",
     "in Seconds": "en segundos",
     "Enable plugin: Display Layer Progress": "Habilitar complemento: Display Layer Progress",
-    "use HTTPS": "utilizar HTTPS"
+    "use HTTPS": "utilizar HTTPS",
+    "Request timeout": "Solicitud de tiempo de espera en segundos"
 }

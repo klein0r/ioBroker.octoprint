@@ -163,6 +163,7 @@
     "octoprintApiKey": "",
     "octoprintPort": "80",
     "useHttps": false,
+    "apiTimeoutSek": 2,
     "apiRefreshInterval": 60,
     "apiRefreshIntervalOperational": 30,
     "apiRefreshIntervalPrinting": 10,

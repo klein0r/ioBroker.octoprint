@@ -40,6 +40,16 @@
                     "label": "API-Key",
                     "help": "can be found in the settings section of OctoPrint"
                 },
+                "apiTimeoutSek": {
+                    "newLine": true,
+                    "type": "number",
+                    "min": 1,
+                    "max": 60,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "Request timeout"
+                },
                 "useHttps": {
                     "newLine": true,
                     "type": "checkbox",

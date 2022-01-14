@@ -1,6 +1,6 @@
 /*!
  * ioBroker gulpfile
- * Date: 2021-11-15
+ * Date: 2022-01-14
  */
 'use strict';
 
@@ -69,7 +69,7 @@ gulp.task('updatePackages', function (done) {
         };
         iopackage.common.news = Object.assign(newNews, news);
     }
-    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 4));
+    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 2));
     done();
 });
 
@@ -154,7 +154,7 @@ gulp.task('translate', async function (done) {
         }
 
     }
-    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 4));
+    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 2));
 });
 
 gulp.task('default', gulp.series('updatePackages', 'updateReadme'));

@@ -81,6 +81,7 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
 
 ### **WORK IN PROGRESS**
 
+* (klein0r) Added: Request timeout in seconds
 * (klein0r) Logging improvements
 
 ### 2.1.0 (2021-12-28)

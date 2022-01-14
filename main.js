@@ -1026,7 +1026,7 @@ class OctoPrint extends utils.Adapter {
             data: data,
             baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
             url: url,
-            timeout: 2000,
+            timeout: this.config.apiTimeoutSek * 1000,
             responseType: 'json',
             headers: {
                 'X-Api-Key': this.config.octoprintApiKey

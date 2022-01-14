@@ -13,5 +13,6 @@
     "can be found in the settings section of OctoPrint": "可以在 OctoPrint 的设置部分找到",
     "in Seconds": "马上",
     "Enable plugin: Display Layer Progress": "启用插件：Display Layer Progress",
-    "use HTTPS": "使用 HTTPS"
+    "use HTTPS": "使用 HTTPS",
+    "Request timeout": "请求超时（以秒为单位）"
 }
