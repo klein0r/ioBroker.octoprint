@@ -1035,7 +1035,8 @@ class OctoPrint extends utils.Adapter {
                 return [200, 204, 409].indexOf(status) > -1;
             },
         }).then(response => {
-            this.log.debug('received ' + response.status + ' response from ' + url + ' with content: ' + JSON.stringify(response.data));
+            this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
+
             // no error - clear up reminder
             delete this.lastErrorCode;
 
@@ -1046,7 +1047,7 @@ class OctoPrint extends utils.Adapter {
             if (error.response) {
                 // The request was made and the server responded with a status code
 
-                this.log.warn('received error ' + error.response.status + ' response from ' + url + ' with content: ' + JSON.stringify(error.response.data));
+                this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
             } else if (error.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -1056,7 +1057,7 @@ class OctoPrint extends utils.Adapter {
                 if (error.code === this.lastErrorCode) {
                     this.log.debug(error.message);
                 } else {
-                    this.log.info(error.message);
+                    this.log.info(`error ${error.code} from ${url}: ${error.message}`);
                     this.lastErrorCode = error.code;
                 }
 
