@@ -13,6 +13,7 @@
     "can be found in the settings section of OctoPrint": "is te vinden in het instellingengedeelte van OctoPrint",
     "in Seconds": "in seconden",
     "Enable plugin: Display Layer Progress": "Plug-in inschakelen: Display Layer Progress",
+    "Enable plugin: Slicer Thumbnails": "Plug-in inschakelen: Slicer Thumbnails",
     "use HTTPS": "gebruik HTTPS",
     "Request timeout": "Verzoek time-out in seconden"
 }

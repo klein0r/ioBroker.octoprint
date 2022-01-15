@@ -66,6 +66,14 @@
                     "lg": 12,
                     "label": "Enable plugin: Display Layer Progress"
                 },
+                "pluginSlicerThumbnails": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "label": "Enable plugin: Slicer Thumbnails"
+                },
                 "_ioBrokerKursBanner": {
                     "newLine": true,
                     "type": "staticImage",

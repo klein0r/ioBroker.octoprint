@@ -13,6 +13,7 @@
     "can be found in the settings section of OctoPrint": "находится в разделе настроек OctoPrint",
     "in Seconds": "в секундах",
     "Enable plugin: Display Layer Progress": "Включить плагин: Display Layer Progress",
+    "Enable plugin: Slicer Thumbnails": "Включить плагин: Slicer Thumbnails",
     "use HTTPS": "использовать HTTPS",
     "Request timeout": "Время ожидания запроса в секундах"
 }

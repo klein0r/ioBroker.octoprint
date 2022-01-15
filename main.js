@@ -446,7 +446,7 @@ class OctoPrint extends utils.Adapter {
                     if (refreshFileList) {
                         this.refreshFiles();
                     } else {
-                        this.log.debug('skipped file list refresh');
+                        this.log.debug(`skipped file list refresh from "${source}"`);
                     }
                 } else {
                     this.log.error(`(version) status ${status}: ${JSON.stringify(content)}`);
@@ -484,7 +484,7 @@ class OctoPrint extends utils.Adapter {
         } else {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (default)', false);
+                this.refreshState('timeout (default)', true);
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (default): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshInterval}`);
         }
@@ -753,14 +753,38 @@ class OctoPrint extends utils.Adapter {
 
                 if (file.type == 'machinecode' && file.origin == 'local') {
 
-                    fileArr.push(
-                        {
-                            name: file.display,
-                            path: file.origin + '/' + file.path,
-                            date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
-                            size: (file.size) ? Number(Math.round(file.size / 1024).toFixed(2)) : 0
+                    const fileObj = {
+                        name: file.display,
+                        path: file.origin + '/' + file.path,
+                        date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
+                        size: (file.size) ? Number(Math.round(file.size / 1024).toFixed(2)) : 0,
+                        thumbnail : null
+                    };
+
+                    // Plugin Slicer Thumbnails
+                    if (this.config.pluginSlicerThumbnails) {
+                        if (
+                            Object.prototype.hasOwnProperty.call(file, 'thumbnail') &&
+                            Object.prototype.hasOwnProperty.call(file, 'thumbnail_src') &&
+                            file.thumbnail_src == 'prusaslicerthumbnails'
+                        ) {
+                            const prefix = this.config.useHttps ? 'https' : 'http';
+                            const thumbnailUrl = prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort + '/';
+
+                            fileObj.thumbnail = thumbnailUrl + file.thumbnail;
+
+                            /*
+                            this.buildPluginRequest(
+                                file.thumbnail.replace('plugin/', ''),
+                                (content, status) => {
+                                    
+                                }
+                            );
+                            */
                         }
-                    );
+                    }
+
+                    fileArr.push(fileObj);
 
                 } else if (file.type == 'folder') {
                     fileArr = fileArr.concat(this.flattenFiles(file.children));
@@ -914,6 +938,32 @@ class OctoPrint extends utils.Adapter {
                                     native: {}
                                 });
                                 await this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
+
+                                if (file.thumbnail) {
+                                    await this.setObjectNotExistsAsync('files.' + fileNameClean + '.thumbnail', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'thumbnail',
+                                                de: 'Miniaturansicht',
+                                                ru: 'миниатюра',
+                                                pt: 'miniatura',
+                                                nl: 'miniatuur',
+                                                fr: 'la vignette',
+                                                it: 'miniatura',
+                                                es: 'miniatura',
+                                                pl: 'Miniaturka',
+                                                'zh-cn': '缩略图'
+                                            },
+                                            type: 'string',
+                                            role: 'value',
+                                            read: true,
+                                            write: false
+                                        },
+                                        native: {}
+                                    });
+                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail', {val: file.thumbnail, ack: true});
+                                }
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
                                     type: 'state',

@@ -167,7 +167,8 @@
     "apiRefreshInterval": 60,
     "apiRefreshIntervalOperational": 30,
     "apiRefreshIntervalPrinting": 10,
-    "pluginDisplayLayerProgress": false
+    "pluginDisplayLayerProgress": false,
+    "pluginSlicerThumbnails": false
   },
   "objects": [],
   "instanceObjects": [
