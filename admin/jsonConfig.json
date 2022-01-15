@@ -83,7 +83,7 @@
             "items": {
                 "apiRefreshInterval": {
                     "type": "number",
-                    "min": 10,
+                    "min": 1,
                     "max": 10000,
                     "sm": 12,
                     "md": 12,
@@ -94,7 +94,7 @@
                 "apiRefreshIntervalOperational": {
                     "newLine": true,
                     "type": "number",
-                    "min": 10,
+                    "min": 1,
                     "max": 10000,
                     "sm": 12,
                     "md": 12,
@@ -105,7 +105,7 @@
                 "apiRefreshIntervalPrinting": {
                     "newLine": true,
                     "type": "number",
-                    "min": 10,
+                    "min": 1,
                     "max": 10000,
                     "sm": 12,
                     "md": 12,
