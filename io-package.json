@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "news": {
+      "2.2.0": {
+        "en": "Added plugin support: Slicer Thumbnails",
+        "de": "Plugin-Unterstützung hinzugefügt: Slicer Thumbnails",
+        "ru": "Добавлена поддержка плагинов: Slicer Thumbnails",
+        "pt": "Adicionado suporte a plugins: Slicer Thumbnails",
+        "nl": "Ondersteuning voor plug-ins toegevoegd: Slicer-miniaturen",
+        "fr": "Ajout de la prise en charge du plug-in : Slicer Thumbnails",
+        "it": "Aggiunto supporto plug-in: Slicer Thumbnails",
+        "es": "Compatibilidad con complementos agregados: Slicer Thumbnails",
+        "pl": "Dodano obsługę wtyczek: Slicer Thumbnails",
+        "zh-cn": "添加插件支持：切片器缩略图"
+      },
       "2.1.1": {
         "en": "Added: Request timeout in seconds\nLogging improvements",
         "de": "Hinzugefügt: Anfrage-Timeout in Sekunden\nLogging-Verbesserungen",
@@ -74,18 +86,6 @@
         "es": "Manejo mejorado de solicitudes de API",
         "pl": "Ulepszona obsługa żądań API",
         "zh-cn": "改进的 API 请求处理"
-      },
-      "2.0.3": {
-        "en": "Translated all objects",
-        "de": "Alle Objekte übersetzt",
-        "ru": "Переведены все объекты",
-        "pt": "Todos os objetos traduzidos",
-        "nl": "Alle objecten vertaald",
-        "fr": "Traduit tous les objets",
-        "it": "Tradotto tutti gli oggetti",
-        "es": "Traducido todos los objetos",
-        "pl": "Przetłumaczono wszystkie obiekty",
-        "zh-cn": "翻译所有对象"
       }
     },
     "title": "OctoPrint",
