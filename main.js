@@ -970,7 +970,6 @@ class OctoPrint extends utils.Adapter {
                                                 'zh-cn': '缩略图'
                                             },
                                             type: 'file',
-                                            role: 'value',
                                             read: true,
                                             write: false
                                         },
@@ -981,6 +980,7 @@ class OctoPrint extends utils.Adapter {
 
                                     axios({
                                         method: 'get',
+                                        responseType: 'arraybuffer',
                                         baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
                                         url: file.thumbnail,
                                         timeout: this.config.apiTimeoutSek * 1000,
