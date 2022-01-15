@@ -928,6 +928,7 @@ class OctoPrint extends utils.Adapter {
                                 await this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
 
                                 if (file.thumbnail) {
+
                                     await this.setObjectNotExistsAsync('files.' + fileNameClean + '.thumbnail_url', {
                                         type: 'state',
                                         common: {
@@ -950,7 +951,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {}
                                     });
-                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail_url', {val: file.thumbnail, ack: true});
+                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail_url', {val: this.getOctoprintUri() + '/' + file.thumbnail, ack: true});
 
                                     const thumbnailId = 'files.' + fileNameClean + '.thumbnail';
 
@@ -976,12 +977,10 @@ class OctoPrint extends utils.Adapter {
                                         native: {}
                                     });
 
-                                    const prefix = this.config.useHttps ? 'https' : 'http';
-
                                     axios({
                                         method: 'get',
                                         responseType: 'arraybuffer',
-                                        baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
+                                        baseURL: this.getOctoprintUri(),
                                         url: file.thumbnail,
                                         timeout: this.config.apiTimeoutSek * 1000,
                                         validateStatus: (status) => {
@@ -1102,6 +1101,11 @@ class OctoPrint extends utils.Adapter {
         return id.replace(re, '');
     }
 
+    getOctoprintUri() {
+        const prefix = this.config.useHttps ? 'https' : 'http';
+        return prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort;
+    }
+
     async buildServiceRequest(service, callback, data) {
         const url = '/api/' + service;
 
@@ -1115,19 +1119,18 @@ class OctoPrint extends utils.Adapter {
     }
 
     async buildRequest(url, callback, data) {
-        const prefix = this.config.useHttps ? 'https' : 'http';
         const method = data ? 'post' : 'get';
 
         if (data) {
-            this.log.debug(`sending "${method}" request to "${url}" (${prefix}) with data: ${JSON.stringify(data)}`);
+            this.log.debug(`sending "${method}" request to "${url}" with data: ${JSON.stringify(data)}`);
         } else {
-            this.log.debug(`sending "${method}" request to "${url}" (${prefix}) without data`);
+            this.log.debug(`sending "${method}" request to "${url}" without data`);
         }
 
         axios({
             method: method,
             data: data,
-            baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
+            baseURL: this.getOctoprintUri(),
             url: url,
             timeout: this.config.apiTimeoutSek * 1000,
             responseType: 'json',
