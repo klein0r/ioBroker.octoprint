@@ -768,19 +768,7 @@ class OctoPrint extends utils.Adapter {
                             Object.prototype.hasOwnProperty.call(file, 'thumbnail_src') &&
                             file.thumbnail_src == 'prusaslicerthumbnails'
                         ) {
-                            const prefix = this.config.useHttps ? 'https' : 'http';
-                            const thumbnailUrl = prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort + '/';
-
-                            fileObj.thumbnail = thumbnailUrl + file.thumbnail;
-
-                            /*
-                            this.buildPluginRequest(
-                                file.thumbnail.replace('plugin/', ''),
-                                (content, status) => {
-                                    
-                                }
-                            );
-                            */
+                            fileObj.thumbnail = file.thumbnail;
                         }
                     }
 
@@ -940,20 +928,20 @@ class OctoPrint extends utils.Adapter {
                                 await this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
 
                                 if (file.thumbnail) {
-                                    await this.setObjectNotExistsAsync('files.' + fileNameClean + '.thumbnail', {
+                                    await this.setObjectNotExistsAsync('files.' + fileNameClean + '.thumbnail_url', {
                                         type: 'state',
                                         common: {
                                             name: {
-                                                en: 'thumbnail',
-                                                de: 'Miniaturansicht',
-                                                ru: 'миниатюра',
-                                                pt: 'miniatura',
-                                                nl: 'miniatuur',
-                                                fr: 'la vignette',
-                                                it: 'miniatura',
-                                                es: 'miniatura',
-                                                pl: 'Miniaturka',
-                                                'zh-cn': '缩略图'
+                                                en: 'Thumbnail URL',
+                                                de: 'Miniaturbild-URL',
+                                                ru: 'URL миниатюры',
+                                                pt: 'URL da miniatura',
+                                                nl: 'Miniatuur-URL',
+                                                fr: 'URL de la miniature',
+                                                it: 'URL miniatura',
+                                                es: 'URL de la miniatura',
+                                                pl: 'URL miniatury',
+                                                'zh-cn': '缩略图网址'
                                             },
                                             type: 'string',
                                             role: 'value',
@@ -962,7 +950,72 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {}
                                     });
-                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail', {val: file.thumbnail, ack: true});
+                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail_url', {val: file.thumbnail, ack: true});
+
+                                    const thumbnailId = 'files.' + fileNameClean + '.thumbnail';
+
+                                    await this.setObjectNotExistsAsync(thumbnailId, {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Thumbnail',
+                                                de: 'Miniaturansicht',
+                                                ru: 'Миниатюра',
+                                                pt: 'Miniatura',
+                                                nl: 'Miniatuur',
+                                                fr: 'La vignette',
+                                                it: 'Miniatura',
+                                                es: 'Miniatura',
+                                                pl: 'Miniaturka',
+                                                'zh-cn': '缩略图'
+                                            },
+                                            type: 'file',
+                                            role: 'value',
+                                            read: true,
+                                            write: false
+                                        },
+                                        native: {}
+                                    });
+
+                                    const prefix = this.config.useHttps ? 'https' : 'http';
+
+                                    axios({
+                                        method: 'get',
+                                        baseURL: prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort,
+                                        url: file.thumbnail,
+                                        timeout: this.config.apiTimeoutSek * 1000,
+                                        validateStatus: (status) => {
+                                            return [200].indexOf(status) > -1;
+                                        },
+                                    }).then(response => {
+                                        this.log.debug(`Received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
+                                        this.setBinaryState(this.namespace + '.' + thumbnailId, response.data, () => {
+                                            this.log.debug(`Saved binary thumbnail information in ${thumbnailId}`);
+
+                                            /*
+                                            this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
+                                                this.log.debug('Binary state: ' + data);
+                                            });
+                                            */
+
+                                        });
+
+                                    }).catch(error => {
+                                        if (error.response) {
+                                            // The request was made and the server responded with a status code
+
+                                            this.log.warn(`received ${error.response.status} response from ${file.thumbnail}`);
+                                        } else if (error.request) {
+                                            // The request was made but no response was received
+                                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                            // http.ClientRequest in node.js
+
+                                            this.log.info(`error ${error.code} from ${file.thumbnail}: ${error.message}`);
+                                        } else {
+                                            // Something happened in setting up the request that triggered an Error
+                                            this.log.error(error.message);
+                                        }
+                                    });
                                 }
 
                                 await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
@@ -1019,6 +1072,7 @@ class OctoPrint extends utils.Adapter {
 
                                 if (filesKeep.indexOf(id) === -1) {
                                     this.delObject(id, {recursive: true}, () => {
+                                        this.delBinaryState(id + '.thumbnail');
                                         this.log.debug(`refreshing file list: file deleted: "${id}"`);
                                     });
                                 }
