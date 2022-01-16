@@ -490,152 +490,154 @@ class OctoPrint extends utils.Adapter {
                 null
             );
 
-            this.buildServiceRequest(
-                'printer',
-                async (content, status) => {
-                    if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
-                        for (const key of Object.keys(content.temperature)) {
-                            const obj = content.temperature[key];
+            if (this.printerOperational) {
+                this.buildServiceRequest(
+                    'printer',
+                    async (content, status) => {
+                        if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
+                            for (const key of Object.keys(content.temperature)) {
+                                const obj = content.temperature[key];
 
-                            const isTool = key.indexOf('tool') > -1;
-                            const isBed = key == 'bed';
+                                const isTool = key.indexOf('tool') > -1;
+                                const isBed = key == 'bed';
 
-                            if (isTool || isBed) { // Tool + bed information
+                                if (isTool || isBed) { // Tool + bed information
 
-                                // Create tool channel
-                                await this.setObjectNotExistsAsync('tools.' + key, {
-                                    type: 'channel',
-                                    common: {
-                                        name: key
-                                    },
-                                    native: {}
-                                });
-
-                                // Set actual temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Actual temperature',
-                                            de: 'Tatsächliche Temperatur',
-                                            ru: 'Фактическая температура',
-                                            pt: 'Temperatura real',
-                                            nl: 'Werkelijke temperatuur',
-                                            fr: 'Température réelle',
-                                            it: 'Temperatura effettiva',
-                                            es: 'Temperatura real',
-                                            pl: 'Rzeczywista temperatura',
-                                            'zh-cn': '实际温度'
+                                    // Create tool channel
+                                    await this.setObjectNotExistsAsync('tools.' + key, {
+                                        type: 'channel',
+                                        common: {
+                                            name: key
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: false
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
+                                        native: {}
+                                    });
 
-                                // Set target temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Target temperature',
-                                            de: 'Zieltemperatur',
-                                            ru: 'Целевая температура',
-                                            pt: 'Temperatura alvo',
-                                            nl: 'Doeltemperatuur',
-                                            fr: 'Température cible',
-                                            it: 'Temperatura obiettivo',
-                                            es: 'Temperatura objetivo',
-                                            pl: 'Temperatura docelowa',
-                                            'zh-cn': '目标温度'
+                                    // Set actual temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Actual temperature',
+                                                de: 'Tatsächliche Temperatur',
+                                                ru: 'Фактическая температура',
+                                                pt: 'Temperatura real',
+                                                nl: 'Werkelijke temperatuur',
+                                                fr: 'Température réelle',
+                                                it: 'Temperatura effettiva',
+                                                es: 'Temperatura real',
+                                                pl: 'Rzeczywista temperatura',
+                                                'zh-cn': '实际温度'
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: false
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: true
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
+                                        native: {}
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
 
-                                // Set offset temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Offset temperature',
-                                            de: 'Offset-Temperatur',
-                                            ru: 'Смещение температуры',
-                                            pt: 'Temperatura compensada',
-                                            nl: 'Offset temperatuur',
-                                            fr: 'Température de décalage',
-                                            it: 'Temperatura di compensazione',
-                                            es: 'Temperatura de compensación',
-                                            pl: 'Temperatura przesunięcia',
-                                            'zh-cn': '偏移温度'
+                                    // Set target temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Target temperature',
+                                                de: 'Zieltemperatur',
+                                                ru: 'Целевая температура',
+                                                pt: 'Temperatura alvo',
+                                                nl: 'Doeltemperatuur',
+                                                fr: 'Température cible',
+                                                it: 'Temperatura obiettivo',
+                                                es: 'Temperatura objetivo',
+                                                pl: 'Temperatura docelowa',
+                                                'zh-cn': '目标温度'
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: true
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: false
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
-                            }
+                                        native: {}
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
 
-                            if (isTool) {
-                                // Set extrude
-                                await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Extrude',
-                                            de: 'Extrudieren',
-                                            ru: 'Выдавливание',
-                                            pt: 'Extrudar',
-                                            nl: 'extruderen',
-                                            fr: 'Extruder',
-                                            it: 'Estrudere',
-                                            es: 'Extrudir',
-                                            pl: 'Wyrzucać',
-                                            'zh-cn': '拉伸'
+                                    // Set offset temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Offset temperature',
+                                                de: 'Offset-Temperatur',
+                                                ru: 'Смещение температуры',
+                                                pt: 'Temperatura compensada',
+                                                nl: 'Offset temperatuur',
+                                                fr: 'Température de décalage',
+                                                it: 'Temperatura di compensazione',
+                                                es: 'Temperatura de compensación',
+                                                pl: 'Temperatura przesunięcia',
+                                                'zh-cn': '偏移温度'
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: false
                                         },
-                                        type: 'number',
-                                        role: 'value',
-                                        unit: 'mm',
-                                        read: true,
-                                        write: true
-                                    },
-                                    native: {}
-                                });
+                                        native: {}
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
+                                }
+
+                                if (isTool) {
+                                    // Set extrude
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Extrude',
+                                                de: 'Extrudieren',
+                                                ru: 'Выдавливание',
+                                                pt: 'Extrudar',
+                                                nl: 'extruderen',
+                                                fr: 'Extruder',
+                                                it: 'Estrudere',
+                                                es: 'Extrudir',
+                                                pl: 'Wyrzucać',
+                                                'zh-cn': '拉伸'
+                                            },
+                                            type: 'number',
+                                            role: 'value',
+                                            unit: 'mm',
+                                            read: true,
+                                            write: true
+                                        },
+                                        native: {}
+                                    });
+                                }
                             }
                         }
-                    }
-                },
-                null
-            );
+                    },
+                    null
+                );
+            } else {
+                this.buildServiceRequest(
+                    'system/commands',
+                    (content, status) => {
+                        this.systemCommands = [];
 
-            this.buildServiceRequest(
-                'system/commands',
-                (content, status) => {
-                    this.systemCommands = [];
+                        for (const key of Object.keys(content)) {
+                            const arr = content[key];
+                            arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
+                        }
 
-                    for (const key of Object.keys(content)) {
-                        const arr = content[key];
-                        arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
-                    }
-
-                    this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
-                },
-                null
-            );
+                        this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
+                    },
+                    null
+                );
+            }
 
             // Plugin Display Layer Progress
             // https://github.com/OllisGit/OctoPrint-DisplayLayerProgress
@@ -647,7 +649,7 @@ class OctoPrint extends utils.Adapter {
                 // this.delObject('plugins.displayLayerProgress', {recursive: true});
             }
 
-            if (this.printerStatus === 'Printing' || this.printerStatus === 'Operational' || this.printerStatus === 'Finishing') {
+            if (this.printerPrinting) {
 
                 this.buildServiceRequest(
                     'job',
