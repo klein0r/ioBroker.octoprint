@@ -57,7 +57,7 @@ class OctoPrint extends utils.Adapter {
 
     async onReady() {
         this.subscribeStates('*');
-        this.setPrinterState(false);
+        this.setApiConnected(false);
 
         if (!this.config.octoprintApiKey) {
             this.log.warn(`API key not configured. Check configuration of instance ${this.namespace}`);
@@ -77,7 +77,7 @@ class OctoPrint extends utils.Adapter {
 
     onUnload(callback) {
         try {
-            this.setPrinterState(false);
+            this.setApiConnected(false);
 
             // Delete old timer
             if (this.refreshStateTimeout) {
@@ -412,7 +412,7 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
-    setPrinterState(connection) {
+    setApiConnected(connection) {
         this.setStateAsync('info.connection', connection, true);
         this.apiConnected = connection;
 
@@ -430,7 +430,7 @@ class OctoPrint extends utils.Adapter {
             'version',
             (content, status) => {
                 if (status === 200) {
-                    this.setPrinterState(true);
+                    this.setApiConnected(true);
 
                     this.log.debug(`connected to OctoPrint API - online! - status: ${status}`);
 
@@ -530,7 +530,7 @@ class OctoPrint extends utils.Adapter {
                                 await this.setObjectNotExistsAsync('tools.' + key, {
                                     type: 'channel',
                                     common: {
-                                        name: key,
+                                        name: key
                                     },
                                     native: {}
                                 });
@@ -945,7 +945,7 @@ class OctoPrint extends utils.Adapter {
                                                 'zh-cn': '缩略图网址'
                                             },
                                             type: 'string',
-                                            role: 'value',
+                                            role: 'url',
                                             read: true,
                                             write: false
                                         },
@@ -1167,12 +1167,12 @@ class OctoPrint extends utils.Adapter {
                     this.lastErrorCode = error.code;
                 }
 
-                this.setPrinterState(false);
+                this.setApiConnected(false);
             } else {
                 // Something happened in setting up the request that triggered an Error
                 this.log.error(error.message);
 
-                this.setPrinterState(false);
+                this.setApiConnected(false);
             }
         });
     }
