@@ -21,32 +21,9 @@ class OctoPrint extends utils.Adapter {
         this.apiConnected = false;
         this.systemCommands = [];
 
-        /*
-            Available states from OctoPrint:
-
-            - Offline
-            - Offline after error
-            - Error
-            - Opening serial connection
-            - Detecting serial connection
-            - Connecting
-            - Operational
-            - Starting
-            - Starting print from SD
-            - Starting to send file to SD
-            - Printing from SD
-            - Sending file to SD
-            - Printing
-            - Paused
-            - Closed
-            - Transferring file to SD
-            - Pausing
-            - Resuming
-            - Cancelling
-            - Finishing
-        */
-
         this.printerStatus = 'API not connected';
+        this.printerOperational = false;
+        this.printerPrinting = false;
 
         this.refreshStateTimeout = null;
 
@@ -98,10 +75,10 @@ class OctoPrint extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     onStateChange(id, state) {
+        // No ack = changed by user
         if (state && !state.ack) {
             const cleanId = this.removeNamespace(id);
 
-            // No ack = changed by user
             if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
 
@@ -469,13 +446,13 @@ class OctoPrint extends utils.Adapter {
                 this.refreshState('timeout (API not connected)', true);
             }, notConnectedTimeout * 1000);
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`);
-        } else if (this.printerStatus === 'Printing' || this.printerStatus === 'Finishing') {
+        } else if (this.printerPrinting) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)', false);
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`);
-        } else if (this.printerStatus === 'Operational') {
+        } else if (this.printerOperational) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)', true);
@@ -498,8 +475,7 @@ class OctoPrint extends utils.Adapter {
                 'connection',
                 (content, status) => {
                     if (status === 200) {
-                        this.printerStatus = content.current.state;
-                        this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
+                        this.updatePrinterStatus(content.current.state);
 
                         // Try again in 2 seconds
                         if (this.printerStatus === 'Detecting serial connection') {
@@ -1175,6 +1151,39 @@ class OctoPrint extends utils.Adapter {
                 this.setApiConnected(false);
             }
         });
+    }
+
+    updatePrinterStatus(printerStatus) {
+        this.printerStatus = printerStatus;
+
+        const operationalStates = [
+            'Starting', 'Starting print from SD', 'Starting to send file to SD', // STATE_STARTING
+            'Printing', 'Printing from SD', 'Sending file to SD', // STATE_PRINTING
+            'Operational', // STATE_OPERATIONAL
+            'Paused', // STATE_PAUSED
+            'Cancelling', // STATE_CANCELLING
+            'Pausing', // STATE_PAUSING
+            'Resuming', // STATE_RESUMING
+            'Finishing', // STATE_FINISHING
+            'Transferring file to SD' // STATE_TRANSFERING_FILE
+        ];
+        this.printerOperational = (operationalStates.indexOf(printerStatus) >= 0);
+
+        const printingStates = [
+            'Starting', 'Starting print from SD', 'Starting to send file to SD', // STATE_STARTING
+            'Printing', 'Printing from SD', 'Sending file to SD', // STATE_PRINTING
+            'Cancelling', // STATE_CANCELLING
+            'Pausing', // STATE_PAUSING
+            'Resuming', // STATE_RESUMING
+            'Finishing' // STATE_FINISHING
+        ];
+        this.printerPrinting = (printingStates.indexOf(printerStatus) >= 0);
+
+        this.log.debug(`updatePrinterStatus from: "${this.printerStatus}" -> printerOperational: ${this.printerOperational}, printerPrinting: ${this.printerPrinting}`);
+
+        this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
+        this.setStateAsync('operational', {val: this.printerOperational, ack: true});
+        this.setStateAsync('printing', {val: this.printerPrinting, ack: true});
     }
 
     isNewerVersion(oldVer, newVer) {

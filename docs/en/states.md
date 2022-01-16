@@ -1,0 +1,109 @@
+# Available states from OctoPrint
+
+- STATE_NONE = 0
+- STATE_OPEN_SERIAL = 1
+- STATE_DETECT_SERIAL = 2
+- STATE_CONNECTING = 3
+- STATE_OPERATIONAL = 4
+- STATE_STARTING = 5
+- STATE_PRINTING = 6
+- STATE_PAUSED = 7
+- STATE_PAUSING = 8
+- STATE_RESUMING = 9
+- STATE_FINISHING = 10
+- STATE_CLOSED = 11
+- STATE_ERROR = 12
+- STATE_CLOSED_WITH_ERROR = 13
+- STATE_TRANSFERING_FILE = 14
+- STATE_CANCELLING = 15
+
+## OPERATIONAL_STATES
+
+- STATE_STARTING = 5
+- STATE_PRINTING = 6
+- STATE_OPERATIONAL = 4
+- STATE_PAUSED = 7
+- STATE_CANCELLING = 15
+- STATE_PAUSING = 8
+- STATE_RESUMING = 9
+- STATE_FINISHING = 10
+- STATE_TRANSFERING_FILE = 14
+
+## PRINTING_STATES
+
+- STATE_STARTING = 5
+- STATE_PRINTING = 6
+- STATE_CANCELLING = 15
+- STATE_PAUSING = 8
+- STATE_RESUMING = 9
+- STATE_FINISHING = 10
+
+## State text to State Id
+
+### STATE_NONE
+
+- Offline
+
+### STATE_OPEN_SERIAL
+
+- Opening serial connection
+
+### STATE_DETECT_SERIAL
+
+- Detecting serial connection
+
+### STATE_CONNECTING
+
+- Connecting
+
+### STATE_OPERATIONAL
+
+- Operational
+
+### STATE_STARTING
+
+- Starting
+- Starting print from SD
+- Starting to send file to SD
+
+### STATE_PRINTING
+
+- Printing
+- Printing from SD
+- Sending file to SD
+
+### STATE_CANCELLING
+
+- Cancelling
+
+### STATE_PAUSING
+
+- Pausing
+
+### STATE_PAUSED
+
+- Paused
+
+### STATE_RESUMING
+
+- Resuming
+
+### STATE_FINISHING
+
+- Finishing
+
+### STATE_CLOSED
+
+- Closed
+
+### STATE_ERROR
+
+- Error
+
+### STATE_CLOSED_WITH_ERROR
+
+- Offline after error
+
+### STATE_TRANSFERING_FILE
+
+- Transferring file to SD

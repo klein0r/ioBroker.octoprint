@@ -119,7 +119,9 @@
     "keywords": [
       "octoprint",
       "3d printing",
-      "hardware"
+      "hardware",
+      "drucker",
+      "gcode"
     ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
@@ -135,6 +137,10 @@
     "dataSource": "poll",
     "adminUI": {
       "config": "json"
+    },
+    "docs": {
+      "en": "docs/en/basics.md",
+      "de": "docs/de/basics.md"
     },
     "dependencies": [
       {
@@ -216,6 +222,54 @@
         "read": true,
         "write": false,
         "def": "API not connected"
+      },
+      "native": {}
+    },
+    {
+      "_id": "operational",
+      "type": "state",
+      "common": {
+        "name": {
+            "en": "Printer Operational",
+            "de": "Drucker betriebsbereit",
+            "ru": "Принтер работает",
+            "pt": "Impressora Operacional",
+            "nl": "Printer operationeel",
+            "fr": "Imprimante opérationnelle",
+            "it": "Stampante operativa",
+            "es": "Impresora operativa",
+            "pl": "Drukarka działa",
+            "zh-cn": "打印机操作"
+        },
+        "type": "boolean",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printing",
+      "type": "state",
+      "common": {
+        "name": {
+            "en": "Is Printing",
+            "de": "Druckt",
+            "ru": "печатает",
+            "pt": "Está Imprimindo",
+            "nl": "Is aan het afdrukken",
+            "fr": "Est en train d'imprimer",
+            "it": "sta stampando",
+            "es": "está imprimiendo",
+            "pl": "Czy drukowanie",
+            "zh-cn": "正在打印"
+        },
+        "type": "boolean",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "def": false
       },
       "native": {}
     },
