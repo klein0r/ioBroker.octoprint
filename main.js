@@ -49,7 +49,7 @@ class OctoPrint extends utils.Adapter {
         // Delete old (unused) namespace on startup
         await this.delObjectAsync('temperature', {recursive: true});
 
-        this.refreshState('onReady', true);
+        this.refreshState('onReady');
     }
 
     onUnload(callback) {
@@ -169,7 +169,7 @@ class OctoPrint extends utils.Adapter {
                             (content, status) => {
                                 if (status === 204) {
                                     this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                    this.refreshState('onStateChange command.printer', false);
+                                    this.refreshState('onStateChange command.printer');
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
@@ -371,7 +371,7 @@ class OctoPrint extends utils.Adapter {
                                 (content, status) => {
                                     if (status === 204) {
                                         this.log.debug('selection/print file successful');
-                                        this.refreshState('onStateChange file.' + action, false);
+                                        this.refreshState('onStateChange file.' + action);
                                     } else {
                                         this.log.error(`(files/*) status ${status}: ${JSON.stringify(content)}`);
                                     }
@@ -399,7 +399,7 @@ class OctoPrint extends utils.Adapter {
         }
     }
 
-    async refreshState(source, refreshFileList) {
+    async refreshState(source) {
         this.log.debug(`refreshState: started from "${source}"`);
 
         // https://docs.octoprint.org/en/master/api/version.html
@@ -419,12 +419,6 @@ class OctoPrint extends utils.Adapter {
                     }
 
                     this.refreshStateDetails();
-
-                    if (refreshFileList) {
-                        this.refreshFiles();
-                    } else {
-                        this.log.debug(`skipped file list refresh from "${source}"`);
-                    }
                 } else {
                     this.log.error(`(version) status ${status}: ${JSON.stringify(content)}`);
                 }
@@ -434,7 +428,7 @@ class OctoPrint extends utils.Adapter {
 
         // Delete old timer
         if (this.refreshStateTimeout) {
-            this.log.debug(`refreshStateTimeout: CLEARED id ${this.refreshStateTimeout}`);
+            this.log.debug(`refreshStateTimeout: CLEARED by ${source}`);
             this.clearTimeout(this.refreshStateTimeout);
         }
 
@@ -443,25 +437,25 @@ class OctoPrint extends utils.Adapter {
             const notConnectedTimeout = 10;
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (API not connected)', true);
+                this.refreshState('timeout (API not connected)');
             }, notConnectedTimeout * 1000);
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`);
         } else if (this.printerPrinting) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (printing)', false);
+                this.refreshState('timeout (printing)');
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`);
         } else if (this.printerOperational) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (operational)', true);
+                this.refreshState('timeout (operational)');
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (operational): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalOperational}`);
         } else {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
-                this.refreshState('timeout (default)', true);
+                this.refreshState('timeout (default)');
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
             this.log.debug(`refreshStateTimeout: re-created refresh timeout (default): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshInterval}`);
         }
@@ -477,10 +471,14 @@ class OctoPrint extends utils.Adapter {
                     if (status === 200) {
                         this.updatePrinterStatus(content.current.state);
 
+                        if (!this.printerPrinting) {
+                            this.refreshFiles();
+                        }
+
                         // Try again in 2 seconds
                         if (this.printerStatus === 'Detecting serial connection') {
                             this.setTimeout(() => {
-                                this.refreshState('detecting serial connection', false);
+                                this.refreshState('detecting serial connection');
                             }, 2000);
                         }
                     } else {
