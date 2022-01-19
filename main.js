@@ -536,7 +536,8 @@ class OctoPrint extends utils.Adapter {
                                         role: 'value.temperature',
                                         unit: '°C',
                                         read: true,
-                                        write: false
+                                        write: false,
+                                        def: 0
                                     },
                                     native: {}
                                 });
@@ -588,7 +589,8 @@ class OctoPrint extends utils.Adapter {
                                         role: 'value.temperature',
                                         unit: '°C',
                                         read: true,
-                                        write: false
+                                        write: false,
+                                        def: 0
                                     },
                                     native: {}
                                 });
@@ -616,7 +618,8 @@ class OctoPrint extends utils.Adapter {
                                         role: 'value',
                                         unit: 'mm',
                                         read: true,
-                                        write: true
+                                        write: true,
+                                        def: 0
                                     },
                                     native: {}
                                 });
@@ -655,7 +658,7 @@ class OctoPrint extends utils.Adapter {
                 // this.delObject('plugins.displayLayerProgress', {recursive: true});
             }
 
-            if (this.printerPrinting) {
+            if (this.printerOperational || this.printerPrinting) {
 
                 // https://docs.octoprint.org/en/master/api/job.html#retrieve-information-about-the-current-job
                 this.buildServiceRequest(
