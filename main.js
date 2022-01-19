@@ -95,42 +95,42 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
                         this.buildServiceRequest(
                             'printer/tool',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
-
-                                    this.log.error(`(printer/tool) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {
                                 command: 'target',
                                 targets: targetObj
                             }
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+
+                                this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else if (command === 'extrude') {
                         this.log.debug(`extruding ${state.val}mm`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
                         this.buildServiceRequest(
                             'printer/tool',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
-
-                                    this.log.error(`(printer/tool) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {
                                 command: 'extrude',
                                 amount: state.val
                             }
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+
+                                this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     }
 
                 } else if (id === this.namespace + '.tools.bed.targetTemperature') {
@@ -139,21 +139,21 @@ class OctoPrint extends utils.Adapter {
                     // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
                     this.buildServiceRequest(
                         'printer/bed',
-                        (content, status) => {
-                            if (status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
-
-                                this.log.error(`(printer/bed) status ${status}: ${JSON.stringify(content)}`);
-                            }
-                        },
                         {
                             command: 'target',
                             target: state.val
                         }
-                    );
+                    ).then(response => {
+                        if (response.status === 204) {
+                            this.setStateAsync(cleanId, {val: state.val, ack: true});
+                        } else {
+                            // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                            // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
+
+                            this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
+                        }
+                    }).catch(error => {
+                    });
 
                 } else if (id === this.namespace + '.command.printer') {
 
@@ -166,41 +166,41 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/connection.html#issue-a-connection-command
                         this.buildServiceRequest(
                             'connection',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                    this.refreshState('onStateChange command.printer');
-                                } else {
-                                    // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
-
-                                    this.log.error(`(connection) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {
                                 command: state.val
                             }
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                                this.refreshState('onStateChange command.printer');
+                            } else {
+                                // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
+
+                                this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug(`sending printer command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
                         this.buildServiceRequest(
                             'printer/printhead',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
-                                    // 409 Conflict – If the printer is not operational or currently printing.
-
-                                    this.log.error(`(printer/printhead) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {
                                 command: state.val,
                                 axes: ['x', 'y', 'z']
                             }
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                // 409 Conflict – If the printer is not operational or currently printing.
+
+                                this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
@@ -230,17 +230,17 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
                         this.buildServiceRequest(
                             'job',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
-
-                                    this.log.error(`(job) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             printjobCommand
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
+
+                                this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
@@ -255,19 +255,19 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-an-sd-command
                         this.buildServiceRequest(
                             'printer/sd',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
-
-                                    this.log.error(`(printer/sd) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {
                                 command: state.val
                             }
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
+
+                                this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else {
                         this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
@@ -278,19 +278,19 @@ class OctoPrint extends utils.Adapter {
                     // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
                     this.buildServiceRequest(
                         'printer/command',
-                        (content, status) => {
-                            if (status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 409 Conflict – If the printer is not operational
-
-                                this.log.error(`(printer/command) status ${status}: ${JSON.stringify(content)}`);
-                            }
-                        },
                         {
                             command: state.val
                         }
-                    );
+                    ).then(response => {
+                        if (response.status === 204) {
+                            this.setStateAsync(cleanId, {val: state.val, ack: true});
+                        } else {
+                            // 409 Conflict – If the printer is not operational
+
+                            this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
+                        }
+                    }).catch(error => {
+                    });
 
                 } else if (id === this.namespace + '.command.system') {
 
@@ -300,19 +300,19 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/system.html#execute-a-registered-system-command
                         this.buildServiceRequest(
                             'system/commands/' + state.val,
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
-                                    // 404 Not Found – If the command could not be found for source and action
-                                    // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
-
-                                    this.log.error(`(system/commands/*) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             {}
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
+                                // 404 Not Found – If the command could not be found for source and action
+                                // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
+
+                                this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else {
                         this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
                     }
@@ -334,18 +334,18 @@ class OctoPrint extends utils.Adapter {
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
                         this.buildServiceRequest(
                             'printer/printhead',
-                            (content, status) => {
-                                if (status === 204) {
-                                    this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                } else {
-                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
-                                    // 409 Conflict – If the printer is not operational or currently printing.
-
-                                    this.log.error(`(printer/printhead) status ${status}: ${JSON.stringify(content)}`);
-                                }
-                            },
                             jogCommand
-                        );
+                        ).then(response => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, {val: state.val, ack: true});
+                            } else {
+                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                // 409 Conflict – If the printer is not operational or currently printing.
+
+                                this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        }).catch(error => {
+                        });
                     } else {
                         this.log.error('Jog: provide non-zero jog value');
                     }
@@ -368,19 +368,19 @@ class OctoPrint extends utils.Adapter {
                             // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
                             this.buildServiceRequest(
                                 'files/' + fullPath,
-                                (content, status) => {
-                                    if (status === 204) {
-                                        this.log.debug('selection/print file successful');
-                                        this.refreshState('onStateChange file.' + action);
-                                    } else {
-                                        this.log.error(`(files/*) status ${status}: ${JSON.stringify(content)}`);
-                                    }
-                                },
                                 {
                                     command: 'select',
                                     print: (action === 'print')
                                 }
-                            );
+                            ).then(response => {
+                                if (response.status === 204) {
+                                    this.log.debug('selection/print file successful');
+                                    this.refreshState('onStateChange file.' + action);
+                                } else {
+                                    this.log.error(`(files/*) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            }).catch(error => {
+                            });
                         }
                     );
 
@@ -394,6 +394,8 @@ class OctoPrint extends utils.Adapter {
         this.apiConnected = connection;
 
         if (!connection) {
+            this.log.debug('API is offline');
+
             this.printerStatus = 'API not connected';
             this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
         }
@@ -405,26 +407,28 @@ class OctoPrint extends utils.Adapter {
         // https://docs.octoprint.org/en/master/api/version.html
         this.buildServiceRequest(
             'version',
-            (content, status) => {
-                if (status === 200) {
-                    this.setApiConnected(true);
-
-                    this.log.debug(`connected to OctoPrint API - online! - status: ${status}`);
-
-                    this.setStateAsync('meta.version', {val: content.server, ack: true});
-                    this.setStateAsync('meta.api_version', {val: content.api, ack: true});
-
-                    if (this.isNewerVersion(content.server, this.supportedVersion)) {
-                        this.log.warn(`You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${content.server}`);
-                    }
-
-                    this.refreshStateDetails();
-                } else {
-                    this.log.error(`(version) status ${status}: ${JSON.stringify(content)}`);
-                }
-            },
             null
-        );
+        ).then(response => {
+            if (response.status === 200) {
+                this.setApiConnected(true);
+
+                this.log.debug(`connected to OctoPrint API - online! - status: ${response.status}`);
+
+                this.setStateAsync('meta.version', {val: response.data.server, ack: true});
+                this.setStateAsync('meta.api_version', {val: response.data.api, ack: true});
+
+                if (this.isNewerVersion(response.data.server, this.supportedVersion)) {
+                    this.log.warn(`You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${response.data.server}`);
+                }
+
+                this.refreshStateDetails();
+            } else {
+                this.log.error(`(version) status ${response.status}: ${JSON.stringify(response.data)}`);
+            }
+        }).catch(error => {
+            this.log.debug(`(version) received error - API is now offline: ${JSON.stringify(error)}`);
+            this.setApiConnected(false);
+        });
 
         // Delete old timer
         if (this.refreshStateTimeout) {
@@ -467,174 +471,178 @@ class OctoPrint extends utils.Adapter {
             // https://docs.octoprint.org/en/master/api/connection.html
             this.buildServiceRequest(
                 'connection',
-                (content, status) => {
-                    if (status === 200) {
-                        this.updatePrinterStatus(content.current.state);
-
-                        if (!this.printerPrinting) {
-                            this.refreshFiles();
-                        }
-
-                        // Try again in 2 seconds
-                        if (this.printerStatus === 'Detecting serial connection') {
-                            this.setTimeout(() => {
-                                this.refreshState('detecting serial connection');
-                            }, 2000);
-                        }
-                    } else {
-                        this.log.error(`(connection) status ${status}: ${JSON.stringify(content)}`);
-                    }
-                },
                 null
-            );
+            ).then(response => {
+                if (response.status === 200) {
+                    this.updatePrinterStatus(response.data.current.state);
+
+                    if (!this.printerPrinting) {
+                        this.refreshFiles();
+                    }
+
+                    // Try again in 2 seconds
+                    if (this.printerStatus === 'Detecting serial connection') {
+                        this.setTimeout(() => {
+                            this.refreshState('detecting serial connection');
+                        }, 2000);
+                    }
+                } else {
+                    this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
+                }
+            }).catch(error => {
+            });
 
             if (this.printerOperational) {
                 this.buildServiceRequest(
                     'printer',
-                    async (content, status) => {
-                        if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
-                            for (const key of Object.keys(content.temperature)) {
-                                const obj = content.temperature[key];
+                    null
+                ).then(async response => {
+                    const content = response.data;
+                    if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
+                        for (const key of Object.keys(content.temperature)) {
+                            const obj = content.temperature[key];
 
-                                const isTool = key.indexOf('tool') > -1;
-                                const isBed = key == 'bed';
+                            const isTool = key.indexOf('tool') > -1;
+                            const isBed = key == 'bed';
 
-                                if (isTool || isBed) { // Tool + bed information
+                            if (isTool || isBed) { // Tool + bed information
 
-                                    // Create tool channel
-                                    await this.setObjectNotExistsAsync('tools.' + key, {
-                                        type: 'channel',
-                                        common: {
-                                            name: key
+                                // Create tool channel
+                                await this.setObjectNotExistsAsync('tools.' + key, {
+                                    type: 'channel',
+                                    common: {
+                                        name: key
+                                    },
+                                    native: {}
+                                });
+
+                                // Set actual temperature
+                                await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Actual temperature',
+                                            de: 'Tatsächliche Temperatur',
+                                            ru: 'Фактическая температура',
+                                            pt: 'Temperatura real',
+                                            nl: 'Werkelijke temperatuur',
+                                            fr: 'Température réelle',
+                                            it: 'Temperatura effettiva',
+                                            es: 'Temperatura real',
+                                            pl: 'Rzeczywista temperatura',
+                                            'zh-cn': '实际温度'
                                         },
-                                        native: {}
-                                    });
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
 
-                                    // Set actual temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Actual temperature',
-                                                de: 'Tatsächliche Temperatur',
-                                                ru: 'Фактическая температура',
-                                                pt: 'Temperatura real',
-                                                nl: 'Werkelijke temperatuur',
-                                                fr: 'Température réelle',
-                                                it: 'Temperatura effettiva',
-                                                es: 'Temperatura real',
-                                                pl: 'Rzeczywista temperatura',
-                                                'zh-cn': '实际温度'
-                                            },
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: false
+                                // Set target temperature
+                                await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Target temperature',
+                                            de: 'Zieltemperatur',
+                                            ru: 'Целевая температура',
+                                            pt: 'Temperatura alvo',
+                                            nl: 'Doeltemperatuur',
+                                            fr: 'Température cible',
+                                            it: 'Temperatura obiettivo',
+                                            es: 'Temperatura objetivo',
+                                            pl: 'Temperatura docelowa',
+                                            'zh-cn': '目标温度'
                                         },
-                                        native: {}
-                                    });
-                                    await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
+                                await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
 
-                                    // Set target temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Target temperature',
-                                                de: 'Zieltemperatur',
-                                                ru: 'Целевая температура',
-                                                pt: 'Temperatura alvo',
-                                                nl: 'Doeltemperatuur',
-                                                fr: 'Température cible',
-                                                it: 'Temperatura obiettivo',
-                                                es: 'Temperatura objetivo',
-                                                pl: 'Temperatura docelowa',
-                                                'zh-cn': '目标温度'
-                                            },
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: true
+                                // Set offset temperature
+                                await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Offset temperature',
+                                            de: 'Offset-Temperatur',
+                                            ru: 'Смещение температуры',
+                                            pt: 'Temperatura compensada',
+                                            nl: 'Offset temperatuur',
+                                            fr: 'Température de décalage',
+                                            it: 'Temperatura di compensazione',
+                                            es: 'Temperatura de compensación',
+                                            pl: 'Temperatura przesunięcia',
+                                            'zh-cn': '偏移温度'
                                         },
-                                        native: {}
-                                    });
-                                    await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
+                                        type: 'number',
+                                        role: 'value.temperature',
+                                        unit: '°C',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+                                await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
+                            }
 
-                                    // Set offset temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Offset temperature',
-                                                de: 'Offset-Temperatur',
-                                                ru: 'Смещение температуры',
-                                                pt: 'Temperatura compensada',
-                                                nl: 'Offset temperatuur',
-                                                fr: 'Température de décalage',
-                                                it: 'Temperatura di compensazione',
-                                                es: 'Temperatura de compensación',
-                                                pl: 'Temperatura przesunięcia',
-                                                'zh-cn': '偏移温度'
-                                            },
-                                            type: 'number',
-                                            role: 'value.temperature',
-                                            unit: '°C',
-                                            read: true,
-                                            write: false
+                            if (isTool) {
+                                // Set extrude
+                                await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Extrude',
+                                            de: 'Extrudieren',
+                                            ru: 'Выдавливание',
+                                            pt: 'Extrudar',
+                                            nl: 'extruderen',
+                                            fr: 'Extruder',
+                                            it: 'Estrudere',
+                                            es: 'Extrudir',
+                                            pl: 'Wyrzucać',
+                                            'zh-cn': '拉伸'
                                         },
-                                        native: {}
-                                    });
-                                    await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
-                                }
-
-                                if (isTool) {
-                                    // Set extrude
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Extrude',
-                                                de: 'Extrudieren',
-                                                ru: 'Выдавливание',
-                                                pt: 'Extrudar',
-                                                nl: 'extruderen',
-                                                fr: 'Extruder',
-                                                it: 'Estrudere',
-                                                es: 'Extrudir',
-                                                pl: 'Wyrzucać',
-                                                'zh-cn': '拉伸'
-                                            },
-                                            type: 'number',
-                                            role: 'value',
-                                            unit: 'mm',
-                                            read: true,
-                                            write: true
-                                        },
-                                        native: {}
-                                    });
-                                }
+                                        type: 'number',
+                                        role: 'value',
+                                        unit: 'mm',
+                                        read: true,
+                                        write: true
+                                    },
+                                    native: {}
+                                });
                             }
                         }
-                    },
-                    null
-                );
+                    }
+                }).catch(error => {
+                });
             } else {
+                // https://docs.octoprint.org/en/master/api/system.html#list-all-registered-system-commands
                 this.buildServiceRequest(
                     'system/commands',
-                    (content, status) => {
+                    null
+                ).then(response => {
+                    if (response.status === 200) {
                         this.systemCommands = [];
 
-                        for (const key of Object.keys(content)) {
-                            const arr = content[key];
+                        for (const key of Object.keys(response.data)) {
+                            const arr = response.data[key];
                             arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
                         }
 
                         this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
-                    },
-                    null
-                );
+                    }
+                }).catch(error => {
+                });
             }
 
             // Plugin Display Layer Progress
@@ -649,9 +657,14 @@ class OctoPrint extends utils.Adapter {
 
             if (this.printerPrinting) {
 
+                // https://docs.octoprint.org/en/master/api/job.html#retrieve-information-about-the-current-job
                 this.buildServiceRequest(
                     'job',
-                    async (content, status) => {
+                    null
+                ).then(async response => {
+                    if (response.status === 200) {
+                        const content = response.data;
+
                         if (Object.prototype.hasOwnProperty.call(content, 'error')) {
                             this.log.warn(`print job error: ${content.error}`);
                         }
@@ -695,9 +708,9 @@ class OctoPrint extends utils.Adapter {
                             await this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
                             await this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
                         }
-                    },
-                    null
-                );
+                    }
+                }).catch(error => {
+                });
             } else {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
 
@@ -767,7 +780,10 @@ class OctoPrint extends utils.Adapter {
 
             this.buildServiceRequest(
                 'files?recursive=true',
-                (content, status) => {
+                null
+            ).then(response => {
+                if (response.status === 200) {
+                    const content = response.data;
 
                     this.getChannelsOf(
                         'files',
@@ -1054,9 +1070,9 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     );
-                },
-                null
-            );
+                }
+            }).catch(error => {
+            });
         } else {
             this.log.debug('refreshing file list: skipped (API not connected)');
         }
@@ -1083,73 +1099,77 @@ class OctoPrint extends utils.Adapter {
     }
 
     async buildServiceRequest(service, callback, data) {
-        const url = '/api/' + service;
+        return new Promise((resolve, reject) => {
+            this.log.debug('Starting service request');
 
-        this.buildRequest(url, callback, data);
+            this.buildRequest('/api/' + service, callback, data)
+                .then(resolve, reject);
+        });
     }
 
     async buildPluginRequest(plugin, callback, data) {
-        const url = '/plugin/' + plugin;
+        return new Promise((resolve, reject) => {
+            this.log.debug('Starting plugin request');
 
-        this.buildRequest(url, callback, data);
+            this.buildRequest('/plugin/' + plugin, callback, data)
+                .then(resolve, reject);
+        });
     }
 
-    async buildRequest(url, callback, data) {
-        const method = data ? 'post' : 'get';
+    async buildRequest(url, data) {
+        return new Promise((resolve, reject) => {
+            const method = data ? 'post' : 'get';
 
-        if (data) {
-            this.log.debug(`sending "${method}" request to "${url}" with data: ${JSON.stringify(data)}`);
-        } else {
-            this.log.debug(`sending "${method}" request to "${url}" without data`);
-        }
-
-        axios({
-            method: method,
-            data: data,
-            baseURL: this.getOctoprintUri(),
-            url: url,
-            timeout: this.config.apiTimeoutSek * 1000,
-            responseType: 'json',
-            headers: {
-                'X-Api-Key': this.config.octoprintApiKey
-            },
-            validateStatus: (status) => {
-                return [200, 204, 409].indexOf(status) > -1;
-            },
-        }).then(response => {
-            this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
-
-            // no error - clear up reminder
-            delete this.lastErrorCode;
-
-            if (response && callback && typeof callback === 'function') {
-                callback(response.data, response.status);
+            if (data) {
+                this.log.debug(`sending "${method}" request to "${url}" with data: ${JSON.stringify(data)}`);
+            } else {
+                this.log.debug(`sending "${method}" request to "${url}" without data`);
             }
-        }).catch(error => {
-            if (error.response) {
-                // The request was made and the server responded with a status code
 
-                this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
+            axios({
+                method: method,
+                data: data,
+                baseURL: this.getOctoprintUri(),
+                url: url,
+                timeout: this.config.apiTimeoutSek * 1000,
+                responseType: 'json',
+                headers: {
+                    'X-Api-Key': this.config.octoprintApiKey
+                },
+                validateStatus: (status) => {
+                    return [200, 204, 409].indexOf(status) > -1;
+                },
+            }).then(response => {
+                this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
 
-                // avoid spamming of the same error when stuck in a reconnection loop
-                if (error.code === this.lastErrorCode) {
-                    this.log.debug(error.message);
+                // no error - clear up reminder
+                delete this.lastErrorCode;
+
+                resolve(response);
+            }).catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+
+                    this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+
+                    // avoid spamming of the same error when stuck in a reconnection loop
+                    if (error.code === this.lastErrorCode) {
+                        this.log.debug(error.message);
+                    } else {
+                        this.log.info(`error ${error.code} from ${url}: ${error.message}`);
+                        this.lastErrorCode = error.code;
+                    }
                 } else {
-                    this.log.info(`error ${error.code} from ${url}: ${error.message}`);
-                    this.lastErrorCode = error.code;
+                    // Something happened in setting up the request that triggered an Error
+                    this.log.error(error.message);
                 }
 
-                this.setApiConnected(false);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                this.log.error(error.message);
-
-                this.setApiConnected(false);
-            }
+                reject(error);
+            });
         });
     }
 
