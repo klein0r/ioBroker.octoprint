@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "news": {
+      "3.0.0": {
+        "en": "Added printing and operational state",
+        "de": "Druck- und Betriebszustand hinzugefügt",
+        "ru": "Добавлено состояние печати и работы",
+        "pt": "Adicionado impressão e estado operacional",
+        "nl": "Afdrukken en operationele status toegevoegd",
+        "fr": "Ajout de l'impression et de l'état opérationnel",
+        "it": "Aggiunta stampa e stato operativo",
+        "es": "Impresión agregada y estado operativo.",
+        "pl": "Dodano drukowanie i stan operacyjny",
+        "zh-cn": "添加了打印和操作状态"
+      },
       "2.2.0": {
         "en": "Added plugin support: Slicer Thumbnails",
         "de": "Plugin-Unterstützung hinzugefügt: Slicer Thumbnails",
@@ -74,18 +86,6 @@
         "es": "Requerir una nueva versión para los objetos de instancia traducidos\nProblemas de tiempo de espera solucionados",
         "pl": "Wymagaj nowej wersji dla przetłumaczonych obiektów instancji\nNaprawiono problemy z limitem czasu",
         "zh-cn": "需要新版本的翻译实例对象\n修复超时问题"
-      },
-      "2.0.4": {
-        "en": "Improved API request handling",
-        "de": "Verbesserte Handhabung von API-Anfragen",
-        "ru": "Улучшенная обработка запросов API.",
-        "pt": "Tratamento aprimorado de solicitações de API",
-        "nl": "Verbeterde verwerking van API-verzoeken",
-        "fr": "Amélioration de la gestion des demandes d'API",
-        "it": "Gestione delle richieste API migliorata",
-        "es": "Manejo mejorado de solicitudes de API",
-        "pl": "Ulepszona obsługa żądań API",
-        "zh-cn": "改进的 API 请求处理"
       }
     },
     "title": "OctoPrint",
@@ -230,16 +230,16 @@
       "type": "state",
       "common": {
         "name": {
-            "en": "Printer Operational",
-            "de": "Drucker betriebsbereit",
-            "ru": "Принтер работает",
-            "pt": "Impressora Operacional",
-            "nl": "Printer operationeel",
-            "fr": "Imprimante opérationnelle",
-            "it": "Stampante operativa",
-            "es": "Impresora operativa",
-            "pl": "Drukarka działa",
-            "zh-cn": "打印机操作"
+          "en": "Printer Operational",
+          "de": "Drucker betriebsbereit",
+          "ru": "Принтер работает",
+          "pt": "Impressora Operacional",
+          "nl": "Printer operationeel",
+          "fr": "Imprimante opérationnelle",
+          "it": "Stampante operativa",
+          "es": "Impresora operativa",
+          "pl": "Drukarka działa",
+          "zh-cn": "打印机操作"
         },
         "type": "boolean",
         "role": "value",
@@ -254,16 +254,16 @@
       "type": "state",
       "common": {
         "name": {
-            "en": "Is Printing",
-            "de": "Druckt",
-            "ru": "печатает",
-            "pt": "Está Imprimindo",
-            "nl": "Is aan het afdrukken",
-            "fr": "Est en train d'imprimer",
-            "it": "sta stampando",
-            "es": "está imprimiendo",
-            "pl": "Czy drukowanie",
-            "zh-cn": "正在打印"
+          "en": "Is Printing",
+          "de": "Druckt",
+          "ru": "печатает",
+          "pt": "Está Imprimindo",
+          "nl": "Is aan het afdrukken",
+          "fr": "Est en train d'imprimer",
+          "it": "sta stampando",
+          "es": "está imprimiendo",
+          "pl": "Czy drukowanie",
+          "zh-cn": "正在打印"
         },
         "type": "boolean",
         "role": "value",
