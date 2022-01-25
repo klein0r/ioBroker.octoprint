@@ -1092,7 +1092,7 @@ class OctoPrint extends utils.Adapter {
     }
 
     removeNamespace(id) {
-        const re = new RegExp(this.namespace + '*\.', 'g');
+        const re = new RegExp(this.namespace + '*\\.', 'g');
         return id.replace(re, '');
     }
 
