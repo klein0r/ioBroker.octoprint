@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
+      "3.0.1": {
+        "en": "Updated state roles\nAdded hint for Admin 4 configuration",
+        "de": "Statusrollen aktualisiert\nHinweis für die Konfiguration von Admin 4 hinzugefügt",
+        "ru": "Обновлены роли состояния\nДобавлена подсказка для конфигурации Admin 4",
+        "pt": "Funções de estado atualizadas\nAdicionada dica para configuração do Admin 4",
+        "nl": "Bijgewerkte statusrollen\nHint toegevoegd voor configuratie van Admin 4",
+        "fr": "Rôles d'état mis à jour\nAjout d'un indice pour la configuration d'Admin 4",
+        "it": "Ruoli statali aggiornati\nAggiunto suggerimento per la configurazione dell'amministratore 4",
+        "es": "Roles de estado actualizados\nSugerencia agregada para la configuración de Admin 4",
+        "pl": "Zaktualizowane role stanowe\nDodano wskazówkę dotyczącą konfiguracji Admin 4",
+        "zh-cn": "更新了状态角色\n添加了 Admin 4 配置的提示"
+      },
       "3.0.0": {
         "en": "Added printing and operational state",
         "de": "Druck- und Betriebszustand hinzugefügt",
@@ -74,18 +86,6 @@
         "es": "Permitir pausar / reanudar el trabajo de impresión",
         "pl": "Zezwól na wstrzymanie/wznowienie zadania drukowania",
         "zh-cn": "允许暂停/恢复打印作业"
-      },
-      "2.0.5": {
-        "en": "Require new version for translated instance objects\nFixed timeout issues",
-        "de": "Neue Version für übersetzte Instanzobjekte erforderlich\nTimeout-Probleme behoben",
-        "ru": "Требовать новую версию для переведенных экземпляров объектов\nИсправлены проблемы с тайм-аутом",
-        "pt": "Requer nova versão para objetos de instância traduzidos\nProblemas de tempo limite corrigidos",
-        "nl": "Nieuwe versie vereisen voor vertaalde instantieobjecten\nTime-outproblemen opgelost",
-        "fr": "Exiger une nouvelle version pour les objets d'instance traduits\nCorrection des problèmes de délai d'attente",
-        "it": "Richiedi una nuova versione per gli oggetti istanza tradotti\nRisolti problemi di timeout",
-        "es": "Requerir una nueva versión para los objetos de instancia traducidos\nProblemas de tiempo de espera solucionados",
-        "pl": "Wymagaj nowej wersji dla przetłumaczonych obiektów instancji\nNaprawiono problemy z limitem czasu",
-        "zh-cn": "需要新版本的翻译实例对象\n修复超时问题"
       }
     },
     "titleLang": {
