@@ -86,6 +86,7 @@ Please use state `system.adapter.octoprint.0.alive` to stop/start the instance.
 -->
 ### **WORK IN PROGRESS**
 
+* (klein0r) Updated state roles
 * (klein0r) Added hint for Admin 4 configuration
 
 ### 3.0.0 (2022-01-19)

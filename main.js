@@ -841,7 +841,7 @@ class OctoPrint extends utils.Adapter {
                                             'zh-cn': '文档名称'
                                         },
                                         type: 'string',
-                                        role: 'value',
+                                        role: 'text',
                                         read: true,
                                         write: false
                                     },
@@ -865,7 +865,7 @@ class OctoPrint extends utils.Adapter {
                                             'zh-cn': '文件路径'
                                         },
                                         type: 'string',
-                                        role: 'value',
+                                        role: 'text',
                                         read: true,
                                         write: false
                                     },
@@ -966,6 +966,7 @@ class OctoPrint extends utils.Adapter {
                                                 'zh-cn': '缩略图'
                                             },
                                             type: 'file',
+                                            role: 'state',
                                             read: true,
                                             write: false
                                         },

@@ -88,7 +88,6 @@
         "zh-cn": "需要新版本的翻译实例对象\n修复超时问题"
       }
     },
-    "title": "OctoPrint",
     "titleLang": {
       "en": "OctoPrint",
       "de": "OctoPrint",
@@ -180,6 +179,49 @@
   "objects": [],
   "instanceObjects": [
     {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Information",
+          "ru": "Информация",
+          "pt": "Em formação",
+          "nl": "Informatie",
+          "fr": "Informations",
+          "it": "Informazione",
+          "es": "Información",
+          "pl": "Informacja",
+          "zh-cn": "信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Connected to OctoPrint",
+          "de": "Mit OctoPrint verbunden",
+          "ru": "При подключении к OctoPrint",
+          "pt": "Se conectado ao OctoPrint",
+          "nl": "Indien verbonden met OctoPrint",
+          "fr": "Si connecté à OctoPrint",
+          "it": "Se connesso a OctoPrint",
+          "es": "Si está conectado a OctoPrint",
+          "pl": "W przypadku połączenia z OctoPrint",
+          "zh-cn": "如果连接到 OctoPrint"
+        },
+        "type": "boolean",
+        "role": "indicator.reachable",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
       "_id": "name",
       "type": "state",
       "common": {
@@ -196,7 +238,7 @@
           "zh-cn": "自定义打印机名称"
         },
         "type": "string",
-        "role": "value",
+        "role": "text",
         "read": true,
         "write": false
       },
@@ -219,7 +261,7 @@
           "zh-cn": "打印机状态"
         },
         "type": "string",
-        "role": "value",
+        "role": "state",
         "read": true,
         "write": false,
         "def": "API not connected"
@@ -243,7 +285,7 @@
           "zh-cn": "打印机操作"
         },
         "type": "boolean",
-        "role": "value",
+        "role": "state",
         "read": true,
         "write": false,
         "def": false
@@ -267,7 +309,7 @@
           "zh-cn": "正在打印"
         },
         "type": "boolean",
-        "role": "value",
+        "role": "state",
         "read": true,
         "write": false,
         "def": false
@@ -500,49 +542,6 @@
       "native": {}
     },
     {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "Information",
-          "de": "Information",
-          "ru": "Информация",
-          "pt": "Em formação",
-          "nl": "Informatie",
-          "fr": "Informations",
-          "it": "Informazione",
-          "es": "Información",
-          "pl": "Informacja",
-          "zh-cn": "信息"
-        }
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.reachable",
-        "name": {
-          "en": "Connected to OctoPrint",
-          "de": "Mit OctoPrint verbunden",
-          "ru": "При подключении к OctoPrint",
-          "pt": "Se conectado ao OctoPrint",
-          "nl": "Indien verbonden met OctoPrint",
-          "fr": "Si connecté à OctoPrint",
-          "it": "Se connesso a OctoPrint",
-          "es": "Si está conectado a OctoPrint",
-          "pl": "W przypadku połączenia z OctoPrint",
-          "zh-cn": "如果连接到 OctoPrint"
-        },
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
       "_id": "meta",
       "type": "channel",
       "common": {
@@ -579,7 +578,7 @@
           "zh-cn": "版本"
         },
         "type": "string",
-        "role": "value",
+        "role": "text",
         "read": true,
         "write": false
       },
@@ -602,7 +601,7 @@
           "zh-cn": "接口版本"
         },
         "type": "string",
-        "role": "value",
+        "role": "text",
         "read": true,
         "write": false
       },
@@ -682,7 +681,7 @@
           "zh-cn": "文档名称"
         },
         "type": "string",
-        "role": "value",
+        "role": "text",
         "read": true,
         "write": false
       },
@@ -705,7 +704,7 @@
           "zh-cn": "文件来源"
         },
         "type": "string",
-        "role": "value",
+        "role": "text",
         "read": true,
         "write": false
       },
@@ -794,8 +793,8 @@
           "zh-cn": "灯丝长度"
         },
         "type": "number",
-        "unit": "m",
         "role": "value",
+        "unit": "m",
         "read": true,
         "write": false
       },
@@ -818,8 +817,8 @@
           "zh-cn": "灯丝体积"
         },
         "type": "number",
-        "unit": "cm³",
         "role": "value",
+        "unit": "cm³",
         "read": true,
         "write": false
       },
@@ -861,8 +860,8 @@
           "zh-cn": "进步"
         },
         "type": "number",
-        "unit": "%",
         "role": "value",
+        "unit": "%",
         "read": true,
         "write": false
       },
@@ -885,8 +884,8 @@
           "zh-cn": "文件位置"
         },
         "type": "number",
-        "unit": "KiB",
         "role": "value",
+        "unit": "KiB",
         "read": true,
         "write": false
       },
@@ -909,8 +908,8 @@
           "zh-cn": "打印时间"
         },
         "type": "number",
-        "unit": "s",
         "role": "value",
+        "unit": "s",
         "read": true,
         "write": false
       },
@@ -933,8 +932,8 @@
           "zh-cn": "剩余打印时间"
         },
         "type": "number",
-        "unit": "s",
         "role": "value",
+        "unit": "s",
         "read": true,
         "write": false
       },
