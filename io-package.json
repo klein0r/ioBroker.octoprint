@@ -916,7 +916,7 @@
       "native": {}
     },
     {
-      "_id": "printjob.progress.printtime_left",
+      "_id": "printjob.progress.printtimeLeft",
       "type": "state",
       "common": {
         "name": {
@@ -934,6 +934,29 @@
         "type": "number",
         "role": "value",
         "unit": "s",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.finishedAt",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Finished at",
+          "de": "Fertig um",
+          "ru": "Закончено в",
+          "pt": "Terminado em",
+          "nl": "Afgewerkt om",
+          "fr": "Terminé à",
+          "it": "Finito a",
+          "es": "Terminado en",
+          "pl": "Zakończono o",
+          "zh-cn": "完成于"
+        },
+        "type": "number",
+        "role": "date",
         "read": true,
         "write": false
       },

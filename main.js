@@ -36,6 +36,9 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setApiConnected(false);
 
+        // Old state from previous versions
+        this.delObjectAsync('printjob.progress.printtime_left');
+
         if (!this.config.octoprintApiKey) {
             this.log.warn(`API key not configured. Check configuration of instance ${this.namespace}`);
         }
@@ -709,7 +712,12 @@ class OctoPrint extends utils.Adapter {
                             await this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
                             await this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
                             await this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
-                            await this.setStateAsync('printjob.progress.printtime_left', {val: content.progress.printTimeLeft, ack: true});
+                            await this.setStateAsync('printjob.progress.printtimeLeft', {val: content.progress.printTimeLeft, ack: true});
+
+                            const finishedAt = new Date();
+                            finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
+
+                            await this.setStateAsync('printjob.progress.finishedAt', {val: finishedAt.getTime(), ack: true});
                         }
                     }
                 }).catch(error => {
