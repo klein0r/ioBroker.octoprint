@@ -14,7 +14,7 @@
 
 Adapter to connect OctoPrint to ioBroker
 
-**Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.2**
+**Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.3**
 
 ## Installation
 

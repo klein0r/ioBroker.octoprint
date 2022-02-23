@@ -17,7 +17,7 @@ class OctoPrint extends utils.Adapter {
             name: adapterName,
         });
 
-        this.supportedVersion = '1.7.2';
+        this.supportedVersion = '1.7.3';
         this.apiConnected = false;
         this.systemCommands = [];
 
