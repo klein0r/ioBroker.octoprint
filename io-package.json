@@ -126,7 +126,7 @@
     "platform": "Javascript/Node.js",
     "icon": "octoprint.png",
     "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
-    "enabled": true,
+    "enabled": false,
     "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
     "loglevel": "info",
     "mode": "daemon",
