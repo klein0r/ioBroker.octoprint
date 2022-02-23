@@ -18,6 +18,8 @@ class OctoPrint extends utils.Adapter {
         });
 
         this.supportedVersion = '1.7.3';
+        this.displayedVersionWarning = false;
+
         this.apiConnected = false;
         this.systemCommands = [];
 
@@ -420,8 +422,9 @@ class OctoPrint extends utils.Adapter {
                 this.setStateAsync('meta.version', {val: response.data.server, ack: true});
                 this.setStateAsync('meta.api_version', {val: response.data.api, ack: true});
 
-                if (this.isNewerVersion(response.data.server, this.supportedVersion)) {
+                if (this.isNewerVersion(response.data.server, this.supportedVersion) && !this.displayedVersionWarning) {
                     this.log.warn(`You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${response.data.server}`);
+                    this.displayedVersionWarning = true; // Just show once
                 }
 
                 this.refreshStateDetails();
@@ -737,7 +740,7 @@ class OctoPrint extends utils.Adapter {
                 await this.setStateAsync('printjob.progress.completion', {val: 0, ack: true});
                 await this.setStateAsync('printjob.progress.filepos', {val: 0, ack: true});
                 await this.setStateAsync('printjob.progress.printtime', {val: 0, ack: true});
-                await this.setStateAsync('printjob.progress.printtime_left', {val: 0, ack: true});
+                await this.setStateAsync('printjob.progress.printtimeLeft', {val: 0, ack: true});
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
