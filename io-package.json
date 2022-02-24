@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "3.0.1",
+    "version": "3.1.0",
     "news": {
+      "3.1.0": {
+        "en": "Calculate date/time when print will be finished",
+        "de": "Berechnen Sie Datum/Uhrzeit, wann der Druck fertig sein wird",
+        "ru": "Рассчитать дату/время, когда печать будет завершена",
+        "pt": "Calcular data/hora em que a impressão será concluída",
+        "nl": "Bereken datum/tijd wanneer het afdrukken klaar is",
+        "fr": "Calculer la date/heure à laquelle l'impression sera terminée",
+        "it": "Calcola data/ora in cui la stampa sarà terminata",
+        "es": "Calcular la fecha/hora en que se terminará la impresión",
+        "pl": "Oblicz datę/godzinę zakończenia drukowania",
+        "zh-cn": "计算打印完成的日期/时间"
+      },
       "3.0.1": {
         "en": "Updated state roles\nAdded hint for Admin 4 configuration",
         "de": "Statusrollen aktualisiert\nHinweis für die Konfiguration von Admin 4 hinzugefügt",
@@ -74,18 +86,6 @@
         "es": "Compatibilidad con complementos añadidos: Progreso de la capa de visualización",
         "pl": "Dodano obsługę wtyczek: Wyświetl postęp warstwy",
         "zh-cn": "添加了插件支持：显示图层进度"
-      },
-      "2.0.6": {
-        "en": "Allow to pause/resume printjob",
-        "de": "Druckauftrag anhalten/fortsetzen lassen",
-        "ru": "Разрешить приостановить / возобновить задание печати",
-        "pt": "Permitir pausar / retomar o trabalho de impressão",
-        "nl": "Sta toe om afdruktaak te pauzeren/hervatten",
-        "fr": "Permet de suspendre/reprendre le travail d'impression",
-        "it": "Consenti di mettere in pausa/riprendere il lavoro di stampa",
-        "es": "Permitir pausar / reanudar el trabajo de impresión",
-        "pl": "Zezwól na wstrzymanie/wznowienie zadania drukowania",
-        "zh-cn": "允许暂停/恢复打印作业"
       }
     },
     "titleLang": {
