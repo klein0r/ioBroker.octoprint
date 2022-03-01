@@ -717,6 +717,9 @@ class OctoPrint extends utils.Adapter {
                             await this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
                             await this.setStateAsync('printjob.progress.printtimeLeft', {val: content.progress.printTimeLeft, ack: true});
 
+                            await this.setStateAsync('printjob.progress.printtimeFormat', {val: this.printtimeString(content.progress.printTime), ack: true});
+                            await this.setStateAsync('printjob.progress.printtimeLeftFormat', {val: this.printtimeString(content.progress.printTimeLeft), ack: true});
+
                             const finishedAt = new Date();
                             finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
 
@@ -741,6 +744,9 @@ class OctoPrint extends utils.Adapter {
                 await this.setStateAsync('printjob.progress.filepos', {val: 0, ack: true});
                 await this.setStateAsync('printjob.progress.printtime', {val: 0, ack: true});
                 await this.setStateAsync('printjob.progress.printtimeLeft', {val: 0, ack: true});
+
+                await this.setStateAsync('printjob.progress.printtimeFormat', {val: this.printtimeString(0), ack: true});
+                await this.setStateAsync('printjob.progress.printtimeLeftFormat', {val: this.printtimeString(0), ack: true});
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
@@ -1231,6 +1237,30 @@ class OctoPrint extends utils.Adapter {
             if (a < b) return false;
         }
         return false;
+    }
+
+    printtimeString(seconds) {
+        if (seconds < 0) {
+            seconds = 0;
+        }
+
+        const timeDifference = new Date(seconds * 1000);
+        const secondsInADay = 60 * 60 * 1000 * 24;
+        const secondsInAHour = 60 * 60 * 1000;
+        const days = Math.floor(timeDifference / (secondsInADay) * 1);
+        let hours = Math.floor((timeDifference % (secondsInADay)) / (secondsInAHour) * 1);
+        let mins = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+        let secs = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+
+        if (hours < 10) { hours = '0' + hours; }
+        if (mins < 10) { mins = '0' + mins; }
+        if (secs < 10) { secs = '0' + secs; }
+
+        if (days > 0) {
+            return days + 'D' + hours + ':' + mins + ':' + secs;
+        } else {
+            return hours + ':' + mins + ':' + secs;
+        }
     }
 }
 

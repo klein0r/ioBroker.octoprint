@@ -40,6 +40,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (klein0r) Added print times as readable states (seconds to string)
+
 ### 3.1.0 (2022-02-24)
 
 * (klein0r) Calculate date/time when print will be finished

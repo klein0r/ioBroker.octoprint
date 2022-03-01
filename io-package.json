@@ -916,14 +916,37 @@
       "native": {}
     },
     {
+      "_id": "printjob.progress.printtimeFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time (formatted)",
+          "de": "Druckzeit (formatiert)",
+          "ru": "Время печати (отформатировано)",
+          "pt": "Tempo de impressão (formatado)",
+          "nl": "Afdruktijd (opgemaakt)",
+          "fr": "Temps d'impression (formaté)",
+          "it": "Tempo di stampa (formattato)",
+          "es": "Hora de impresión (formateada)",
+          "pl": "Czas drukowania (sformatowany)",
+          "zh-cn": "打印时间（格式化）"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
       "_id": "printjob.progress.printtimeLeft",
       "type": "state",
       "common": {
         "name": {
           "en": "Print time left",
-          "de": "Druckzeit übrig",
+          "de": "Verbleibende Druckzeit",
           "ru": "Оставшееся время печати",
-          "pt": "Tempo restante de impressão",
+          "pt": "Tempo de impressão restante",
           "nl": "Resterende afdruktijd",
           "fr": "Temps d'impression restant",
           "it": "Tempo di stampa rimasto",
@@ -934,6 +957,29 @@
         "type": "number",
         "role": "value",
         "unit": "s",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtimeLeftFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time left (formatted)",
+          "de": "Verbleibende Druckzeit (formatiert)",
+          "ru": "Оставшееся время печати (отформатировано)",
+          "pt": "Tempo de impressão restante (formatado)",
+          "nl": "Resterende afdruktijd (opgemaakt)",
+          "fr": "Temps d'impression restant (formaté)",
+          "it": "Tempo di stampa rimasto (formattato)",
+          "es": "Tiempo restante de impresión (formateado)",
+          "pl": "Pozostały czas drukowania (sformatowany)",
+          "zh-cn": "剩余打印时间（格式化）"
+        },
+        "type": "string",
+        "role": "text",
         "read": true,
         "write": false
       },
