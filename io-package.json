@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "news": {
+      "3.2.0": {
+        "en": "Tested with OctoPrint 1.7.3\n\n* Added print times as readable states (seconds to string)\n* Added formatted date when print job will finish\n* Added fan speed and feedrate from plugin Display Layer Progress",
+        "de": "Getestet mit OctoPrint 1.7.3\n\n* Druckzeiten als lesbare Zustände hinzugefügt (Sekunden zu String)\n* Formatiertes Datum hinzugefügt, an dem der Druckauftrag abgeschlossen ist\n* Lüftergeschwindigkeit und Feedrate vom Plugin Display Layer Progress hinzugefügt",
+        "ru": "Протестировано с OctoPrint 1.7.3\n\n* Добавлено время печати в виде читаемых состояний (секунды в строку)\n* Добавлен формат даты, когда задание на печать будет завершено\n* Добавлена скорость вентилятора и скорость подачи из плагина Display Layer Progress",
+        "pt": "Testado com OctoPrint 1.7.3\n\n* Adicionados tempos de impressão como estados legíveis (segundos para string)\n* Adicionado data formatada quando o trabalho de impressão terminará\n* Adicionado velocidade do ventilador e taxa de alimentação do plugin Display Layer Progress",
+        "nl": "Getest met OctoPrint 1.7.3\n\n* Afdruktijden toegevoegd als leesbare toestanden (seconden tot string)\n* Opgemaakte datum toegevoegd waarop de afdruktaak zal eindigen\n* Ventilatorsnelheid en voedingssnelheid toegevoegd van plug-in Display Layer Progress",
+        "fr": "Testé avec OctoPrint 1.7.3\n\n* Ajout des temps d'impression en tant qu'états lisibles (secondes à la chaîne)\n* Ajout d'une date formatée à la fin du travail d'impression\n* Ajout de la vitesse du ventilateur et de la vitesse d'avance du plugin Display Layer Progress",
+        "it": "Testato con OctoPrint 1.7.3\n\n* Aggiunti tempi di stampa come stati leggibili (secondi per stringa)\n* Aggiunta la data formattata al termine del lavoro di stampa\n* Aggiunta la velocità della ventola e l'avanzamento dal plug-in Display Layer Progress",
+        "es": "Probado con OctoPrint 1.7.3\n\n* Tiempos de impresión agregados como estados legibles (segundos a cadena)\n* Fecha formateada agregada cuando terminará el trabajo de impresión\n* Se agregó la velocidad del ventilador y la velocidad de avance del complemento Display Layer Progress",
+        "pl": "Testowane z OctoPrint 1.7.3\n\n* Dodano czasy drukowania jako stany czytelne (sekundy do ciągu)\n* Dodano sformatowaną datę zakończenia zadania drukowania\n* Dodano prędkość wentylatora i prędkość posuwu z wtyczki Display Layer Progress",
+        "zh-cn": "使用 OctoPrint 1.7.3 测试\n\n*将打印时间添加为可读状态（以秒为字符串）\n* 添加打印作业完成的格式化日期\n* 从插件显示层进度添加风扇速度和进给率"
+      },
       "3.1.0": {
         "en": "Calculate date/time when print will be finished",
         "de": "Berechnen Sie Datum/Uhrzeit, wann der Druck fertig sein wird",
@@ -74,18 +86,6 @@
         "es": "Opción HTTPS agregada\nIntegración de Progreso de capa de pantalla fija",
         "pl": "Dodano opcję HTTPS\nNaprawiono integrację postępu warstwy wyświetlania",
         "zh-cn": "添加了 HTTPS 选项\n固定显示层进度集成"
-      },
-      "2.0.7": {
-        "en": "Added plugin support: Display Layer Progress",
-        "de": "Plugin-Unterstützung hinzugefügt: Layer-Fortschritt anzeigen",
-        "ru": "Добавлена поддержка плагина: Display Layer Progress",
-        "pt": "Adicionado suporte de plug-in: Exibir progresso da camada",
-        "nl": "Ondersteuning voor plug-ins toegevoegd: Display Layer Progress",
-        "fr": "Ajout de la prise en charge du plug-in : Afficher la progression de la couche",
-        "it": "Aggiunto supporto plug-in: Visualizza avanzamento livello",
-        "es": "Compatibilidad con complementos añadidos: Progreso de la capa de visualización",
-        "pl": "Dodano obsługę wtyczek: Wyświetl postęp warstwy",
-        "zh-cn": "添加了插件支持：显示图层进度"
       }
     },
     "titleLang": {
