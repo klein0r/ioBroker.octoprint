@@ -1009,6 +1009,29 @@
       "native": {}
     },
     {
+      "_id": "printjob.progress.finishedAtFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Finished at - date formatted",
+          "de": "Fertig um - Datum formatiert",
+          "ru": "Завершено в - дата отформатирована",
+          "pt": "Concluído em - data formatada",
+          "nl": "Voltooid om - datum geformatteerd",
+          "fr": "Fini à - date formatée",
+          "it": "Fine alle - data formattata",
+          "es": "Terminado el - fecha formateada",
+          "pl": "Zakończono w - sformatowano datę",
+          "zh-cn": "完成日期格式"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
       "_id": "files",
       "type": "channel",
       "common": {

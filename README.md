@@ -42,7 +42,10 @@ iobroker add octoprint
 -->
 ### **WORK IN PROGRESS**
 
+Tested with OctoPrint 1.7.3
+
 * (klein0r) Added print times as readable states (seconds to string)
+* (klein0r) Added formatted date when print job will finish
 
 ### 3.1.0 (2022-02-24)
 

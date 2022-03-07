@@ -5,7 +5,6 @@
 
 const utils = require('@iobroker/adapter-core');
 const axios = require('axios');
-const adapterName = require('./package.json').name.split('.').pop();
 
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
 
@@ -14,7 +13,8 @@ class OctoPrint extends utils.Adapter {
     constructor(options) {
         super({
             ...options,
-            name: adapterName,
+            name: 'octoprint',
+            useFormatDate: true
         });
 
         this.supportedVersion = '1.7.3';
@@ -724,6 +724,7 @@ class OctoPrint extends utils.Adapter {
                             finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
 
                             await this.setStateAsync('printjob.progress.finishedAt', {val: finishedAt.getTime(), ack: true});
+                            await this.setStateAsync('printjob.progress.finishedAtFormat', {val: this.formatDate(finishedAt), ack: true});
                         }
                     }
                 }).catch(error => {
