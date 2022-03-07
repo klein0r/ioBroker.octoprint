@@ -29,7 +29,7 @@
 
 ### Supported Plugins
 
-- [Display Layer Progress](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress) - tested with version 1.27.2 (requires **adapter version 2.1.0** or later)
+- [Display Layer Progress](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress) - tested with version 1.28.0 (requires **adapter version 2.1.0** or later)
 - [Slicer Thumbnails](https://github.com/jneilliii/OctoPrint-PrusaSlicerThumbnails) - tested with version 1.0.0 (requires **adapter version 2.2.0** or later)
 
 ## Important!
