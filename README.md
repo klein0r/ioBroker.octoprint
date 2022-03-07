@@ -14,8 +14,6 @@
 
 Adapter to connect OctoPrint to ioBroker
 
-**Tested with [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.7.3**
-
 ## Installation
 
 Please use the "adapter list" in ioBroker to install a stable version of this adapter. You can also use the CLI to install this adapter:
@@ -46,6 +44,7 @@ Tested with OctoPrint 1.7.3
 
 * (klein0r) Added print times as readable states (seconds to string)
 * (klein0r) Added formatted date when print job will finish
+* (klein0r) Added fan speed and feedrate from plugin Display Layer Progress
 
 ### 3.1.0 (2022-02-24)
 
