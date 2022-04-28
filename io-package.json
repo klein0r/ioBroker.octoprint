@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "news": {
+      "3.2.1": {
+        "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
+        "de": "Holen Sie sich die Thumbnail-URL der aktuellen Datei und kopieren Sie den Wert in den Druckauftrag (erfordert das Plugin Slicer Thumbnails)\nProtokollmeldungen aktualisiert",
+        "ru": "Получить URL-адрес эскиза текущего файла и скопировать значение в задание печати (требуется плагин Slicer Thumbnails)\nОбновлены сообщения журнала",
+        "pt": "Obtenha o URL da miniatura do arquivo atual e copie o valor para printjob (requer plugin Slicer Thumbnails)\nMensagens de registro atualizadas",
+        "nl": "Verkrijg miniatuur-URL van huidig bestand en kopieer waarde naar printjob (vereist plug-in Slicer Thumbnails)\nBijgewerkte logberichten",
+        "fr": "Obtenir l'URL de la vignette du fichier actuel et copier la valeur dans le travail d'impression (nécessite le plugin Slicer Thumbnails)\nMessages de journal mis à jour",
+        "it": "Ottieni l'URL della miniatura del file corrente e copia il valore su printjob (richiede il plug-in Slicer Thumbnails)\nMessaggi di registro aggiornati",
+        "es": "Obtenga la URL en miniatura del archivo actual y copie el valor en el trabajo de impresión (requiere el complemento Slicer Thumbnails)\nMensajes de registro actualizados",
+        "pl": "Uzyskaj adres URL miniatury bieżącego pliku i skopiuj wartość do zadania drukowania (wymaga wtyczki Slicer Thumbnails)\nZaktualizowane komunikaty dziennika",
+        "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息"
+      },
       "3.2.0": {
         "en": "Tested with OctoPrint 1.7.3\n\n* Added print times as readable states (seconds to string)\n* Added formatted date when print job will finish\n* Added fan speed and feedrate from plugin Display Layer Progress",
         "de": "Getestet mit OctoPrint 1.7.3\n\n* Druckzeiten als lesbare Zustände hinzugefügt (Sekunden zu String)\n* Formatiertes Datum hinzugefügt, an dem der Druckauftrag abgeschlossen ist\n* Lüftergeschwindigkeit und Feedrate vom Plugin Display Layer Progress hinzugefügt",
@@ -74,18 +86,6 @@
         "es": "Agregado: Solicitud de tiempo de espera en segundos\nMejoras en el registro",
         "pl": "Dodano: Limit czasu żądania w sekundach\nUlepszenia rejestrowania",
         "zh-cn": "补充：请求超时以秒为单位\n日志记录改进"
-      },
-      "2.1.0": {
-        "en": "Added HTTPS option\nFixed Display Layer Progress integration",
-        "de": "HTTPS-Option hinzugefügt\nIntegration des Anzeige-Layer-Fortschritts behoben",
-        "ru": "Добавлена опция HTTPS\nИнтеграция с фиксированным уровнем отображения",
-        "pt": "Adicionada opção HTTPS\nIntegração de progresso de camada de exibição fixa",
-        "nl": "HTTPS-optie toegevoegd\nIntegratie van vaste weergavelaagvoortgang",
-        "fr": "Ajout de l'option HTTPS\nIntégration de la progression de la couche d'affichage fixe",
-        "it": "Aggiunta opzione HTTPS\nRisolto il problema con l'integrazione dell'avanzamento del livello di visualizzazione",
-        "es": "Opción HTTPS agregada\nIntegración de Progreso de capa de pantalla fija",
-        "pl": "Dodano opcję HTTPS\nNaprawiono integrację postępu warstwy wyświetlania",
-        "zh-cn": "添加了 HTTPS 选项\n固定显示层进度集成"
       }
     },
     "titleLang": {
