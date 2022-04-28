@@ -38,6 +38,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (klein0r) Updated log messages
+
 ### 3.2.0 (2022-03-07)
 
 Tested with OctoPrint 1.7.3

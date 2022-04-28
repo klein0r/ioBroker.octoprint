@@ -41,8 +41,14 @@ class OctoPrint extends utils.Adapter {
         // Old state from previous versions
         this.delObjectAsync('printjob.progress.printtime_left');
 
+        if (!this.config.octoprintIp) {
+            this.log.warn(`Octoprint IP / hostname not configured. Check configuration and restart.`);
+            return;
+        }
+
         if (!this.config.octoprintApiKey) {
-            this.log.warn(`API key not configured. Check configuration of instance ${this.namespace}`);
+            this.log.warn(`API key not configured. Check configuration and restart.`);
+            return;
         }
 
         if (this.config.customName) {
@@ -833,9 +839,9 @@ class OctoPrint extends utils.Adapter {
                                 const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
 
                                 this.log.debug(`refreshing file list:  found file "${fileNameClean}" (clean name) - location: ${file.path}`);
-                                filesKeep.push('files.' + fileNameClean);
+                                filesKeep.push(`files.${fileNameClean}`);
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean, {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
                                     type: 'channel',
                                     common: {
                                         name: file.name,
@@ -843,7 +849,7 @@ class OctoPrint extends utils.Adapter {
                                     native: {}
                                 });
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.name', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -865,9 +871,9 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('files.' + fileNameClean + '.name', {val: file.name, ack: true});
+                                await this.setStateAsync(`files.${fileNameClean}.name`, {val: file.name, ack: true});
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.path', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -889,9 +895,9 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('files.' + fileNameClean + '.path', {val: file.path, ack: true});
+                                await this.setStateAsync(`files.${fileNameClean}.path`, {val: file.path, ack: true});
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.size', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -914,9 +920,9 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('files.' + fileNameClean + '.size', {val: file.size, ack: true});
+                                await this.setStateAsync(`files.${fileNameClean}.size`, {val: file.size, ack: true});
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.date', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -938,11 +944,11 @@ class OctoPrint extends utils.Adapter {
                                     },
                                     native: {}
                                 });
-                                await this.setStateAsync('files.' + fileNameClean + '.date', {val: file.date, ack: true});
+                                await this.setStateAsync(`files.${fileNameClean}.date`, {val: file.date, ack: true});
 
                                 if (file.thumbnail) {
 
-                                    await this.setObjectNotExistsAsync('files.' + fileNameClean + '.thumbnail_url', {
+                                    await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
                                         type: 'state',
                                         common: {
                                             name: {
@@ -964,9 +970,9 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {}
                                     });
-                                    await this.setStateAsync('files.' + fileNameClean + '.thumbnail_url', {val: this.getOctoprintUri() + '/' + file.thumbnail, ack: true});
+                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
 
-                                    const thumbnailId = 'files.' + fileNameClean + '.thumbnail';
+                                    const thumbnailId = `files.${fileNameClean}.thumbnail`;
 
                                     await this.setObjectNotExistsAsync(thumbnailId, {
                                         type: 'state',
@@ -1002,7 +1008,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                     }).then(response => {
                                         this.log.debug(`Received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
-                                        this.setBinaryState(this.namespace + '.' + thumbnailId, response.data, () => {
+                                        this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
                                             this.log.debug(`Saved binary thumbnail information in ${thumbnailId}`);
 
                                             /*
@@ -1012,7 +1018,6 @@ class OctoPrint extends utils.Adapter {
                                             */
 
                                         });
-
                                     }).catch(error => {
                                         if (error.response) {
                                             // The request was made and the server responded with a status code
@@ -1031,7 +1036,7 @@ class OctoPrint extends utils.Adapter {
                                     });
                                 }
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.select', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -1054,7 +1059,7 @@ class OctoPrint extends utils.Adapter {
                                     native: {}
                                 });
 
-                                await this.setObjectNotExistsAsync('files.' + fileNameClean + '.print', {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.print`, {
                                     type: 'state',
                                     common: {
                                         name: {
