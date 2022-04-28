@@ -40,6 +40,7 @@ iobroker add octoprint
 -->
 ### **WORK IN PROGRESS**
 
+* (klein0r) Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)
 * (klein0r) Updated log messages
 
 ### 3.2.0 (2022-03-07)

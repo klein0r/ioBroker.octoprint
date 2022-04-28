@@ -38,9 +38,6 @@ class OctoPrint extends utils.Adapter {
         this.subscribeStates('*');
         this.setApiConnected(false);
 
-        // Old state from previous versions
-        this.delObjectAsync('printjob.progress.printtime_left');
-
         if (!this.config.octoprintIp) {
             this.log.warn(`Octoprint IP / hostname not configured. Check configuration and restart.`);
             return;
@@ -58,6 +55,7 @@ class OctoPrint extends utils.Adapter {
         }
 
         // Delete old (unused) namespace on startup
+        await this.delObjectAsync('printjob.progress.printtime_left');
         await this.delObjectAsync('temperature', {recursive: true});
 
         this.refreshState('onReady');
@@ -685,6 +683,69 @@ class OctoPrint extends utils.Adapter {
                         }
 
                         if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
+                            const filePath = `${content.job.file.origin}/${content.job.file.path}`;
+
+                            if (this.config.pluginSlicerThumbnails) {
+                                let foundThumbnail = false;
+                                await this.setObjectNotExistsAsync('printjob.file.thumbnail_url', {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Thumbnail URL',
+                                            de: 'Miniaturbild-URL',
+                                            ru: 'URL миниатюры',
+                                            pt: 'URL da miniatura',
+                                            nl: 'Miniatuur-URL',
+                                            fr: 'URL de la miniature',
+                                            it: 'URL miniatura',
+                                            es: 'URL de la miniatura',
+                                            pl: 'URL miniatury',
+                                            'zh-cn': '缩略图网址'
+                                        },
+                                        type: 'string',
+                                        role: 'url',
+                                        read: true,
+                                        write: false
+                                    },
+                                    native: {}
+                                });
+
+                                const fileObjectsView = await this.getObjectViewAsync(
+                                    'system',
+                                    'channel',
+                                    {
+                                        startkey: this.namespace + '.files.',
+                                        endkey: this.namespace + '.files.\u9999'
+                                    }
+                                );
+
+                                if (fileObjectsView && fileObjectsView.rows) {
+                                    // File file where native.path matches current jobs file path
+                                    const currentFileObject = fileObjectsView.rows.find(file => file.value.native.path === filePath);
+                                    if (currentFileObject) {
+                                        const currentFileId = this.removeNamespace(currentFileObject.id);
+
+                                        try {
+                                            this.log.debug(`Found current file: ${currentFileId}`);
+                                            const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail_url`);
+
+                                            if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
+                                                foundThumbnail = true;
+                                                await this.setStateAsync('printjob.file.thumbnail_url', {val: currentFileThumbnailUrlState.val, ack: true});
+                                            }
+                                        } catch (err) {
+                                            this.log.debug(`Unable to get value of state ${currentFileId}.thumbnail_url`);
+                                        }
+                                    }
+                                }
+
+                                if (!foundThumbnail) {
+                                    await this.setStateAsync('printjob.file.thumbnail_url', {val: null, ack: true});
+                                }
+                            } else {
+                                await this.delObjectAsync('printjob.file.thumbnail_url');
+                            }
+
                             await this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
                             await this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
                             await this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
@@ -846,7 +907,9 @@ class OctoPrint extends utils.Adapter {
                                     common: {
                                         name: file.name,
                                     },
-                                    native: {}
+                                    native: {
+                                        path: file.path
+                                    }
                                 });
 
                                 await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
@@ -946,7 +1009,7 @@ class OctoPrint extends utils.Adapter {
                                 });
                                 await this.setStateAsync(`files.${fileNameClean}.date`, {val: file.date, ack: true});
 
-                                if (file.thumbnail) {
+                                if (this.config.pluginSlicerThumbnails) {
 
                                     await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
                                         type: 'state',
@@ -970,7 +1033,6 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {}
                                     });
-                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
 
                                     const thumbnailId = `files.${fileNameClean}.thumbnail`;
 
@@ -997,43 +1059,50 @@ class OctoPrint extends utils.Adapter {
                                         native: {}
                                     });
 
-                                    axios({
-                                        method: 'get',
-                                        responseType: 'arraybuffer',
-                                        baseURL: this.getOctoprintUri(),
-                                        url: file.thumbnail,
-                                        timeout: this.config.apiTimeoutSek * 1000,
-                                        validateStatus: (status) => {
-                                            return [200].indexOf(status) > -1;
-                                        },
-                                    }).then(response => {
-                                        this.log.debug(`Received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
-                                        this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
-                                            this.log.debug(`Saved binary thumbnail information in ${thumbnailId}`);
+                                    if (file.thumbnail) {
+                                        await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
 
-                                            /*
-                                            this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
-                                                this.log.debug('Binary state: ' + data);
+                                        axios({
+                                            method: 'get',
+                                            responseType: 'arraybuffer',
+                                            baseURL: this.getOctoprintUri(),
+                                            url: file.thumbnail,
+                                            timeout: this.config.apiTimeoutSek * 1000,
+                                            validateStatus: (status) => {
+                                                return [200].indexOf(status) > -1;
+                                            },
+                                        }).then(response => {
+                                            this.log.debug(`Received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
+                                            this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
+                                                this.log.debug(`Saved binary thumbnail information in ${thumbnailId}`);
+
+                                                /*
+                                                this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
+                                                    this.log.debug('Binary state: ' + data);
+                                                });
+                                                */
+
                                             });
-                                            */
+                                        }).catch(error => {
+                                            if (error.response) {
+                                                // The request was made and the server responded with a status code
 
+                                                this.log.warn(`received ${error.response.status} response from ${file.thumbnail}`);
+                                            } else if (error.request) {
+                                                // The request was made but no response was received
+                                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                                // http.ClientRequest in node.js
+
+                                                this.log.info(`error ${error.code} from ${file.thumbnail}: ${error.message}`);
+                                            } else {
+                                                // Something happened in setting up the request that triggered an Error
+                                                this.log.error(error.message);
+                                            }
                                         });
-                                    }).catch(error => {
-                                        if (error.response) {
-                                            // The request was made and the server responded with a status code
-
-                                            this.log.warn(`received ${error.response.status} response from ${file.thumbnail}`);
-                                        } else if (error.request) {
-                                            // The request was made but no response was received
-                                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                            // http.ClientRequest in node.js
-
-                                            this.log.info(`error ${error.code} from ${file.thumbnail}: ${error.message}`);
-                                        } else {
-                                            // Something happened in setting up the request that triggered an Error
-                                            this.log.error(error.message);
-                                        }
-                                    });
+                                    }
+                                } else {
+                                    await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
+                                    await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
                                 }
 
                                 await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
