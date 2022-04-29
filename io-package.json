@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "news": {
+      "3.2.2": {
+        "en": "Updated depedency for js-controller to 4.0.15",
+        "de": "Abhängigkeit für js-controller auf 4.0.15 aktualisiert",
+        "ru": "Обновлена зависимость для js-контроллера до 4.0.15.",
+        "pt": "Dependência atualizada para js-controller para 4.0.15",
+        "nl": "Afhankelijkheid voor js-controller bijgewerkt naar 4.0.15",
+        "fr": "Mise à jour de la dépendance pour js-controller vers 4.0.15",
+        "it": "Dipendenza aggiornata per js-controller a 4.0.15",
+        "es": "Dependencia actualizada para js-controller a 4.0.15",
+        "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
+        "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
+      },
       "3.2.1": {
         "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
         "de": "Holen Sie sich die Thumbnail-URL der aktuellen Datei und kopieren Sie den Wert in den Druckauftrag (erfordert das Plugin Slicer Thumbnails)\nProtokollmeldungen aktualisiert",
@@ -74,18 +86,6 @@
         "es": "Compatibilidad con complementos agregados: Slicer Thumbnails",
         "pl": "Dodano obsługę wtyczek: Slicer Thumbnails",
         "zh-cn": "添加插件支持：切片器缩略图"
-      },
-      "2.1.1": {
-        "en": "Added: Request timeout in seconds\nLogging improvements",
-        "de": "Hinzugefügt: Anfrage-Timeout in Sekunden\nLogging-Verbesserungen",
-        "ru": "Добавлено: время ожидания запроса в секундах.\nУлучшения ведения журнала",
-        "pt": "Adicionado: tempo limite de solicitação em segundos\nMelhorias no registro",
-        "nl": "Toegevoegd: Verzoek time-out in seconden\nLogboekverbeteringen",
-        "fr": "Ajouté : délai d'attente de la demande en secondes\nAméliorations de la journalisation",
-        "it": "Aggiunto: richiesta di timeout in secondi\nMiglioramenti alla registrazione",
-        "es": "Agregado: Solicitud de tiempo de espera en segundos\nMejoras en el registro",
-        "pl": "Dodano: Limit czasu żądania w sekundach\nUlepszenia rejestrowania",
-        "zh-cn": "补充：请求超时以秒为单位\n日志记录改进"
       }
     },
     "titleLang": {
