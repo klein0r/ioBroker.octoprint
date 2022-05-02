@@ -5,8 +5,7 @@
 [![NPM version](http://img.shields.io/npm/v/iobroker.octoprint.svg)](https://www.npmjs.com/package/iobroker.octoprint)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.octoprint.svg)](https://www.npmjs.com/package/iobroker.octoprint)
 [![Stable](http://iobroker.live/badges/octoprint-stable.svg)](http://iobroker.live/badges/octoprint-stable.svg)
-[![installed](http://iobroker.live/badges/octoprint-installed.svg)](http://iobroker.live/badges/octoprint-installed.svg)
-[![Dependency Status](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)](https://david-dm.org/klein0r/iobroker.octoprint)
+[![Installed](http://iobroker.live/badges/octoprint-installed.svg)](http://iobroker.live/badges/octoprint-installed.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)](https://snyk.io/test/github/klein0r/ioBroker.octoprint)
 ![Test and Release](https://github.com/klein0r/ioBroker.octoprint/workflows/Test%20and%20Release/badge.svg)
 
