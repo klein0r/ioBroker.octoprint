@@ -165,16 +165,17 @@
     "octoprintApiKey"
   ],
   "native": {
+    "octoprintIp": "",
+    "octoprintPort": "80",
     "customName": "My 3D printer",
     "octoprintApiKey": "",
-    "octoprintPort": "80",
-    "useHttps": false,
     "apiTimeoutSek": 2,
+    "useHttps": false,
+    "pluginDisplayLayerProgress": false,
+    "pluginSlicerThumbnails": false,
     "apiRefreshInterval": 60,
     "apiRefreshIntervalOperational": 30,
-    "apiRefreshIntervalPrinting": 10,
-    "pluginDisplayLayerProgress": false,
-    "pluginSlicerThumbnails": false
+    "apiRefreshIntervalPrinting": 10
   },
   "objects": [],
   "instanceObjects": [
