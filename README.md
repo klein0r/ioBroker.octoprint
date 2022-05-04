@@ -37,6 +37,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+NodeJS 14.x is required (NodeJS 12.x is EOL)
+
 ### 3.2.2 (2022-04-29)
 
 * (klein0r) Updated depedency for js-controller to 4.0.15
