@@ -1,6 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
@@ -39,12 +36,12 @@ class OctoPrint extends utils.Adapter {
         this.setApiConnected(false);
 
         if (!this.config.octoprintIp) {
-            this.log.warn(`Octoprint IP / hostname not configured. Check configuration and restart.`);
+            this.log.warn(`octoprint ip / hostname not configured - check configuration and restart`);
             return;
         }
 
         if (!this.config.octoprintApiKey) {
-            this.log.warn(`API key not configured. Check configuration and restart.`);
+            this.log.warn(`API key not configured - check configuration and restart`);
             return;
         }
 
@@ -661,7 +658,7 @@ class OctoPrint extends utils.Adapter {
             // Plugin Display Layer Progress
             // https://github.com/OllisGit/OctoPrint-DisplayLayerProgress
             if (this.config.pluginDisplayLayerProgress) {
-                this.log.debug('Plugin "Display Layer Progress" is activated - fetching details');
+                this.log.debug('[plugin display layer progress] plugin activated - fetching details');
 
                 pluginDisplayLayerProgress.refreshValues(this);
             } else {
@@ -686,6 +683,8 @@ class OctoPrint extends utils.Adapter {
                             const filePath = `${content.job.file.origin}/${content.job.file.path}`;
 
                             if (this.config.pluginSlicerThumbnails) {
+                                this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail`);
+
                                 let foundThumbnail = false;
                                 await this.setObjectNotExistsAsync('printjob.file.thumbnail_url', {
                                     type: 'state',
@@ -726,7 +725,7 @@ class OctoPrint extends utils.Adapter {
                                         const currentFileId = this.removeNamespace(currentFileObject.id);
 
                                         try {
-                                            this.log.debug(`Found current file: ${currentFileId}`);
+                                            this.log.debug(`[plugin slicer thumbnails] found current file: ${currentFileId}`);
                                             const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail_url`);
 
                                             if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
@@ -734,12 +733,13 @@ class OctoPrint extends utils.Adapter {
                                                 await this.setStateAsync('printjob.file.thumbnail_url', {val: currentFileThumbnailUrlState.val, ack: true});
                                             }
                                         } catch (err) {
-                                            this.log.debug(`Unable to get value of state ${currentFileId}.thumbnail_url`);
+                                            this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail_url`);
                                         }
                                     }
                                 }
 
                                 if (!foundThumbnail) {
+                                    this.log.debug(`[plugin slicer thumbnails] unable to find file which matches current job file`);
                                     await this.setStateAsync('printjob.file.thumbnail_url', {val: null, ack: true});
                                 }
                             } else {
@@ -864,313 +864,320 @@ class OctoPrint extends utils.Adapter {
     async refreshFiles() {
 
         if (this.apiConnected) {
-            this.log.debug('refreshing file list: started');
+            this.log.debug('[refreshFiles] started');
+
+            const filesAll = [];
+            const filesKeep = [];
+
+            try {
+                const fileChannels = await this.getChannelsOfAsync('files');
+
+                // Collect all existing files
+                if (fileChannels) {
+                    for (let i = 0; i < fileChannels.length; i++) {
+                        const id = this.removeNamespace(fileChannels[i]._id);
+
+                        // Check if the state is a direct child (e.g. files.MyCustomFile)
+                        if (id.split('.').length === 2) {
+                            if (!fileChannels[i].native.path) {
+                                // Force recreation of files without native path (upgraded from older version)
+                                await this.delObjectAsync(id, {recursive: true});
+                                this.log.debug(`[refreshFiles] found file channel without native.path - deleted ${id}`);
+                            } else {
+                                filesAll.push(id);
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                this.log.warn(err);
+            }
 
             this.buildServiceRequest(
                 'files?recursive=true',
                 null
-            ).then(response => {
+            ).then(async response => {
                 if (response.status === 200) {
                     const content = response.data;
 
-                    this.getChannelsOf(
-                        'files',
-                        async (err, states) => {
+                    const fileList = this.flattenFiles(content.files);
+                    this.log.debug(`[refreshFiles] found ${fileList.length} files`);
 
-                            const filesAll = [];
-                            const filesKeep = [];
+                    for (const f in fileList) {
+                        const file = fileList[f];
+                        const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
 
-                            // Collect all files
-                            if (states) {
-                                for (let i = 0; i < states.length; i++) {
-                                    const id = this.removeNamespace(states[i]._id);
+                        this.log.debug(`[refreshFiles] found file "${fileNameClean}" (clean name) - location: ${file.path}`);
+                        filesKeep.push(`files.${fileNameClean}`);
 
-                                    // Check if the state is a direct child (e.g. files.2)
-                                    if (id.split('.').length === 2) {
-                                        filesAll.push(id);
-                                    }
-                                }
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
+                            type: 'channel',
+                            common: {
+                                name: file.name,
+                            },
+                            native: {
+                                path: file.path
                             }
+                        });
 
-                            const fileList = this.flattenFiles(content.files);
-                            this.log.debug(`found ${fileList.length} files`);
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'File name',
+                                    de: 'Dateiname',
+                                    ru: 'Имя файла',
+                                    pt: 'Nome do arquivo',
+                                    nl: 'Bestandsnaam',
+                                    fr: 'Nom de fichier',
+                                    it: 'Nome del file',
+                                    es: 'Nombre del archivo',
+                                    pl: 'Nazwa pliku',
+                                    'zh-cn': '文档名称'
+                                },
+                                type: 'string',
+                                role: 'text',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        await this.setStateAsync(`files.${fileNameClean}.name`, {val: file.name, ack: true});
 
-                            for (const f in fileList) {
-                                const file = fileList[f];
-                                const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'File path',
+                                    de: 'Dateipfad',
+                                    ru: 'Путь файла',
+                                    pt: 'Caminho de arquivo',
+                                    nl: 'Bestandspad',
+                                    fr: 'Chemin du fichier',
+                                    it: 'Percorso del file',
+                                    es: 'Ruta de archivo',
+                                    pl: 'Ścieżka pliku',
+                                    'zh-cn': '文件路径'
+                                },
+                                type: 'string',
+                                role: 'text',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        await this.setStateAsync(`files.${fileNameClean}.path`, {val: file.path, ack: true});
 
-                                this.log.debug(`refreshing file list:  found file "${fileNameClean}" (clean name) - location: ${file.path}`);
-                                filesKeep.push(`files.${fileNameClean}`);
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'File size',
+                                    de: 'Dateigröße',
+                                    ru: 'Размер файла',
+                                    pt: 'Tamanho do arquivo',
+                                    nl: 'Bestandsgrootte',
+                                    fr: 'Taille du fichier',
+                                    it: 'Dimensione del file',
+                                    es: 'Tamaño del archivo',
+                                    pl: 'Rozmiar pliku',
+                                    'zh-cn': '文件大小'
+                                },
+                                type: 'number',
+                                role: 'value',
+                                unit: 'KiB',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        await this.setStateAsync(`files.${fileNameClean}.size`, {val: file.size, ack: true});
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
-                                    type: 'channel',
-                                    common: {
-                                        name: file.name,
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'File date',
+                                    de: 'Dateidatum',
+                                    ru: 'Дата файла',
+                                    pt: 'Data do arquivo',
+                                    nl: 'Bestandsdatum',
+                                    fr: 'Date du fichier',
+                                    it: 'Data file',
+                                    es: 'Fecha de archivo',
+                                    pl: 'Data pliku',
+                                    'zh-cn': '文件日期'
+                                },
+                                type: 'number',
+                                role: 'date',
+                                read: true,
+                                write: false
+                            },
+                            native: {}
+                        });
+                        await this.setStateAsync(`files.${fileNameClean}.date`, {val: file.date, ack: true});
+
+                        if (this.config.pluginSlicerThumbnails) {
+
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'Thumbnail URL',
+                                        de: 'Miniaturbild-URL',
+                                        ru: 'URL миниатюры',
+                                        pt: 'URL da miniatura',
+                                        nl: 'Miniatuur-URL',
+                                        fr: 'URL de la miniature',
+                                        it: 'URL miniatura',
+                                        es: 'URL de la miniatura',
+                                        pl: 'URL miniatury',
+                                        'zh-cn': '缩略图网址'
                                     },
-                                    native: {
-                                        path: file.path
-                                    }
-                                });
+                                    type: 'string',
+                                    role: 'url',
+                                    read: true,
+                                    write: false
+                                },
+                                native: {}
+                            });
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'File name',
-                                            de: 'Dateiname',
-                                            ru: 'Имя файла',
-                                            pt: 'Nome do arquivo',
-                                            nl: 'Bestandsnaam',
-                                            fr: 'Nom de fichier',
-                                            it: 'Nome del file',
-                                            es: 'Nombre del archivo',
-                                            pl: 'Nazwa pliku',
-                                            'zh-cn': '文档名称'
-                                        },
-                                        type: 'string',
-                                        role: 'text',
-                                        read: true,
-                                        write: false
+                            const thumbnailId = `files.${fileNameClean}.thumbnail`;
+
+                            await this.setObjectNotExistsAsync(thumbnailId, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'Thumbnail',
+                                        de: 'Miniaturansicht',
+                                        ru: 'Миниатюра',
+                                        pt: 'Miniatura',
+                                        nl: 'Miniatuur',
+                                        fr: 'La vignette',
+                                        it: 'Miniatura',
+                                        es: 'Miniatura',
+                                        pl: 'Miniaturka',
+                                        'zh-cn': '缩略图'
                                     },
-                                    native: {}
-                                });
-                                await this.setStateAsync(`files.${fileNameClean}.name`, {val: file.name, ack: true});
+                                    type: 'file',
+                                    role: 'state',
+                                    read: true,
+                                    write: false
+                                },
+                                native: {}
+                            });
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'File path',
-                                            de: 'Dateipfad',
-                                            ru: 'Путь файла',
-                                            pt: 'Caminho de arquivo',
-                                            nl: 'Bestandspad',
-                                            fr: 'Chemin du fichier',
-                                            it: 'Percorso del file',
-                                            es: 'Ruta de archivo',
-                                            pl: 'Ścieżka pliku',
-                                            'zh-cn': '文件路径'
-                                        },
-                                        type: 'string',
-                                        role: 'text',
-                                        read: true,
-                                        write: false
+                            if (file.thumbnail) {
+                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
+
+                                await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
+
+                                axios({
+                                    method: 'get',
+                                    responseType: 'arraybuffer',
+                                    baseURL: this.getOctoprintUri(),
+                                    url: file.thumbnail,
+                                    timeout: this.config.apiTimeoutSek * 1000,
+                                    validateStatus: (status) => {
+                                        return [200].indexOf(status) > -1;
                                     },
-                                    native: {}
-                                });
-                                await this.setStateAsync(`files.${fileNameClean}.path`, {val: file.path, ack: true});
+                                }).then(response => {
+                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
+                                    this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
+                                        this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary thumbnail information in ${thumbnailId}`);
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'File size',
-                                            de: 'Dateigröße',
-                                            ru: 'Размер файла',
-                                            pt: 'Tamanho do arquivo',
-                                            nl: 'Bestandsgrootte',
-                                            fr: 'Taille du fichier',
-                                            it: 'Dimensione del file',
-                                            es: 'Tamaño del archivo',
-                                            pl: 'Rozmiar pliku',
-                                            'zh-cn': '文件大小'
-                                        },
-                                        type: 'number',
-                                        role: 'value',
-                                        unit: 'KiB',
-                                        read: true,
-                                        write: false
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync(`files.${fileNameClean}.size`, {val: file.size, ack: true});
-
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'File date',
-                                            de: 'Dateidatum',
-                                            ru: 'Дата файла',
-                                            pt: 'Data do arquivo',
-                                            nl: 'Bestandsdatum',
-                                            fr: 'Date du fichier',
-                                            it: 'Data file',
-                                            es: 'Fecha de archivo',
-                                            pl: 'Data pliku',
-                                            'zh-cn': '文件日期'
-                                        },
-                                        type: 'number',
-                                        role: 'date',
-                                        read: true,
-                                        write: false
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync(`files.${fileNameClean}.date`, {val: file.date, ack: true});
-
-                                if (this.config.pluginSlicerThumbnails) {
-
-                                    await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Thumbnail URL',
-                                                de: 'Miniaturbild-URL',
-                                                ru: 'URL миниатюры',
-                                                pt: 'URL da miniatura',
-                                                nl: 'Miniatuur-URL',
-                                                fr: 'URL de la miniature',
-                                                it: 'URL miniatura',
-                                                es: 'URL de la miniatura',
-                                                pl: 'URL miniatury',
-                                                'zh-cn': '缩略图网址'
-                                            },
-                                            type: 'string',
-                                            role: 'url',
-                                            read: true,
-                                            write: false
-                                        },
-                                        native: {}
-                                    });
-
-                                    const thumbnailId = `files.${fileNameClean}.thumbnail`;
-
-                                    await this.setObjectNotExistsAsync(thumbnailId, {
-                                        type: 'state',
-                                        common: {
-                                            name: {
-                                                en: 'Thumbnail',
-                                                de: 'Miniaturansicht',
-                                                ru: 'Миниатюра',
-                                                pt: 'Miniatura',
-                                                nl: 'Miniatuur',
-                                                fr: 'La vignette',
-                                                it: 'Miniatura',
-                                                es: 'Miniatura',
-                                                pl: 'Miniaturka',
-                                                'zh-cn': '缩略图'
-                                            },
-                                            type: 'file',
-                                            role: 'state',
-                                            read: true,
-                                            write: false
-                                        },
-                                        native: {}
-                                    });
-
-                                    if (file.thumbnail) {
-                                        await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
-
-                                        axios({
-                                            method: 'get',
-                                            responseType: 'arraybuffer',
-                                            baseURL: this.getOctoprintUri(),
-                                            url: file.thumbnail,
-                                            timeout: this.config.apiTimeoutSek * 1000,
-                                            validateStatus: (status) => {
-                                                return [200].indexOf(status) > -1;
-                                            },
-                                        }).then(response => {
-                                            this.log.debug(`Received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
-                                            this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
-                                                this.log.debug(`Saved binary thumbnail information in ${thumbnailId}`);
-
-                                                /*
-                                                this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
-                                                    this.log.debug('Binary state: ' + data);
-                                                });
-                                                */
-
-                                            });
-                                        }).catch(error => {
-                                            if (error.response) {
-                                                // The request was made and the server responded with a status code
-
-                                                this.log.warn(`received ${error.response.status} response from ${file.thumbnail}`);
-                                            } else if (error.request) {
-                                                // The request was made but no response was received
-                                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                                // http.ClientRequest in node.js
-
-                                                this.log.info(`error ${error.code} from ${file.thumbnail}: ${error.message}`);
-                                            } else {
-                                                // Something happened in setting up the request that triggered an Error
-                                                this.log.error(error.message);
-                                            }
+                                        /*
+                                        this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
+                                            this.log.debug('Binary state: ' + data);
                                         });
-                                    }
-                                } else {
-                                    await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
-                                    await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
-                                }
+                                        */
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Select file',
-                                            de: 'Datei auswählen',
-                                            ru: 'Выберите файл',
-                                            pt: 'Selecione o arquivo',
-                                            nl: 'Selecteer bestand',
-                                            fr: 'Choisir le dossier',
-                                            it: 'Seleziona il file',
-                                            es: 'Seleccione Archivo',
-                                            pl: 'Wybierz plik',
-                                            'zh-cn': '选择文件'
-                                        },
-                                        type: 'boolean',
-                                        role: 'button',
-                                        read: false,
-                                        write: true
-                                    },
-                                    native: {}
-                                });
-
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.print`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Print',
-                                            de: 'Drucken',
-                                            ru: 'Распечатать',
-                                            pt: 'Imprimir',
-                                            nl: 'Afdrukken',
-                                            fr: 'Imprimer',
-                                            it: 'Stampa',
-                                            es: 'Impresión',
-                                            pl: 'Wydrukować',
-                                            'zh-cn': '打印'
-                                        },
-                                        type: 'boolean',
-                                        role: 'button',
-                                        read: false,
-                                        write: true
-                                    },
-                                    native: {}
-                                });
-
-                            }
-
-                            // Delete non existent files
-                            for (let i = 0; i < filesAll.length; i++) {
-                                const id = filesAll[i];
-
-                                if (filesKeep.indexOf(id) === -1) {
-                                    this.delObject(id, {recursive: true}, () => {
-                                        this.delBinaryState(id + '.thumbnail');
-                                        this.log.debug(`refreshing file list: file deleted: "${id}"`);
                                     });
-                                }
+                                }).catch(error => {
+                                    if (error.response) {
+                                        // The request was made and the server responded with a status code
+
+                                        this.log.warn(`[refreshFiles] [plugin slicer thumbnails] received ${error.response.status} response from ${file.thumbnail}`);
+                                    } else if (error.request) {
+                                        // The request was made but no response was received
+                                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                        // http.ClientRequest in node.js
+
+                                        this.log.info(`[refreshFiles] [plugin slicer thumbnails] error ${error.code} from ${file.thumbnail}: ${error.message}`);
+                                    } else {
+                                        // Something happened in setting up the request that triggered an Error
+                                        this.log.error(error.message);
+                                    }
+                                });
                             }
+                        } else {
+                            await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
+                            await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
                         }
-                    );
+
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'Select file',
+                                    de: 'Datei auswählen',
+                                    ru: 'Выберите файл',
+                                    pt: 'Selecione o arquivo',
+                                    nl: 'Selecteer bestand',
+                                    fr: 'Choisir le dossier',
+                                    it: 'Seleziona il file',
+                                    es: 'Seleccione Archivo',
+                                    pl: 'Wybierz plik',
+                                    'zh-cn': '选择文件'
+                                },
+                                type: 'boolean',
+                                role: 'button',
+                                read: false,
+                                write: true
+                            },
+                            native: {}
+                        });
+
+                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.print`, {
+                            type: 'state',
+                            common: {
+                                name: {
+                                    en: 'Print',
+                                    de: 'Drucken',
+                                    ru: 'Распечатать',
+                                    pt: 'Imprimir',
+                                    nl: 'Afdrukken',
+                                    fr: 'Imprimer',
+                                    it: 'Stampa',
+                                    es: 'Impresión',
+                                    pl: 'Wydrukować',
+                                    'zh-cn': '打印'
+                                },
+                                type: 'boolean',
+                                role: 'button',
+                                read: false,
+                                write: true
+                            },
+                            native: {}
+                        });
+
+                    }
+
+                    // Delete non existent files
+                    for (let i = 0; i < filesAll.length; i++) {
+                        const id = filesAll[i];
+
+                        if (filesKeep.indexOf(id) === -1) {
+                            await this.delObjectAsync(id, {recursive: true});
+                            // this.delForeignBinaryStateAsync(`${id}.thumbnail`);
+                            this.log.debug(`[refreshFiles] file deleted: "${id}"`);
+                        }
+                    }
                 }
             }).catch(error => {
             });
         } else {
-            this.log.debug('refreshing file list: skipped (API not connected)');
+            this.log.debug('[refreshFiles] skipped (API not connected)');
         }
     }
 
@@ -1196,7 +1203,7 @@ class OctoPrint extends utils.Adapter {
 
     async buildServiceRequest(service, callback, data) {
         return new Promise((resolve, reject) => {
-            this.log.debug('Starting service request');
+            this.log.debug('[buildServiceRequest] starting service request');
 
             this.buildRequest('/api/' + service, callback, data)
                 .then(resolve, reject);
@@ -1205,7 +1212,7 @@ class OctoPrint extends utils.Adapter {
 
     async buildPluginRequest(plugin, callback, data) {
         return new Promise((resolve, reject) => {
-            this.log.debug('Starting plugin request');
+            this.log.debug('[buildPluginRequest] starting plugin request');
 
             this.buildRequest('/plugin/' + plugin, callback, data)
                 .then(resolve, reject);
