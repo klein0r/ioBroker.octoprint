@@ -1,5 +1,13 @@
 {
     "eslint.enable": true,
     "editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "io-package.json"
+            ],
+            "url": "https://json.schemastore.org/io-package"
+        }
+    ]
 }

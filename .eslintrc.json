@@ -6,35 +6,16 @@
         "mocha": true
     },
     "extends": [
-        "eslint:recommended"
+        "eslint:recommended",
+        "plugin:prettier/recommended"
     ],
     "rules": {
-        "indent": [
-            "error",
-            4,
-            {
-                "SwitchCase": 1
-            }
-        ],
         "no-console": "off",
         "no-var": "error",
-        "no-trailing-spaces": "error",
-        "prefer-const": "error",
-        "quotes": [
-            "error",
-            "single",
-            {
-                "avoidEscape": true,
-                "allowTemplateLiterals": true
-            }
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "prefer-const": "error"
     },
     "parserOptions": {
-        "ecmaVersion": 2018,
+        "ecmaVersion": 2020,
         "ecmaFeatures": {
             "jsx": true
         }
