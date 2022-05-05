@@ -662,7 +662,7 @@ class OctoPrint extends utils.Adapter {
 
                 pluginDisplayLayerProgress.refreshValues(this);
             } else {
-                // this.delObject('plugins.displayLayerProgress', {recursive: true});
+                await this.delObjectAsync('plugins.displayLayerProgress', {recursive: true});
             }
 
             if (this.printerOperational || this.printerPrinting) {
