@@ -6,12 +6,11 @@ const axios = require('axios');
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
 
 class OctoPrint extends utils.Adapter {
-
     constructor(options) {
         super({
             ...options,
             name: 'octoprint',
-            useFormatDate: true
+            useFormatDate: true,
         });
 
         this.supportedVersion = '1.7.3';
@@ -46,14 +45,14 @@ class OctoPrint extends utils.Adapter {
         }
 
         if (this.config.customName) {
-            this.setStateAsync('name', {val: this.config.customName, ack: true});
+            this.setStateAsync('name', { val: this.config.customName, ack: true });
         } else {
-            this.setStateAsync('name', {val: '', ack: true});
+            this.setStateAsync('name', { val: '', ack: true });
         }
 
         // Delete old (unused) namespace on startup
         await this.delObjectAsync('printjob.progress.printtime_left');
-        await this.delObjectAsync('temperature', {recursive: true});
+        await this.delObjectAsync('temperature', { recursive: true });
 
         this.refreshState('onReady');
     }
@@ -87,7 +86,6 @@ class OctoPrint extends utils.Adapter {
 
             if (this.apiConnected) {
                 if (id.match(new RegExp(this.namespace + '.tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
-
                     const matches = id.match(/.+\.tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
                     const toolId = matches[1];
                     const command = matches[2];
@@ -99,70 +97,61 @@ class OctoPrint extends utils.Adapter {
                         targetObj[toolId] = state.val;
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
-                        this.buildServiceRequest(
-                            'printer/tool',
-                            {
-                                command: 'target',
-                                targets: targetObj
-                            }
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+                        this.buildServiceRequest('printer/tool', {
+                            command: 'target',
+                            targets: targetObj,
+                        })
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else if (command === 'extrude') {
                         this.log.debug(`extruding ${state.val}mm`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-tool-command
-                        this.buildServiceRequest(
-                            'printer/tool',
-                            {
-                                command: 'extrude',
-                                amount: state.val
-                            }
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                                // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
+                        this.buildServiceRequest('printer/tool', {
+                            command: 'extrude',
+                            amount: state.val,
+                        })
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                    // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     }
-
                 } else if (id === this.namespace + '.tools.bed.targetTemperature') {
                     this.log.debug(`changing target bed temperature to ${state.val}°C`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
-                    this.buildServiceRequest(
-                        'printer/bed',
-                        {
-                            command: 'target',
-                            target: state.val
-                        }
-                    ).then(response => {
-                        if (response.status === 204) {
-                            this.setStateAsync(cleanId, {val: state.val, ack: true});
-                        } else {
-                            // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
-                            // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
+                    this.buildServiceRequest('printer/bed', {
+                        command: 'target',
+                        target: state.val,
+                    })
+                        .then((response) => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, { val: state.val, ack: true });
+                            } else {
+                                // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
+                                // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
 
-                            this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
-                        }
-                    }).catch(error => {
-                    });
-
+                                this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        })
+                        .catch(() => {});
                 } else if (id === this.namespace + '.command.printer') {
-
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
 
@@ -170,56 +159,50 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug(`sending printer connection command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/connection.html#issue-a-connection-command
-                        this.buildServiceRequest(
-                            'connection',
-                            {
-                                command: state.val
-                            }
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                                this.refreshState('onStateChange command.printer');
-                            } else {
-                                // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
+                        this.buildServiceRequest('connection', {
+                            command: state.val,
+                        })
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.refreshState('onStateChange command.printer');
+                                } else {
+                                    // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
-                                this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug(`sending printer command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
-                        this.buildServiceRequest(
-                            'printer/printhead',
-                            {
-                                command: state.val,
-                                axes: ['x', 'y', 'z']
-                            }
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
-                                // 409 Conflict – If the printer is not operational or currently printing.
+                        this.buildServiceRequest('printer/printhead', {
+                            command: state.val,
+                            axes: ['x', 'y', 'z'],
+                        })
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                    // 409 Conflict – If the printer is not operational or currently printing.
 
-                                this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
-
                 } else if (id === this.namespace + '.command.printjob') {
-
                     const allowedCommands = ['start', 'pause', 'resume', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending printjob command: ${state.val}`);
 
                         const printjobCommand = {
-                            command: state.val
+                            command: state.val,
                         };
 
                         // Pause command needs an action
@@ -234,102 +217,87 @@ class OctoPrint extends utils.Adapter {
                         }
 
                         // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
-                        this.buildServiceRequest(
-                            'job',
-                            printjobCommand
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
+                        this.buildServiceRequest('job', printjobCommand)
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
-                                this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-
                 } else if (id === this.namespace + '.command.sd') {
-
                     const allowedCommands = ['init', 'refresh', 'release'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending sd card command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-an-sd-command
-                        this.buildServiceRequest(
-                            'printer/sd',
-                            {
-                                command: state.val
-                            }
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
+                        this.buildServiceRequest('printer/sd', {
+                            command: state.val,
+                        })
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
-                                this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else {
                         this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-
                 } else if (id === this.namespace + '.command.custom') {
                     this.log.debug(`sending custom command: ${state.val}`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
-                    this.buildServiceRequest(
-                        'printer/command',
-                        {
-                            command: state.val
-                        }
-                    ).then(response => {
-                        if (response.status === 204) {
-                            this.setStateAsync(cleanId, {val: state.val, ack: true});
-                        } else {
-                            // 409 Conflict – If the printer is not operational
+                    this.buildServiceRequest('printer/command', {
+                        command: state.val,
+                    })
+                        .then((response) => {
+                            if (response.status === 204) {
+                                this.setStateAsync(cleanId, { val: state.val, ack: true });
+                            } else {
+                                // 409 Conflict – If the printer is not operational
 
-                            this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
-                        }
-                    }).catch(error => {
-                    });
-
+                                this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
+                            }
+                        })
+                        .catch(() => {});
                 } else if (id === this.namespace + '.command.system') {
-
                     if (this.systemCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending system command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/system.html#execute-a-registered-system-command
-                        this.buildServiceRequest(
-                            'system/commands/' + state.val,
-                            {}
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
-                                // 404 Not Found – If the command could not be found for source and action
-                                // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
+                        this.buildServiceRequest('system/commands/' + state.val, {})
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
+                                    // 404 Not Found – If the command could not be found for source and action
+                                    // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
 
-                                this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else {
                         this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
                     }
-
                 } else if (id.indexOf(this.namespace + '.command.jog.') === 0) {
-
                     // Validate jog value
                     if (state.val !== 0) {
                         const axis = id.split('.').pop(); // Last element of the object id is the axis
                         const jogCommand = {
-                            command: 'jog'
+                            command: 'jog',
                         };
 
                         // Add axis
@@ -338,58 +306,48 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug(`sending jog ${axis} command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
-                        this.buildServiceRequest(
-                            'printer/printhead',
-                            jogCommand
-                        ).then(response => {
-                            if (response.status === 204) {
-                                this.setStateAsync(cleanId, {val: state.val, ack: true});
-                            } else {
-                                // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
-                                // 409 Conflict – If the printer is not operational or currently printing.
+                        this.buildServiceRequest('printer/printhead', jogCommand)
+                            .then((response) => {
+                                if (response.status === 204) {
+                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                } else {
+                                    // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
+                                    // 409 Conflict – If the printer is not operational or currently printing.
 
-                                this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
-                            }
-                        }).catch(error => {
-                        });
+                                    this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                }
+                            })
+                            .catch(() => {});
                     } else {
                         this.log.error('Jog: provide non-zero jog value');
                     }
-
                 } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9_]+.(select|print)'))) {
-
                     const matches = id.match(/.+\.files\.([a-zA-Z0-9_]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
 
                     this.log.debug(`selecting/printing file "${fileId}" - action: "${action}"`);
 
-                    this.getState(
-                        'files.' + fileId + '.path',
-                        (err, state) => {
-                            const fullPath = state.val;
+                    this.getState('files.' + fileId + '.path', (err, state) => {
+                        const fullPath = state.val;
 
-                            this.log.debug(`selecting/printing file with path "${fullPath}"`);
+                        this.log.debug(`selecting/printing file with path "${fullPath}"`);
 
-                            // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
-                            this.buildServiceRequest(
-                                'files/' + fullPath,
-                                {
-                                    command: 'select',
-                                    print: (action === 'print')
-                                }
-                            ).then(response => {
+                        // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
+                        this.buildServiceRequest('files/' + fullPath, {
+                            command: 'select',
+                            print: action === 'print',
+                        })
+                            .then((response) => {
                                 if (response.status === 204) {
                                     this.log.debug('selection/print file successful');
                                     this.refreshState('onStateChange file.' + action);
                                 } else {
                                     this.log.error(`(files/*) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
-                            }).catch(error => {
-                            });
-                        }
-                    );
-
+                            })
+                            .catch(() => {});
+                    });
                 }
             }
         }
@@ -403,7 +361,7 @@ class OctoPrint extends utils.Adapter {
             this.log.debug('API is offline');
 
             this.printerStatus = 'API not connected';
-            this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
+            this.setStateAsync('printer_status', { val: this.printerStatus, ack: true });
         }
     }
 
@@ -411,31 +369,32 @@ class OctoPrint extends utils.Adapter {
         this.log.debug(`refreshState: started from "${source}"`);
 
         // https://docs.octoprint.org/en/master/api/version.html
-        this.buildServiceRequest(
-            'version',
-            null
-        ).then(response => {
-            if (response.status === 200) {
-                this.setApiConnected(true);
+        this.buildServiceRequest('version', null)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.setApiConnected(true);
 
-                this.log.debug(`connected to OctoPrint API - online! - status: ${response.status}`);
+                    this.log.debug(`connected to OctoPrint API - online! - status: ${response.status}`);
 
-                this.setStateAsync('meta.version', {val: response.data.server, ack: true});
-                this.setStateAsync('meta.api_version', {val: response.data.api, ack: true});
+                    this.setStateAsync('meta.version', { val: response.data.server, ack: true });
+                    this.setStateAsync('meta.api_version', { val: response.data.api, ack: true });
 
-                if (this.isNewerVersion(response.data.server, this.supportedVersion) && !this.displayedVersionWarning) {
-                    this.log.warn(`You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${response.data.server}`);
-                    this.displayedVersionWarning = true; // Just show once
+                    if (this.isNewerVersion(response.data.server, this.supportedVersion) && !this.displayedVersionWarning) {
+                        this.log.warn(
+                            `You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${response.data.server}`,
+                        );
+                        this.displayedVersionWarning = true; // Just show once
+                    }
+
+                    this.refreshStateDetails();
+                } else {
+                    this.log.error(`(version) status ${response.status}: ${JSON.stringify(response.data)}`);
                 }
-
-                this.refreshStateDetails();
-            } else {
-                this.log.error(`(version) status ${response.status}: ${JSON.stringify(response.data)}`);
-            }
-        }).catch(error => {
-            this.log.debug(`(version) received error - API is now offline: ${JSON.stringify(error)}`);
-            this.setApiConnected(false);
-        });
+            })
+            .catch((error) => {
+                this.log.debug(`(version) received error - API is now offline: ${JSON.stringify(error)}`);
+                this.setApiConnected(false);
+            });
 
         // Delete old timer
         if (this.refreshStateTimeout) {
@@ -474,185 +433,179 @@ class OctoPrint extends utils.Adapter {
 
     async refreshStateDetails() {
         if (this.apiConnected) {
-
             // https://docs.octoprint.org/en/master/api/connection.html
-            this.buildServiceRequest(
-                'connection',
-                null
-            ).then(response => {
-                if (response.status === 200) {
-                    this.updatePrinterStatus(response.data.current.state);
+            this.buildServiceRequest('connection', null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.updatePrinterStatus(response.data.current.state);
 
-                    if (!this.printerPrinting) {
-                        this.refreshFiles();
-                    }
+                        if (!this.printerPrinting) {
+                            this.refreshFiles();
+                        }
 
-                    // Try again in 2 seconds
-                    if (this.printerStatus === 'Detecting serial connection') {
-                        this.setTimeout(() => {
-                            this.refreshState('detecting serial connection');
-                        }, 2000);
+                        // Try again in 2 seconds
+                        if (this.printerStatus === 'Detecting serial connection') {
+                            this.setTimeout(() => {
+                                this.refreshState('detecting serial connection');
+                            }, 2000);
+                        }
+                    } else {
+                        this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                     }
-                } else {
-                    this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
-                }
-            }).catch(error => {
-            });
+                })
+                .catch(() => {});
 
             if (this.printerOperational) {
-                this.buildServiceRequest(
-                    'printer',
-                    null
-                ).then(async response => {
-                    const content = response.data;
-                    if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
-                        for (const key of Object.keys(content.temperature)) {
-                            const obj = content.temperature[key];
+                this.buildServiceRequest('printer', null)
+                    .then(async (response) => {
+                        const content = response.data;
+                        if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
+                            for (const key of Object.keys(content.temperature)) {
+                                const obj = content.temperature[key];
 
-                            const isTool = key.indexOf('tool') > -1;
-                            const isBed = key == 'bed';
+                                const isTool = key.indexOf('tool') > -1;
+                                const isBed = key == 'bed';
 
-                            if (isTool || isBed) { // Tool + bed information
+                                if (isTool || isBed) {
+                                    // Tool + bed information
 
-                                // Create tool channel
-                                await this.setObjectNotExistsAsync('tools.' + key, {
-                                    type: 'channel',
-                                    common: {
-                                        name: key
-                                    },
-                                    native: {}
-                                });
-
-                                // Set actual temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Actual temperature',
-                                            de: 'Tatsächliche Temperatur',
-                                            ru: 'Фактическая температура',
-                                            pt: 'Temperatura real',
-                                            nl: 'Werkelijke temperatuur',
-                                            fr: 'Température réelle',
-                                            it: 'Temperatura effettiva',
-                                            es: 'Temperatura real',
-                                            pl: 'Rzeczywista temperatura',
-                                            'zh-cn': '实际温度'
+                                    // Create tool channel
+                                    await this.setObjectNotExistsAsync('tools.' + key, {
+                                        type: 'channel',
+                                        common: {
+                                            name: key,
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: false,
-                                        def: 0
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.actualTemperature', {val: obj.actual, ack: true});
+                                        native: {},
+                                    });
 
-                                // Set target temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Target temperature',
-                                            de: 'Zieltemperatur',
-                                            ru: 'Целевая температура',
-                                            pt: 'Temperatura alvo',
-                                            nl: 'Doeltemperatuur',
-                                            fr: 'Température cible',
-                                            it: 'Temperatura obiettivo',
-                                            es: 'Temperatura objetivo',
-                                            pl: 'Temperatura docelowa',
-                                            'zh-cn': '目标温度'
+                                    // Set actual temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Actual temperature',
+                                                de: 'Tatsächliche Temperatur',
+                                                ru: 'Фактическая температура',
+                                                pt: 'Temperatura real',
+                                                nl: 'Werkelijke temperatuur',
+                                                fr: 'Température réelle',
+                                                it: 'Temperatura effettiva',
+                                                es: 'Temperatura real',
+                                                pl: 'Rzeczywista temperatura',
+                                                'zh-cn': '实际温度',
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: false,
+                                            def: 0,
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: true
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.targetTemperature', {val: obj.target, ack: true});
+                                        native: {},
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.actualTemperature', { val: obj.actual, ack: true });
 
-                                // Set offset temperature
-                                await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Offset temperature',
-                                            de: 'Offset-Temperatur',
-                                            ru: 'Смещение температуры',
-                                            pt: 'Temperatura compensada',
-                                            nl: 'Offset temperatuur',
-                                            fr: 'Température de décalage',
-                                            it: 'Temperatura di compensazione',
-                                            es: 'Temperatura de compensación',
-                                            pl: 'Temperatura przesunięcia',
-                                            'zh-cn': '偏移温度'
+                                    // Set target temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Target temperature',
+                                                de: 'Zieltemperatur',
+                                                ru: 'Целевая температура',
+                                                pt: 'Temperatura alvo',
+                                                nl: 'Doeltemperatuur',
+                                                fr: 'Température cible',
+                                                it: 'Temperatura obiettivo',
+                                                es: 'Temperatura objetivo',
+                                                pl: 'Temperatura docelowa',
+                                                'zh-cn': '目标温度',
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: true,
                                         },
-                                        type: 'number',
-                                        role: 'value.temperature',
-                                        unit: '°C',
-                                        read: true,
-                                        write: false,
-                                        def: 0
-                                    },
-                                    native: {}
-                                });
-                                await this.setStateAsync('tools.' + key + '.offsetTemperature', {val: obj.target, ack: true});
-                            }
+                                        native: {},
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.targetTemperature', { val: obj.target, ack: true });
 
-                            if (isTool) {
-                                // Set extrude
-                                await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Extrude',
-                                            de: 'Extrudieren',
-                                            ru: 'Выдавливание',
-                                            pt: 'Extrudar',
-                                            nl: 'extruderen',
-                                            fr: 'Extruder',
-                                            it: 'Estrudere',
-                                            es: 'Extrudir',
-                                            pl: 'Wyrzucać',
-                                            'zh-cn': '拉伸'
+                                    // Set offset temperature
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Offset temperature',
+                                                de: 'Offset-Temperatur',
+                                                ru: 'Смещение температуры',
+                                                pt: 'Temperatura compensada',
+                                                nl: 'Offset temperatuur',
+                                                fr: 'Température de décalage',
+                                                it: 'Temperatura di compensazione',
+                                                es: 'Temperatura de compensación',
+                                                pl: 'Temperatura przesunięcia',
+                                                'zh-cn': '偏移温度',
+                                            },
+                                            type: 'number',
+                                            role: 'value.temperature',
+                                            unit: '°C',
+                                            read: true,
+                                            write: false,
+                                            def: 0,
                                         },
-                                        type: 'number',
-                                        role: 'value',
-                                        unit: 'mm',
-                                        read: true,
-                                        write: true,
-                                        def: 0
-                                    },
-                                    native: {}
-                                });
+                                        native: {},
+                                    });
+                                    await this.setStateAsync('tools.' + key + '.offsetTemperature', { val: obj.target, ack: true });
+                                }
+
+                                if (isTool) {
+                                    // Set extrude
+                                    await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Extrude',
+                                                de: 'Extrudieren',
+                                                ru: 'Выдавливание',
+                                                pt: 'Extrudar',
+                                                nl: 'extruderen',
+                                                fr: 'Extruder',
+                                                it: 'Estrudere',
+                                                es: 'Extrudir',
+                                                pl: 'Wyrzucać',
+                                                'zh-cn': '拉伸',
+                                            },
+                                            type: 'number',
+                                            role: 'value',
+                                            unit: 'mm',
+                                            read: true,
+                                            write: true,
+                                            def: 0,
+                                        },
+                                        native: {},
+                                    });
+                                }
                             }
                         }
-                    }
-                }).catch(error => {
-                });
+                    })
+                    .catch(() => {});
             } else {
                 // https://docs.octoprint.org/en/master/api/system.html#list-all-registered-system-commands
-                this.buildServiceRequest(
-                    'system/commands',
-                    null
-                ).then(response => {
-                    if (response.status === 200) {
-                        this.systemCommands = [];
+                this.buildServiceRequest('system/commands', null)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.systemCommands = [];
 
-                        for (const key of Object.keys(response.data)) {
-                            const arr = response.data[key];
-                            arr.forEach(e => this.systemCommands.push(e.source + '/' + e.action));
+                            for (const key of Object.keys(response.data)) {
+                                const arr = response.data[key];
+                                arr.forEach((e) => this.systemCommands.push(e.source + '/' + e.action));
+                            }
+
+                            this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
                         }
-
-                        this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
-                    }
-                }).catch(error => {
-                });
+                    })
+                    .catch(() => {});
             }
 
             // Plugin Display Layer Progress
@@ -662,159 +615,152 @@ class OctoPrint extends utils.Adapter {
 
                 pluginDisplayLayerProgress.refreshValues(this);
             } else {
-                await this.delObjectAsync('plugins.displayLayerProgress', {recursive: true});
+                await this.delObjectAsync('plugins.displayLayerProgress', { recursive: true });
             }
 
             if (this.printerOperational || this.printerPrinting) {
-
                 // https://docs.octoprint.org/en/master/api/job.html#retrieve-information-about-the-current-job
-                this.buildServiceRequest(
-                    'job',
-                    null
-                ).then(async response => {
-                    if (response.status === 200) {
-                        const content = response.data;
+                this.buildServiceRequest('job', null)
+                    .then(async (response) => {
+                        if (response.status === 200) {
+                            const content = response.data;
 
-                        if (Object.prototype.hasOwnProperty.call(content, 'error')) {
-                            this.log.warn(`print job error: ${content.error}`);
-                        }
+                            if (Object.prototype.hasOwnProperty.call(content, 'error')) {
+                                this.log.warn(`print job error: ${content.error}`);
+                            }
 
-                        if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
-                            const filePath = `${content.job.file.origin}/${content.job.file.path}`;
+                            if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
+                                const filePath = `${content.job.file.origin}/${content.job.file.path}`;
 
-                            if (this.config.pluginSlicerThumbnails) {
-                                this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail`);
+                                if (this.config.pluginSlicerThumbnails) {
+                                    this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail`);
 
-                                let foundThumbnail = false;
-                                await this.setObjectNotExistsAsync('printjob.file.thumbnail_url', {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Thumbnail URL',
-                                            de: 'Miniaturbild-URL',
-                                            ru: 'URL миниатюры',
-                                            pt: 'URL da miniatura',
-                                            nl: 'Miniatuur-URL',
-                                            fr: 'URL de la miniature',
-                                            it: 'URL miniatura',
-                                            es: 'URL de la miniatura',
-                                            pl: 'URL miniatury',
-                                            'zh-cn': '缩略图网址'
+                                    let foundThumbnail = false;
+                                    await this.setObjectNotExistsAsync('printjob.file.thumbnail_url', {
+                                        type: 'state',
+                                        common: {
+                                            name: {
+                                                en: 'Thumbnail URL',
+                                                de: 'Miniaturbild-URL',
+                                                ru: 'URL миниатюры',
+                                                pt: 'URL da miniatura',
+                                                nl: 'Miniatuur-URL',
+                                                fr: 'URL de la miniature',
+                                                it: 'URL miniatura',
+                                                es: 'URL de la miniatura',
+                                                pl: 'URL miniatury',
+                                                'zh-cn': '缩略图网址',
+                                            },
+                                            type: 'string',
+                                            role: 'url',
+                                            read: true,
+                                            write: false,
                                         },
-                                        type: 'string',
-                                        role: 'url',
-                                        read: true,
-                                        write: false
-                                    },
-                                    native: {}
-                                });
+                                        native: {},
+                                    });
 
-                                const fileObjectsView = await this.getObjectViewAsync(
-                                    'system',
-                                    'channel',
-                                    {
+                                    const fileObjectsView = await this.getObjectViewAsync('system', 'channel', {
                                         startkey: this.namespace + '.files.',
-                                        endkey: this.namespace + '.files.\u9999'
-                                    }
-                                );
+                                        endkey: this.namespace + '.files.\u9999',
+                                    });
 
-                                if (fileObjectsView && fileObjectsView.rows) {
-                                    // File file where native.path matches current jobs file path
-                                    const currentFileObject = fileObjectsView.rows.find(file => file.value.native.path === filePath);
-                                    if (currentFileObject) {
-                                        const currentFileId = this.removeNamespace(currentFileObject.id);
+                                    if (fileObjectsView && fileObjectsView.rows) {
+                                        // File file where native.path matches current jobs file path
+                                        const currentFileObject = fileObjectsView.rows.find((file) => file.value.native.path === filePath);
+                                        if (currentFileObject) {
+                                            const currentFileId = this.removeNamespace(currentFileObject.id);
 
-                                        try {
-                                            this.log.debug(`[plugin slicer thumbnails] found current file: ${currentFileId}`);
-                                            const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail_url`);
+                                            try {
+                                                this.log.debug(`[plugin slicer thumbnails] found current file: ${currentFileId}`);
+                                                const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail_url`);
 
-                                            if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
-                                                foundThumbnail = true;
-                                                await this.setStateAsync('printjob.file.thumbnail_url', {val: currentFileThumbnailUrlState.val, ack: true});
+                                                if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
+                                                    foundThumbnail = true;
+                                                    await this.setStateAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
+                                                }
+                                            } catch (err) {
+                                                this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail_url`);
                                             }
-                                        } catch (err) {
-                                            this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail_url`);
                                         }
                                     }
+
+                                    if (!foundThumbnail) {
+                                        this.log.debug(`[plugin slicer thumbnails] unable to find file which matches current job file`);
+                                        await this.setStateAsync('printjob.file.thumbnail_url', { val: null, ack: true });
+                                    }
+                                } else {
+                                    await this.delObjectAsync('printjob.file.thumbnail_url');
                                 }
 
-                                if (!foundThumbnail) {
-                                    this.log.debug(`[plugin slicer thumbnails] unable to find file which matches current job file`);
-                                    await this.setStateAsync('printjob.file.thumbnail_url', {val: null, ack: true});
+                                await this.setStateAsync('printjob.file.name', { val: content.job.file.name, ack: true });
+                                await this.setStateAsync('printjob.file.origin', { val: content.job.file.origin, ack: true });
+                                await this.setStateAsync('printjob.file.size', { val: Number((content.job.file.size / 1024).toFixed(2)), ack: true });
+                                await this.setStateAsync('printjob.file.date', { val: new Date(content.job.file.date * 1000).getTime(), ack: true });
+
+                                if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
+                                    let filamentLength = 0;
+                                    let filamentVolume = 0;
+
+                                    if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
+                                        filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
+                                        filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
+                                    } else {
+                                        filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
+                                        filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0;
+                                    }
+
+                                    if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
+                                        await this.setStateAsync('printjob.filament.length', { val: Number((filamentLength / 1000).toFixed(2)), ack: true });
+                                        await this.setStateAsync('printjob.filament.volume', { val: Number(filamentVolume.toFixed(2)), ack: true });
+                                    } else {
+                                        this.log.debug('Filament length and/or volume contains no valid number');
+
+                                        await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
+                                        await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
+                                    }
+                                } else {
+                                    await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
+                                    await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
                                 }
-                            } else {
-                                await this.delObjectAsync('printjob.file.thumbnail_url');
                             }
 
-                            await this.setStateAsync('printjob.file.name', {val: content.job.file.name, ack: true});
-                            await this.setStateAsync('printjob.file.origin', {val: content.job.file.origin, ack: true});
-                            await this.setStateAsync('printjob.file.size', {val: Number((content.job.file.size / 1024).toFixed(2)), ack: true});
-                            await this.setStateAsync('printjob.file.date', {val: new Date(content.job.file.date * 1000).getTime(), ack: true});
+                            if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
+                                await this.setStateAsync('printjob.progress.completion', { val: Math.round(content.progress.completion), ack: true });
+                                await this.setStateAsync('printjob.progress.filepos', { val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true });
+                                await this.setStateAsync('printjob.progress.printtime', { val: content.progress.printTime, ack: true });
+                                await this.setStateAsync('printjob.progress.printtimeLeft', { val: content.progress.printTimeLeft, ack: true });
 
-                            if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
-                                let filamentLength = 0;
-                                let filamentVolume = 0;
+                                await this.setStateAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(content.progress.printTime), ack: true });
+                                await this.setStateAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(content.progress.printTimeLeft), ack: true });
 
-                                if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
-                                    filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
-                                    filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
-                                } else {
-                                    filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
-                                    filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0 ;
-                                }
+                                const finishedAt = new Date();
+                                finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
 
-                                if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                    await this.setStateAsync('printjob.filament.length', {val: Number((filamentLength / 1000).toFixed(2)), ack: true});
-                                    await this.setStateAsync('printjob.filament.volume', {val: Number((filamentVolume).toFixed(2)), ack: true});
-                                } else {
-                                    this.log.debug('Filament length and/or volume contains no valid number');
-
-                                    await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
-                                    await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
-                                }
-                            } else {
-                                await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
-                                await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
+                                await this.setStateAsync('printjob.progress.finishedAt', { val: finishedAt.getTime(), ack: true });
+                                await this.setStateAsync('printjob.progress.finishedAtFormat', { val: this.formatDate(finishedAt), ack: true });
                             }
                         }
-
-                        if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
-                            await this.setStateAsync('printjob.progress.completion', {val: Math.round(content.progress.completion), ack: true});
-                            await this.setStateAsync('printjob.progress.filepos', {val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true});
-                            await this.setStateAsync('printjob.progress.printtime', {val: content.progress.printTime, ack: true});
-                            await this.setStateAsync('printjob.progress.printtimeLeft', {val: content.progress.printTimeLeft, ack: true});
-
-                            await this.setStateAsync('printjob.progress.printtimeFormat', {val: this.printtimeString(content.progress.printTime), ack: true});
-                            await this.setStateAsync('printjob.progress.printtimeLeftFormat', {val: this.printtimeString(content.progress.printTimeLeft), ack: true});
-
-                            const finishedAt = new Date();
-                            finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
-
-                            await this.setStateAsync('printjob.progress.finishedAt', {val: finishedAt.getTime(), ack: true});
-                            await this.setStateAsync('printjob.progress.finishedAtFormat', {val: this.formatDate(finishedAt), ack: true});
-                        }
-                    }
-                }).catch(error => {
-                });
+                    })
+                    .catch(() => {});
             } else {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
 
                 // Reset all values
-                await this.setStateAsync('printjob.file.name', {val: '', ack: true});
-                await this.setStateAsync('printjob.file.origin', {val: '', ack: true});
-                await this.setStateAsync('printjob.file.size', {val: 0, ack: true});
-                await this.setStateAsync('printjob.file.date', {val: 0, ack: true});
+                await this.setStateAsync('printjob.file.name', { val: '', ack: true });
+                await this.setStateAsync('printjob.file.origin', { val: '', ack: true });
+                await this.setStateAsync('printjob.file.size', { val: 0, ack: true });
+                await this.setStateAsync('printjob.file.date', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.filament.length', {val: 0, ack: true});
-                await this.setStateAsync('printjob.filament.volume', {val: 0, ack: true});
+                await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
+                await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.progress.completion', {val: 0, ack: true});
-                await this.setStateAsync('printjob.progress.filepos', {val: 0, ack: true});
-                await this.setStateAsync('printjob.progress.printtime', {val: 0, ack: true});
-                await this.setStateAsync('printjob.progress.printtimeLeft', {val: 0, ack: true});
+                await this.setStateAsync('printjob.progress.completion', { val: 0, ack: true });
+                await this.setStateAsync('printjob.progress.filepos', { val: 0, ack: true });
+                await this.setStateAsync('printjob.progress.printtime', { val: 0, ack: true });
+                await this.setStateAsync('printjob.progress.printtimeLeft', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.progress.printtimeFormat', {val: this.printtimeString(0), ack: true});
-                await this.setStateAsync('printjob.progress.printtimeLeftFormat', {val: this.printtimeString(0), ack: true});
+                await this.setStateAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(0), ack: true });
+                await this.setStateAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(0), ack: true });
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
@@ -822,39 +768,30 @@ class OctoPrint extends utils.Adapter {
     }
 
     flattenFiles(files) {
-
         let fileArr = [];
 
         if (Array.isArray(files)) {
             for (const file of files) {
-
                 if (file.type == 'machinecode' && file.origin == 'local') {
-
                     const fileObj = {
                         name: file.display,
                         path: file.origin + '/' + file.path,
-                        date: (file.date) ? new Date(file.date * 1000).getTime() : 0,
-                        size: (file.size) ? Number(Math.round(file.size / 1024).toFixed(2)) : 0,
-                        thumbnail : null
+                        date: file.date ? new Date(file.date * 1000).getTime() : 0,
+                        size: file.size ? Number(Math.round(file.size / 1024).toFixed(2)) : 0,
+                        thumbnail: null,
                     };
 
                     // Plugin Slicer Thumbnails
                     if (this.config.pluginSlicerThumbnails) {
-                        if (
-                            Object.prototype.hasOwnProperty.call(file, 'thumbnail') &&
-                            Object.prototype.hasOwnProperty.call(file, 'thumbnail_src') &&
-                            file.thumbnail_src == 'prusaslicerthumbnails'
-                        ) {
+                        if (Object.prototype.hasOwnProperty.call(file, 'thumbnail') && Object.prototype.hasOwnProperty.call(file, 'thumbnail_src') && file.thumbnail_src == 'prusaslicerthumbnails') {
                             fileObj.thumbnail = file.thumbnail;
                         }
                     }
 
                     fileArr.push(fileObj);
-
                 } else if (file.type == 'folder') {
                     fileArr = fileArr.concat(this.flattenFiles(file.children));
                 }
-
             }
         }
 
@@ -862,7 +799,6 @@ class OctoPrint extends utils.Adapter {
     }
 
     async refreshFiles() {
-
         if (this.apiConnected) {
             this.log.debug('[refreshFiles] started');
 
@@ -881,7 +817,7 @@ class OctoPrint extends utils.Adapter {
                         if (id.split('.').length === 2) {
                             if (!fileChannels[i].native.path) {
                                 // Force recreation of files without native path (upgraded from older version)
-                                await this.delObjectAsync(id, {recursive: true});
+                                await this.delObjectAsync(id, { recursive: true });
                                 this.log.debug(`[refreshFiles] found file channel without native.path - deleted ${id}`);
                             } else {
                                 filesAll.push(id);
@@ -893,289 +829,288 @@ class OctoPrint extends utils.Adapter {
                 this.log.warn(err);
             }
 
-            this.buildServiceRequest(
-                'files?recursive=true',
-                null
-            ).then(async response => {
-                if (response.status === 200) {
-                    const content = response.data;
+            this.buildServiceRequest('files?recursive=true', null)
+                .then(async (response) => {
+                    if (response.status === 200) {
+                        const content = response.data;
 
-                    const fileList = this.flattenFiles(content.files);
-                    this.log.debug(`[refreshFiles] found ${fileList.length} files`);
+                        const fileList = this.flattenFiles(content.files);
+                        this.log.debug(`[refreshFiles] found ${fileList.length} files`);
 
-                    for (const f in fileList) {
-                        const file = fileList[f];
-                        const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
+                        for (const f in fileList) {
+                            const file = fileList[f];
+                            const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
 
-                        this.log.debug(`[refreshFiles] found file "${fileNameClean}" (clean name) - location: ${file.path}`);
-                        filesKeep.push(`files.${fileNameClean}`);
+                            this.log.debug(`[refreshFiles] found file "${fileNameClean}" (clean name) - location: ${file.path}`);
+                            filesKeep.push(`files.${fileNameClean}`);
 
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
-                            type: 'channel',
-                            common: {
-                                name: file.name,
-                            },
-                            native: {
-                                path: file.path
-                            }
-                        });
-
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'File name',
-                                    de: 'Dateiname',
-                                    ru: 'Имя файла',
-                                    pt: 'Nome do arquivo',
-                                    nl: 'Bestandsnaam',
-                                    fr: 'Nom de fichier',
-                                    it: 'Nome del file',
-                                    es: 'Nombre del archivo',
-                                    pl: 'Nazwa pliku',
-                                    'zh-cn': '文档名称'
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
+                                type: 'channel',
+                                common: {
+                                    name: file.name,
                                 },
-                                type: 'string',
-                                role: 'text',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        await this.setStateAsync(`files.${fileNameClean}.name`, {val: file.name, ack: true});
-
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'File path',
-                                    de: 'Dateipfad',
-                                    ru: 'Путь файла',
-                                    pt: 'Caminho de arquivo',
-                                    nl: 'Bestandspad',
-                                    fr: 'Chemin du fichier',
-                                    it: 'Percorso del file',
-                                    es: 'Ruta de archivo',
-                                    pl: 'Ścieżka pliku',
-                                    'zh-cn': '文件路径'
+                                native: {
+                                    path: file.path,
                                 },
-                                type: 'string',
-                                role: 'text',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        await this.setStateAsync(`files.${fileNameClean}.path`, {val: file.path, ack: true});
+                            });
 
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'File size',
-                                    de: 'Dateigröße',
-                                    ru: 'Размер файла',
-                                    pt: 'Tamanho do arquivo',
-                                    nl: 'Bestandsgrootte',
-                                    fr: 'Taille du fichier',
-                                    it: 'Dimensione del file',
-                                    es: 'Tamaño del archivo',
-                                    pl: 'Rozmiar pliku',
-                                    'zh-cn': '文件大小'
-                                },
-                                type: 'number',
-                                role: 'value',
-                                unit: 'KiB',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        await this.setStateAsync(`files.${fileNameClean}.size`, {val: file.size, ack: true});
-
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'File date',
-                                    de: 'Dateidatum',
-                                    ru: 'Дата файла',
-                                    pt: 'Data do arquivo',
-                                    nl: 'Bestandsdatum',
-                                    fr: 'Date du fichier',
-                                    it: 'Data file',
-                                    es: 'Fecha de archivo',
-                                    pl: 'Data pliku',
-                                    'zh-cn': '文件日期'
-                                },
-                                type: 'number',
-                                role: 'date',
-                                read: true,
-                                write: false
-                            },
-                            native: {}
-                        });
-                        await this.setStateAsync(`files.${fileNameClean}.date`, {val: file.date, ack: true});
-
-                        if (this.config.pluginSlicerThumbnails) {
-
-                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.name`, {
                                 type: 'state',
                                 common: {
                                     name: {
-                                        en: 'Thumbnail URL',
-                                        de: 'Miniaturbild-URL',
-                                        ru: 'URL миниатюры',
-                                        pt: 'URL da miniatura',
-                                        nl: 'Miniatuur-URL',
-                                        fr: 'URL de la miniature',
-                                        it: 'URL miniatura',
-                                        es: 'URL de la miniatura',
-                                        pl: 'URL miniatury',
-                                        'zh-cn': '缩略图网址'
+                                        en: 'File name',
+                                        de: 'Dateiname',
+                                        ru: 'Имя файла',
+                                        pt: 'Nome do arquivo',
+                                        nl: 'Bestandsnaam',
+                                        fr: 'Nom de fichier',
+                                        it: 'Nome del file',
+                                        es: 'Nombre del archivo',
+                                        pl: 'Nazwa pliku',
+                                        'zh-cn': '文档名称',
                                     },
                                     type: 'string',
-                                    role: 'url',
+                                    role: 'text',
                                     read: true,
-                                    write: false
+                                    write: false,
                                 },
-                                native: {}
+                                native: {},
                             });
+                            await this.setStateAsync(`files.${fileNameClean}.name`, { val: file.name, ack: true });
 
-                            const thumbnailId = `files.${fileNameClean}.thumbnail`;
-
-                            await this.setObjectNotExistsAsync(thumbnailId, {
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
                                 type: 'state',
                                 common: {
                                     name: {
-                                        en: 'Thumbnail',
-                                        de: 'Miniaturansicht',
-                                        ru: 'Миниатюра',
-                                        pt: 'Miniatura',
-                                        nl: 'Miniatuur',
-                                        fr: 'La vignette',
-                                        it: 'Miniatura',
-                                        es: 'Miniatura',
-                                        pl: 'Miniaturka',
-                                        'zh-cn': '缩略图'
+                                        en: 'File path',
+                                        de: 'Dateipfad',
+                                        ru: 'Путь файла',
+                                        pt: 'Caminho de arquivo',
+                                        nl: 'Bestandspad',
+                                        fr: 'Chemin du fichier',
+                                        it: 'Percorso del file',
+                                        es: 'Ruta de archivo',
+                                        pl: 'Ścieżka pliku',
+                                        'zh-cn': '文件路径',
                                     },
-                                    type: 'file',
-                                    role: 'state',
+                                    type: 'string',
+                                    role: 'text',
                                     read: true,
-                                    write: false
+                                    write: false,
                                 },
-                                native: {}
+                                native: {},
                             });
+                            await this.setStateAsync(`files.${fileNameClean}.path`, { val: file.path, ack: true });
 
-                            if (file.thumbnail) {
-                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
-
-                                await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, {val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true});
-
-                                axios({
-                                    method: 'get',
-                                    responseType: 'arraybuffer',
-                                    baseURL: this.getOctoprintUri(),
-                                    url: file.thumbnail,
-                                    timeout: this.config.apiTimeoutSek * 1000,
-                                    validateStatus: (status) => {
-                                        return [200].indexOf(status) > -1;
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'File size',
+                                        de: 'Dateigröße',
+                                        ru: 'Размер файла',
+                                        pt: 'Tamanho do arquivo',
+                                        nl: 'Bestandsgrootte',
+                                        fr: 'Taille du fichier',
+                                        it: 'Dimensione del file',
+                                        es: 'Tamaño del archivo',
+                                        pl: 'Rozmiar pliku',
+                                        'zh-cn': '文件大小',
                                     },
-                                }).then(response => {
-                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`);
-                                    this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
-                                        this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary thumbnail information in ${thumbnailId}`);
+                                    type: 'number',
+                                    role: 'value',
+                                    unit: 'KiB',
+                                    read: true,
+                                    write: false,
+                                },
+                                native: {},
+                            });
+                            await this.setStateAsync(`files.${fileNameClean}.size`, { val: file.size, ack: true });
 
-                                        /*
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'File date',
+                                        de: 'Dateidatum',
+                                        ru: 'Дата файла',
+                                        pt: 'Data do arquivo',
+                                        nl: 'Bestandsdatum',
+                                        fr: 'Date du fichier',
+                                        it: 'Data file',
+                                        es: 'Fecha de archivo',
+                                        pl: 'Data pliku',
+                                        'zh-cn': '文件日期',
+                                    },
+                                    type: 'number',
+                                    role: 'date',
+                                    read: true,
+                                    write: false,
+                                },
+                                native: {},
+                            });
+                            await this.setStateAsync(`files.${fileNameClean}.date`, { val: file.date, ack: true });
+
+                            if (this.config.pluginSlicerThumbnails) {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Thumbnail URL',
+                                            de: 'Miniaturbild-URL',
+                                            ru: 'URL миниатюры',
+                                            pt: 'URL da miniatura',
+                                            nl: 'Miniatuur-URL',
+                                            fr: 'URL de la miniature',
+                                            it: 'URL miniatura',
+                                            es: 'URL de la miniatura',
+                                            pl: 'URL miniatury',
+                                            'zh-cn': '缩略图网址',
+                                        },
+                                        type: 'string',
+                                        role: 'url',
+                                        read: true,
+                                        write: false,
+                                    },
+                                    native: {},
+                                });
+
+                                const thumbnailId = `files.${fileNameClean}.thumbnail`;
+
+                                await this.setObjectNotExistsAsync(thumbnailId, {
+                                    type: 'state',
+                                    common: {
+                                        name: {
+                                            en: 'Thumbnail',
+                                            de: 'Miniaturansicht',
+                                            ru: 'Миниатюра',
+                                            pt: 'Miniatura',
+                                            nl: 'Miniatuur',
+                                            fr: 'La vignette',
+                                            it: 'Miniatura',
+                                            es: 'Miniatura',
+                                            pl: 'Miniaturka',
+                                            'zh-cn': '缩略图',
+                                        },
+                                        type: 'file',
+                                        role: 'state',
+                                        read: true,
+                                        write: false,
+                                    },
+                                    native: {},
+                                });
+
+                                if (file.thumbnail) {
+                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
+
+                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
+
+                                    axios({
+                                        method: 'get',
+                                        responseType: 'arraybuffer',
+                                        baseURL: this.getOctoprintUri(),
+                                        url: file.thumbnail,
+                                        timeout: this.config.apiTimeoutSek * 1000,
+                                        validateStatus: (status) => {
+                                            return [200].indexOf(status) > -1;
+                                        },
+                                    })
+                                        .then((response) => {
+                                            this.log.debug(
+                                                `[refreshFiles] [plugin slicer thumbnails] received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`,
+                                            );
+                                            this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
+                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary thumbnail information in ${thumbnailId}`);
+
+                                                /*
                                         this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
                                             this.log.debug('Binary state: ' + data);
                                         });
                                         */
+                                            });
+                                        })
+                                        .catch((error) => {
+                                            if (error.response) {
+                                                // The request was made and the server responded with a status code
 
-                                    });
-                                }).catch(error => {
-                                    if (error.response) {
-                                        // The request was made and the server responded with a status code
+                                                this.log.warn(`[refreshFiles] [plugin slicer thumbnails] received ${error.response.status} response from ${file.thumbnail}`);
+                                            } else if (error.request) {
+                                                // The request was made but no response was received
+                                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                                // http.ClientRequest in node.js
 
-                                        this.log.warn(`[refreshFiles] [plugin slicer thumbnails] received ${error.response.status} response from ${file.thumbnail}`);
-                                    } else if (error.request) {
-                                        // The request was made but no response was received
-                                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                        // http.ClientRequest in node.js
-
-                                        this.log.info(`[refreshFiles] [plugin slicer thumbnails] error ${error.code} from ${file.thumbnail}: ${error.message}`);
-                                    } else {
-                                        // Something happened in setting up the request that triggered an Error
-                                        this.log.error(error.message);
-                                    }
-                                });
+                                                this.log.info(`[refreshFiles] [plugin slicer thumbnails] error ${error.code} from ${file.thumbnail}: ${error.message}`);
+                                            } else {
+                                                // Something happened in setting up the request that triggered an Error
+                                                this.log.error(error.message);
+                                            }
+                                        });
+                                }
+                            } else {
+                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
+                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
                             }
-                        } else {
-                            await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
-                            await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
+
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'Select file',
+                                        de: 'Datei auswählen',
+                                        ru: 'Выберите файл',
+                                        pt: 'Selecione o arquivo',
+                                        nl: 'Selecteer bestand',
+                                        fr: 'Choisir le dossier',
+                                        it: 'Seleziona il file',
+                                        es: 'Seleccione Archivo',
+                                        pl: 'Wybierz plik',
+                                        'zh-cn': '选择文件',
+                                    },
+                                    type: 'boolean',
+                                    role: 'button',
+                                    read: false,
+                                    write: true,
+                                },
+                                native: {},
+                            });
+
+                            await this.setObjectNotExistsAsync(`files.${fileNameClean}.print`, {
+                                type: 'state',
+                                common: {
+                                    name: {
+                                        en: 'Print',
+                                        de: 'Drucken',
+                                        ru: 'Распечатать',
+                                        pt: 'Imprimir',
+                                        nl: 'Afdrukken',
+                                        fr: 'Imprimer',
+                                        it: 'Stampa',
+                                        es: 'Impresión',
+                                        pl: 'Wydrukować',
+                                        'zh-cn': '打印',
+                                    },
+                                    type: 'boolean',
+                                    role: 'button',
+                                    read: false,
+                                    write: true,
+                                },
+                                native: {},
+                            });
                         }
 
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'Select file',
-                                    de: 'Datei auswählen',
-                                    ru: 'Выберите файл',
-                                    pt: 'Selecione o arquivo',
-                                    nl: 'Selecteer bestand',
-                                    fr: 'Choisir le dossier',
-                                    it: 'Seleziona il file',
-                                    es: 'Seleccione Archivo',
-                                    pl: 'Wybierz plik',
-                                    'zh-cn': '选择文件'
-                                },
-                                type: 'boolean',
-                                role: 'button',
-                                read: false,
-                                write: true
-                            },
-                            native: {}
-                        });
+                        // Delete non existent files
+                        for (let i = 0; i < filesAll.length; i++) {
+                            const id = filesAll[i];
 
-                        await this.setObjectNotExistsAsync(`files.${fileNameClean}.print`, {
-                            type: 'state',
-                            common: {
-                                name: {
-                                    en: 'Print',
-                                    de: 'Drucken',
-                                    ru: 'Распечатать',
-                                    pt: 'Imprimir',
-                                    nl: 'Afdrukken',
-                                    fr: 'Imprimer',
-                                    it: 'Stampa',
-                                    es: 'Impresión',
-                                    pl: 'Wydrukować',
-                                    'zh-cn': '打印'
-                                },
-                                type: 'boolean',
-                                role: 'button',
-                                read: false,
-                                write: true
-                            },
-                            native: {}
-                        });
-
-                    }
-
-                    // Delete non existent files
-                    for (let i = 0; i < filesAll.length; i++) {
-                        const id = filesAll[i];
-
-                        if (filesKeep.indexOf(id) === -1) {
-                            await this.delObjectAsync(id, {recursive: true});
-                            // this.delForeignBinaryStateAsync(`${id}.thumbnail`);
-                            this.log.debug(`[refreshFiles] file deleted: "${id}"`);
+                            if (filesKeep.indexOf(id) === -1) {
+                                await this.delObjectAsync(id, { recursive: true });
+                                // this.delForeignBinaryStateAsync(`${id}.thumbnail`);
+                                this.log.debug(`[refreshFiles] file deleted: "${id}"`);
+                            }
                         }
                     }
-                }
-            }).catch(error => {
-            });
+                })
+                .catch(() => {});
         } else {
             this.log.debug('[refreshFiles] skipped (API not connected)');
         }
@@ -1205,8 +1140,7 @@ class OctoPrint extends utils.Adapter {
         return new Promise((resolve, reject) => {
             this.log.debug('[buildServiceRequest] starting service request');
 
-            this.buildRequest('/api/' + service, callback, data)
-                .then(resolve, reject);
+            this.buildRequest('/api/' + service, callback, data).then(resolve, reject);
         });
     }
 
@@ -1214,8 +1148,7 @@ class OctoPrint extends utils.Adapter {
         return new Promise((resolve, reject) => {
             this.log.debug('[buildPluginRequest] starting plugin request');
 
-            this.buildRequest('/plugin/' + plugin, callback, data)
-                .then(resolve, reject);
+            this.buildRequest('/plugin/' + plugin, callback, data).then(resolve, reject);
         });
     }
 
@@ -1237,42 +1170,44 @@ class OctoPrint extends utils.Adapter {
                 timeout: this.config.apiTimeoutSek * 1000,
                 responseType: 'json',
                 headers: {
-                    'X-Api-Key': this.config.octoprintApiKey
+                    'X-Api-Key': this.config.octoprintApiKey,
                 },
                 validateStatus: (status) => {
                     return [200, 204, 409].indexOf(status) > -1;
                 },
-            }).then(response => {
-                this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
+            })
+                .then((response) => {
+                    this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
 
-                // no error - clear up reminder
-                delete this.lastErrorCode;
+                    // no error - clear up reminder
+                    delete this.lastErrorCode;
 
-                resolve(response);
-            }).catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
+                    resolve(response);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
 
-                    this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
+                        this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
 
-                    // avoid spamming of the same error when stuck in a reconnection loop
-                    if (error.code === this.lastErrorCode) {
-                        this.log.debug(error.message);
+                        // avoid spamming of the same error when stuck in a reconnection loop
+                        if (error.code === this.lastErrorCode) {
+                            this.log.debug(error.message);
+                        } else {
+                            this.log.info(`error ${error.code} from ${url}: ${error.message}`);
+                            this.lastErrorCode = error.code;
+                        }
                     } else {
-                        this.log.info(`error ${error.code} from ${url}: ${error.message}`);
-                        this.lastErrorCode = error.code;
+                        // Something happened in setting up the request that triggered an Error
+                        this.log.error(error.message);
                     }
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    this.log.error(error.message);
-                }
 
-                reject(error);
-            });
+                    reject(error);
+                });
         });
     }
 
@@ -1280,33 +1215,41 @@ class OctoPrint extends utils.Adapter {
         this.printerStatus = printerStatus;
 
         const operationalStates = [
-            'Starting', 'Starting print from SD', 'Starting to send file to SD', // STATE_STARTING
-            'Printing', 'Printing from SD', 'Sending file to SD', // STATE_PRINTING
+            'Starting',
+            'Starting print from SD',
+            'Starting to send file to SD', // STATE_STARTING
+            'Printing',
+            'Printing from SD',
+            'Sending file to SD', // STATE_PRINTING
             'Operational', // STATE_OPERATIONAL
             'Paused', // STATE_PAUSED
             'Cancelling', // STATE_CANCELLING
             'Pausing', // STATE_PAUSING
             'Resuming', // STATE_RESUMING
             'Finishing', // STATE_FINISHING
-            'Transferring file to SD' // STATE_TRANSFERING_FILE
+            'Transferring file to SD', // STATE_TRANSFERING_FILE
         ];
-        this.printerOperational = (operationalStates.indexOf(printerStatus) >= 0);
+        this.printerOperational = operationalStates.indexOf(printerStatus) >= 0;
 
         const printingStates = [
-            'Starting', 'Starting print from SD', 'Starting to send file to SD', // STATE_STARTING
-            'Printing', 'Printing from SD', 'Sending file to SD', // STATE_PRINTING
+            'Starting',
+            'Starting print from SD',
+            'Starting to send file to SD', // STATE_STARTING
+            'Printing',
+            'Printing from SD',
+            'Sending file to SD', // STATE_PRINTING
             'Cancelling', // STATE_CANCELLING
             'Pausing', // STATE_PAUSING
             'Resuming', // STATE_RESUMING
-            'Finishing' // STATE_FINISHING
+            'Finishing', // STATE_FINISHING
         ];
-        this.printerPrinting = (printingStates.indexOf(printerStatus) >= 0);
+        this.printerPrinting = printingStates.indexOf(printerStatus) >= 0;
 
         this.log.debug(`updatePrinterStatus from: "${this.printerStatus}" -> printerOperational: ${this.printerOperational}, printerPrinting: ${this.printerPrinting}`);
 
-        this.setStateAsync('printer_status', {val: this.printerStatus, ack: true});
-        this.setStateAsync('operational', {val: this.printerOperational, ack: true});
-        this.setStateAsync('printing', {val: this.printerPrinting, ack: true});
+        this.setStateAsync('printer_status', { val: this.printerStatus, ack: true });
+        this.setStateAsync('operational', { val: this.printerOperational, ack: true });
+        this.setStateAsync('printing', { val: this.printerPrinting, ack: true });
     }
 
     isNewerVersion(oldVer, newVer) {
@@ -1329,14 +1272,20 @@ class OctoPrint extends utils.Adapter {
         const timeDifference = new Date(seconds * 1000);
         const secondsInADay = 60 * 60 * 1000 * 24;
         const secondsInAHour = 60 * 60 * 1000;
-        const days = Math.floor(timeDifference / (secondsInADay) * 1);
-        let hours = Math.floor((timeDifference % (secondsInADay)) / (secondsInAHour) * 1);
-        let mins = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
-        let secs = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+        const days = Math.floor((timeDifference / secondsInADay) * 1);
+        let hours = Math.floor(((timeDifference % secondsInADay) / secondsInAHour) * 1);
+        let mins = Math.floor((((timeDifference % secondsInADay) % secondsInAHour) / (60 * 1000)) * 1);
+        let secs = Math.floor(((((timeDifference % secondsInADay) % secondsInAHour) % (60 * 1000)) / 1000) * 1);
 
-        if (hours < 10) { hours = '0' + hours; }
-        if (mins < 10) { mins = '0' + mins; }
-        if (secs < 10) { secs = '0' + secs; }
+        if (hours < 10) {
+            hours = '0' + hours;
+        }
+        if (mins < 10) {
+            mins = '0' + mins;
+        }
+        if (secs < 10) {
+            secs = '0' + secs;
+        }
 
         if (days > 0) {
             return days + 'D' + hours + ':' + mins + ':' + secs;
