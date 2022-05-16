@@ -41,6 +41,8 @@ iobroker add octoprint
 
 NodeJS 14.x is required (NodeJS 12.x is EOL)
 
+* (klein0r) Improved handling of thumbnails and states for plugins
+
 ### 3.2.2 (2022-04-29)
 
 * (klein0r) Updated depedency for js-controller to 4.0.15
