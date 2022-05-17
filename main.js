@@ -1,7 +1,7 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const axios = require('axios');
+const axios = require('axios').default;
 
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
 
@@ -81,12 +81,12 @@ class OctoPrint extends utils.Adapter {
      */
     onStateChange(id, state) {
         // No ack = changed by user
-        if (state && !state.ack) {
+        if (id && state && !state.ack) {
             const cleanId = this.removeNamespace(id);
 
             if (this.apiConnected) {
-                if (id.match(new RegExp(this.namespace + '.tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
-                    const matches = id.match(/.+\.tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
+                if (cleanId.match(new RegExp('tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
+                    const matches = cleanId.match(/tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
                     const toolId = matches[1];
                     const command = matches[2];
 
@@ -111,7 +111,7 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else if (command === 'extrude') {
                         this.log.debug(`extruding ${state.val}mm`);
 
@@ -130,9 +130,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     }
-                } else if (id === this.namespace + '.tools.bed.targetTemperature') {
+                } else if (cleanId === 'tools.bed.targetTemperature') {
                     this.log.debug(`changing target bed temperature to ${state.val}°C`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
@@ -150,8 +150,8 @@ class OctoPrint extends utils.Adapter {
                                 this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
                             }
                         })
-                        .catch(() => {});
-                } else if (id === this.namespace + '.command.printer') {
+                        .catch(() => { });
+                } else if (cleanId === 'command.printer') {
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
 
@@ -172,7 +172,7 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug(`sending printer command: ${state.val}`);
 
@@ -191,11 +191,11 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
-                } else if (id === this.namespace + '.command.printjob') {
+                } else if (cleanId === 'command.printjob') {
                     const allowedCommands = ['start', 'pause', 'resume', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
@@ -227,11 +227,11 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-                } else if (id === this.namespace + '.command.sd') {
+                } else if (cleanId === 'command.sd') {
                     const allowedCommands = ['init', 'refresh', 'release'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
@@ -250,11 +250,11 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else {
                         this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-                } else if (id === this.namespace + '.command.custom') {
+                } else if (cleanId === 'command.custom') {
                     this.log.debug(`sending custom command: ${state.val}`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
@@ -270,8 +270,8 @@ class OctoPrint extends utils.Adapter {
                                 this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
                             }
                         })
-                        .catch(() => {});
-                } else if (id === this.namespace + '.command.system') {
+                        .catch(() => { });
+                } else if (cleanId === 'command.system') {
                     if (this.systemCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending system command: ${state.val}`);
 
@@ -288,11 +288,11 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else {
-                        this.log.error('system command not allowed: ' + state.val + '. Choose one of: ' + this.systemCommands.join(', '));
+                        this.log.error(`system command not allowed: ${state.val}. Choose one of: ${this.systemCommands.join(', ')}`);
                     }
-                } else if (id.indexOf(this.namespace + '.command.jog.') === 0) {
+                } else if (cleanId.indexOf('command.jog.') === 0) {
                     // Validate jog value
                     if (state.val !== 0) {
                         const axis = id.split('.').pop(); // Last element of the object id is the axis
@@ -317,36 +317,36 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     } else {
                         this.log.error('Jog: provide non-zero jog value');
                     }
-                } else if (id.match(new RegExp(this.namespace + '.files.[a-zA-Z0-9_]+.(select|print)'))) {
-                    const matches = id.match(/.+\.files\.([a-zA-Z0-9_]+)\.(select|print)$/);
+                } else if (cleanId.match(new RegExp('files.[a-zA-Z0-9_]+.(select|print)'))) {
+                    const matches = cleanId.match(/files\.([a-zA-Z0-9_]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
 
                     this.log.debug(`selecting/printing file "${fileId}" - action: "${action}"`);
 
-                    this.getState('files.' + fileId + '.path', (err, state) => {
-                        const fullPath = state.val;
+                    this.getState(`files.${fileId}.path`, (err, state) => {
+                        const fullPath = state?.val;
 
                         this.log.debug(`selecting/printing file with path "${fullPath}"`);
 
                         // https://docs.octoprint.org/en/master/api/files.html#issue-a-file-command
-                        this.buildServiceRequest('files/' + fullPath, {
+                        this.buildServiceRequest(`files/${fullPath}`, {
                             command: 'select',
                             print: action === 'print',
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.log.debug('selection/print file successful');
-                                    this.refreshState('onStateChange file.' + action);
+                                    this.log.debug('selecting/printing file successful');
+                                    this.refreshState(`onStateChange file.${action}`);
                                 } else {
                                     this.log.error(`(files/*) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => {});
+                            .catch(() => { });
                     });
                 }
             }
@@ -453,7 +453,7 @@ class OctoPrint extends utils.Adapter {
                         this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                     }
                 })
-                .catch(() => {});
+                .catch(() => { });
 
             if (this.printerOperational) {
                 this.buildServiceRequest('printer', null)
@@ -470,7 +470,7 @@ class OctoPrint extends utils.Adapter {
                                     // Tool + bed information
 
                                     // Create tool channel
-                                    await this.setObjectNotExistsAsync('tools.' + key, {
+                                    await this.setObjectNotExistsAsync(`tools.${key}`, {
                                         type: 'channel',
                                         common: {
                                             name: key,
@@ -479,7 +479,7 @@ class OctoPrint extends utils.Adapter {
                                     });
 
                                     // Set actual temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.actualTemperature', {
+                                    await this.setObjectNotExistsAsync(`tools.${key}.actualTemperature`, {
                                         type: 'state',
                                         common: {
                                             name: {
@@ -503,10 +503,10 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync('tools.' + key + '.actualTemperature', { val: obj.actual, ack: true });
+                                    await this.setStateAsync(`tools.${key}.actualTemperature`, { val: obj.actual, ack: true });
 
                                     // Set target temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.targetTemperature', {
+                                    await this.setObjectNotExistsAsync(`tools.${key}.targetTemperature`, {
                                         type: 'state',
                                         common: {
                                             name: {
@@ -529,10 +529,10 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync('tools.' + key + '.targetTemperature', { val: obj.target, ack: true });
+                                    await this.setStateAsync(`tools.${key}.targetTemperature`, { val: obj.target, ack: true });
 
                                     // Set offset temperature
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.offsetTemperature', {
+                                    await this.setObjectNotExistsAsync(`tools.${key}.offsetTemperature`, {
                                         type: 'state',
                                         common: {
                                             name: {
@@ -556,12 +556,12 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync('tools.' + key + '.offsetTemperature', { val: obj.target, ack: true });
+                                    await this.setStateAsync(`tools.${key}.offsetTemperature`, { val: obj.target, ack: true });
                                 }
 
                                 if (isTool) {
                                     // Set extrude
-                                    await this.setObjectNotExistsAsync('tools.' + key + '.extrude', {
+                                    await this.setObjectNotExistsAsync(`tools.${key}.extrude`, {
                                         type: 'state',
                                         common: {
                                             name: {
@@ -589,7 +589,7 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     })
-                    .catch(() => {});
+                    .catch(() => { });
             } else {
                 // https://docs.octoprint.org/en/master/api/system.html#list-all-registered-system-commands
                 this.buildServiceRequest('system/commands', null)
@@ -599,13 +599,13 @@ class OctoPrint extends utils.Adapter {
 
                             for (const key of Object.keys(response.data)) {
                                 const arr = response.data[key];
-                                arr.forEach((e) => this.systemCommands.push(e.source + '/' + e.action));
+                                arr.forEach((e) => this.systemCommands.push(`${e.source}/${e.action}`));
                             }
 
-                            this.log.debug('registered system commands: ' + this.systemCommands.join(', '));
+                            this.log.debug(`registered system commands: ${this.systemCommands.join(', ')}`);
                         }
                     })
-                    .catch(() => {});
+                    .catch(() => { });
             }
 
             // Plugin Display Layer Progress
@@ -741,7 +741,7 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     })
-                    .catch(() => {});
+                    .catch(() => { });
             } else {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
 
@@ -1021,12 +1021,6 @@ class OctoPrint extends utils.Adapter {
                                             );
                                             this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
                                                 this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary thumbnail information in ${thumbnailId}`);
-
-                                                /*
-                                        this.getBinaryState(this.namespace + '.' + thumbnailId, (err, data) => {
-                                            this.log.debug('Binary state: ' + data);
-                                        });
-                                        */
                                             });
                                         })
                                         .catch((error) => {
@@ -1110,7 +1104,7 @@ class OctoPrint extends utils.Adapter {
                         }
                     }
                 })
-                .catch(() => {});
+                .catch(() => { });
         } else {
             this.log.debug('[refreshFiles] skipped (API not connected)');
         }
@@ -1133,14 +1127,14 @@ class OctoPrint extends utils.Adapter {
 
     getOctoprintUri() {
         const prefix = this.config.useHttps ? 'https' : 'http';
-        return prefix + '://' + this.config.octoprintIp + ':' + this.config.octoprintPort;
+        return `${prefix}://${this.config.octoprintIp}:${this.config.octoprintPort}`;
     }
 
     async buildServiceRequest(service, callback, data) {
         return new Promise((resolve, reject) => {
             this.log.debug('[buildServiceRequest] starting service request');
 
-            this.buildRequest('/api/' + service, callback, data).then(resolve, reject);
+            this.buildRequest(`/api/${service}`, callback, data).then(resolve, reject);
         });
     }
 
@@ -1148,7 +1142,7 @@ class OctoPrint extends utils.Adapter {
         return new Promise((resolve, reject) => {
             this.log.debug('[buildPluginRequest] starting plugin request');
 
-            this.buildRequest('/plugin/' + plugin, callback, data).then(resolve, reject);
+            this.buildRequest(`/plugin/${plugin}`, callback, data).then(resolve, reject);
         });
     }
 
