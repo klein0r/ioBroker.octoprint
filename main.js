@@ -459,7 +459,7 @@ class OctoPrint extends utils.Adapter {
                 this.buildServiceRequest('printer', null)
                     .then(async (response) => {
                         const content = response.data;
-                        if (typeof content === 'object' && Object.prototype.hasOwnProperty.call(content, 'temperature')) {
+                        if (content?.temperature) {
                             for (const key of Object.keys(content.temperature)) {
                                 const obj = content.temperature[key];
 
@@ -698,16 +698,16 @@ class OctoPrint extends utils.Adapter {
                                 await this.setStateAsync('printjob.file.size', { val: Number((content.job.file.size / 1024).toFixed(2)), ack: true });
                                 await this.setStateAsync('printjob.file.date', { val: new Date(content.job.file.date * 1000).getTime(), ack: true });
 
-                                if (Object.prototype.hasOwnProperty.call(content.job, 'filament') && content.job.filament) {
+                                if (content?.job?.filament) {
                                     let filamentLength = 0;
                                     let filamentVolume = 0;
 
-                                    if (Object.prototype.hasOwnProperty.call(content.job.filament, 'tool0') && content.job.filament.tool0) {
-                                        filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'length') ? content.job.filament.tool0.length : 0;
-                                        filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament.tool0, 'volume') ? content.job.filament.tool0.volume : 0;
+                                    if (content.job.filament?.tool0) {
+                                        filamentLength = content.job.filament?.tool0?.length ?? 0;
+                                        filamentVolume = content.job.filament?.tool0?.volume ?? 0;
                                     } else {
-                                        filamentLength = Object.prototype.hasOwnProperty.call(content.job.filament, 'length') ? content.job.filament.length : 0;
-                                        filamentVolume = Object.prototype.hasOwnProperty.call(content.job.filament, 'volume') ? content.job.filament.volume : 0;
+                                        filamentLength = content.job.filament?.length ?? 0;
+                                        filamentVolume = content.job.filament?.volume ?? 0;
                                     }
 
                                     if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
@@ -725,7 +725,7 @@ class OctoPrint extends utils.Adapter {
                                 }
                             }
 
-                            if (Object.prototype.hasOwnProperty.call(content, 'progress')) {
+                            if (content?.progress) {
                                 await this.setStateAsync('printjob.progress.completion', { val: Math.round(content.progress.completion), ack: true });
                                 await this.setStateAsync('printjob.progress.filepos', { val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true });
                                 await this.setStateAsync('printjob.progress.printtime', { val: content.progress.printTime, ack: true });
@@ -784,7 +784,7 @@ class OctoPrint extends utils.Adapter {
 
                     // Plugin Slicer Thumbnails
                     if (this.config.pluginSlicerThumbnails) {
-                        if (Object.prototype.hasOwnProperty.call(file, 'thumbnail') && Object.prototype.hasOwnProperty.call(file, 'thumbnail_src') && file.thumbnail_src == 'prusaslicerthumbnails') {
+                        if (file?.thumbnail_src === 'prusaslicerthumbnails') {
                             fileObj.thumbnail = file.thumbnail;
                         }
                     }
