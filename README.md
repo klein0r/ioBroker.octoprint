@@ -41,8 +41,10 @@ iobroker add octoprint
 
 NodeJS 14.x is required (NodeJS 12.x is EOL)
 
-* (klein0r) **BREAKING:** Moved thumbnail information of files to new structure
-* (klein0r) Updated OctoPrint recommendation to 1.8.0
+Tested with OctoPrint 1.8.0
+
+* (klein0r) Added last and average layer duration (requires plugin Display Layer Progress)
+* (klein0r) Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
 * (klein0r) Improved handling of thumbnails and states for plugins
 
 ### 3.2.2 (2022-04-29)
