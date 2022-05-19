@@ -625,17 +625,14 @@ class OctoPrint extends utils.Adapter {
                         if (response.status === 200) {
                             const content = response.data;
 
-                            if (Object.prototype.hasOwnProperty.call(content, 'error')) {
+                            if (content?.error) {
                                 this.log.warn(`print job error: ${content.error}`);
                             }
 
-                            if (Object.prototype.hasOwnProperty.call(content, 'job') && Object.prototype.hasOwnProperty.call(content.job, 'file')) {
+                            if (content?.job?.file) {
                                 const filePath = `${content.job.file.origin}/${content.job.file.path}`;
 
                                 if (this.config.pluginSlicerThumbnails) {
-                                    this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail`);
-
-                                    let foundThumbnail = false;
                                     await this.setObjectNotExistsAsync('printjob.file.thumbnail_url', {
                                         type: 'state',
                                         common: {
@@ -659,27 +656,31 @@ class OctoPrint extends utils.Adapter {
                                         native: {},
                                     });
 
+                                    this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail url`);
+
                                     const fileObjectsView = await this.getObjectViewAsync('system', 'channel', {
                                         startkey: this.namespace + '.files.',
                                         endkey: this.namespace + '.files.\u9999',
                                     });
 
+                                    let foundThumbnail = false;
+
                                     if (fileObjectsView && fileObjectsView.rows) {
                                         // File file where native.path matches current jobs file path
-                                        const currentFileObject = fileObjectsView.rows.find((file) => file.value.native.path === filePath);
+                                        const currentFileObject = fileObjectsView.rows.find((fileObj) => fileObj.value?.native?.path === filePath);
                                         if (currentFileObject) {
                                             const currentFileId = this.removeNamespace(currentFileObject.id);
 
                                             try {
                                                 this.log.debug(`[plugin slicer thumbnails] found current file: ${currentFileId}`);
-                                                const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail_url`);
+                                                const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail.url`);
 
                                                 if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
                                                     foundThumbnail = true;
                                                     await this.setStateAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
                                                 }
                                             } catch (err) {
-                                                this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail_url`);
+                                                this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail.url`);
                                             }
                                         }
                                     }
@@ -952,7 +953,26 @@ class OctoPrint extends utils.Adapter {
                             await this.setStateAsync(`files.${fileNameClean}.date`, { val: file.date, ack: true });
 
                             if (this.config.pluginSlicerThumbnails) {
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail_url`, {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail`, {
+                                    type: 'channel',
+                                    common: {
+                                        name: {
+                                            en: 'Thumbnail',
+                                            de: 'Miniaturansicht',
+                                            ru: 'Миниатюра',
+                                            pt: 'Miniatura',
+                                            nl: 'Miniatuur',
+                                            fr: 'Vignette',
+                                            it: 'Miniatura',
+                                            es: 'Miniatura',
+                                            pl: 'Miniaturka',
+                                            'zh-cn': '缩略图',
+                                        },
+                                    },
+                                    native: {},
+                                });
+
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail.url`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -975,7 +995,7 @@ class OctoPrint extends utils.Adapter {
                                     native: {},
                                 });
 
-                                const thumbnailId = `files.${fileNameClean}.thumbnail`;
+                                const thumbnailId = `files.${fileNameClean}.thumbnail.png`;
 
                                 await this.setObjectNotExistsAsync(thumbnailId, {
                                     type: 'state',
@@ -1003,7 +1023,7 @@ class OctoPrint extends utils.Adapter {
                                 if (file.thumbnail) {
                                     this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
 
-                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail_url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
+                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail.url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
 
                                     axios({
                                         method: 'get',
@@ -1016,12 +1036,16 @@ class OctoPrint extends utils.Adapter {
                                         },
                                     })
                                         .then((response) => {
-                                            this.log.debug(
-                                                `[refreshFiles] [plugin slicer thumbnails] received thumbnail data for ${file.thumbnail} - target ${thumbnailId}: ${JSON.stringify(response.headers)}`,
-                                            );
-                                            this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, response.data, () => {
-                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary thumbnail information in ${thumbnailId}`);
-                                            });
+                                            if (response.data) {
+                                                const responseType = Object.prototype.toString.call(response.data);
+                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] received data as ${responseType} for ${file.thumbnail}: ${JSON.stringify(response.headers)}`);
+
+                                                this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, Buffer.from(response.data), () => {
+                                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary information in ${thumbnailId}`);
+                                                });
+                                            } else {
+                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] response was empty: ${JSON.stringify(response.headers)}`);
+                                            }
                                         })
                                         .catch((error) => {
                                             if (error.response) {
@@ -1041,24 +1065,23 @@ class OctoPrint extends utils.Adapter {
                                         });
                                 }
                             } else {
-                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail_url`);
-                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail`);
+                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail`, { recursive: true });
                             }
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.select`, {
                                 type: 'state',
                                 common: {
                                     name: {
-                                        en: 'Select file',
-                                        de: 'Datei auswählen',
-                                        ru: 'Выберите файл',
-                                        pt: 'Selecione o arquivo',
-                                        nl: 'Selecteer bestand',
-                                        fr: 'Choisir le dossier',
-                                        it: 'Seleziona il file',
-                                        es: 'Seleccione Archivo',
-                                        pl: 'Wybierz plik',
-                                        'zh-cn': '选择文件',
+                                        en: 'Select',
+                                        de: 'Auswählen',
+                                        ru: 'Выбирать',
+                                        pt: 'Selecionar',
+                                        nl: 'Selecteer',
+                                        fr: 'Sélectionner',
+                                        it: 'Selezionare',
+                                        es: 'Seleccione',
+                                        pl: 'Wybierz',
+                                        'zh-cn': '选择',
                                     },
                                     type: 'boolean',
                                     role: 'button',

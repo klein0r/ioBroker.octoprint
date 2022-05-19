@@ -41,6 +41,7 @@ iobroker add octoprint
 
 NodeJS 14.x is required (NodeJS 12.x is EOL)
 
+* (klein0r) **BREAKING:** Moved thumbnail information of files to new structure
 * (klein0r) Updated OctoPrint recommendation to 1.8.0
 * (klein0r) Improved handling of thumbnails and states for plugins
 
