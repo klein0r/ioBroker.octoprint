@@ -111,7 +111,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/tool) error: ${err}`);
+                            });
                     } else if (command === 'extrude') {
                         this.log.debug(`extruding ${state.val}mm`);
 
@@ -130,7 +132,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/tool) error: ${err}`);
+                            });
                     }
                 } else if (cleanId === 'tools.bed.targetTemperature') {
                     this.log.debug(`changing target bed temperature to ${state.val}°C`);
@@ -150,7 +154,9 @@ class OctoPrint extends utils.Adapter {
                                 this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
                             }
                         })
-                        .catch(() => { });
+                        .catch((err) => {
+                            this.log.debug(`(printer/bed) error: ${err}`);
+                        });
                 } else if (cleanId === 'command.printer') {
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
@@ -172,7 +178,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(connection) error: ${err}`);
+                            });
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
                         this.log.debug(`sending printer command: ${state.val}`);
 
@@ -191,7 +199,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/printhead) error: ${err}`);
+                            });
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
@@ -227,7 +237,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(job) error: ${err}`);
+                            });
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
@@ -250,7 +262,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/sd) error: ${err}`);
+                            });
                     } else {
                         this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
@@ -270,7 +284,9 @@ class OctoPrint extends utils.Adapter {
                                 this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
                             }
                         })
-                        .catch(() => { });
+                        .catch((err) => {
+                            this.log.debug(`(printer/command) error: ${err}`);
+                        });
                 } else if (cleanId === 'command.system') {
                     if (this.systemCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending system command: ${state.val}`);
@@ -288,7 +304,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/commands/*) error: ${err}`);
+                            });
                     } else {
                         this.log.error(`system command not allowed: ${state.val}. Choose one of: ${this.systemCommands.join(', ')}`);
                     }
@@ -317,7 +335,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(printer/printhead) error: ${err}`);
+                            });
                     } else {
                         this.log.error('Jog: provide non-zero jog value');
                     }
@@ -346,7 +366,9 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(files/*) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch(() => { });
+                            .catch((err) => {
+                                this.log.debug(`(files/*) error: ${err}`);
+                            });
                     });
                 }
             }
@@ -453,7 +475,9 @@ class OctoPrint extends utils.Adapter {
                         this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                     }
                 })
-                .catch(() => { });
+                .catch((err) => {
+                    this.log.debug(`(connection) error: ${err}`);
+                });
 
             if (this.printerOperational) {
                 this.buildServiceRequest('printer', null)
@@ -589,7 +613,9 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     })
-                    .catch(() => { });
+                    .catch((err) => {
+                        this.log.debug(`(printer) error: ${err}`);
+                    });
             } else {
                 // https://docs.octoprint.org/en/master/api/system.html#list-all-registered-system-commands
                 this.buildServiceRequest('system/commands', null)
@@ -602,10 +628,12 @@ class OctoPrint extends utils.Adapter {
                                 arr.forEach((e) => this.systemCommands.push(`${e.source}/${e.action}`));
                             }
 
-                            this.log.debug(`registered system commands: ${this.systemCommands.join(', ')}`);
+                            this.log.debug(`(system/commands) registered commands: ${this.systemCommands.join(', ')}`);
                         }
                     })
-                    .catch(() => { });
+                    .catch((err) => {
+                        this.log.debug(`(system/commands) error: ${err}`);
+                    });
             }
 
             // Plugin Display Layer Progress
@@ -742,7 +770,9 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     })
-                    .catch(() => { });
+                    .catch((err) => {
+                        this.log.debug(`(job) error: ${err}`);
+                    });
             } else {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
 
@@ -1127,7 +1157,9 @@ class OctoPrint extends utils.Adapter {
                         }
                     }
                 })
-                .catch(() => { });
+                .catch((err) => {
+                    this.log.debug(`(files) error: ${err}`);
+                });
         } else {
             this.log.debug('[refreshFiles] skipped (API not connected)');
         }
