@@ -139,8 +139,8 @@
       "config": "json"
     },
     "docs": {
-      "en": "docs/en/basics.md",
-      "de": "docs/de/basics.md"
+      "en": "docs/en/README.md",
+      "de": "docs/de/README.md"
     },
     "dependencies": [
       {
