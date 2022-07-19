@@ -57,6 +57,9 @@ class OctoPrint extends utils.Adapter {
         this.refreshState('onReady');
     }
 
+    /**
+     * @param {() => void} callback
+     */
     onUnload(callback) {
         try {
             this.setApiConnected(false);
