@@ -58,27 +58,6 @@ class OctoPrint extends utils.Adapter {
     }
 
     /**
-     * @param {() => void} callback
-     */
-    onUnload(callback) {
-        try {
-            this.setApiConnected(false);
-
-            // Delete old timer
-            if (this.refreshStateTimeout) {
-                this.log.debug('refreshStateTimeout: UNLOAD');
-                this.clearTimeout(this.refreshStateTimeout);
-            }
-
-            this.log.debug('cleaned everything up...');
-            callback();
-        } catch (e) {
-            callback();
-        }
-    }
-
-    /**
-     * Is called if a subscribed state changes
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
@@ -1343,6 +1322,26 @@ class OctoPrint extends utils.Adapter {
             return days + 'D' + hours + ':' + mins + ':' + secs;
         } else {
             return hours + ':' + mins + ':' + secs;
+        }
+    }
+
+    /**
+     * @param {() => void} callback
+     */
+    onUnload(callback) {
+        try {
+            this.setApiConnected(false);
+
+            // Delete old timer
+            if (this.refreshStateTimeout) {
+                this.log.debug('refreshStateTimeout: UNLOAD');
+                this.clearTimeout(this.refreshStateTimeout);
+            }
+
+            this.log.debug('cleaned everything up...');
+            callback();
+        } catch (e) {
+            callback();
         }
     }
 }
