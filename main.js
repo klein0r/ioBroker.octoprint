@@ -2,6 +2,7 @@
 
 const utils = require('@iobroker/adapter-core');
 const axios = require('axios').default;
+const https = require('https');
 
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
 
@@ -28,6 +29,8 @@ class OctoPrint extends utils.Adapter {
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
+
+		this.SSLAgent = new https.Agent ({ rejectUnauthorized: false });
     }
 
     async onReady() {
@@ -1198,6 +1201,7 @@ class OctoPrint extends utils.Adapter {
                 data: data,
                 baseURL: this.getOctoprintUri(),
                 url: url,
+                httpsAgent: this.SSLAgent,
                 timeout: this.config.apiTimeoutSek * 1000,
                 responseType: 'json',
                 headers: {
