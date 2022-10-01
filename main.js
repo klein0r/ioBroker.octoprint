@@ -31,16 +31,15 @@ class OctoPrint extends utils.Adapter {
     }
 
     async onReady() {
-        this.subscribeStates('*');
         this.setApiConnected(false);
 
         if (!this.config.octoprintIp) {
-            this.log.warn(`octoprint ip / hostname not configured - check configuration and restart`);
+            this.log.warn(`OctoPrint ip / hostname not configured - check instance configuration`);
             return;
         }
 
         if (!this.config.octoprintApiKey) {
-            this.log.warn(`API key not configured - check configuration and restart`);
+            this.log.warn(`API key not configured - check instance configuration`);
             return;
         }
 
@@ -49,6 +48,8 @@ class OctoPrint extends utils.Adapter {
         } else {
             this.setStateChangedAsync('name', { val: '', ack: true });
         }
+
+        await this.subscribeStatesAsync('*');
 
         // Delete old (unused) namespace on startup
         await this.delObjectAsync('printjob.progress.printtime_left');
