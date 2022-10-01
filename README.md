@@ -52,6 +52,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+Tested with OctoPrint 1.8.4
+
 ### 4.0.0 (2022-05-19)
 
 NodeJS 14.x is required (NodeJS 12.x is EOL)
