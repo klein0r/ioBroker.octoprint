@@ -45,9 +45,9 @@ class OctoPrint extends utils.Adapter {
         }
 
         if (this.config.customName) {
-            this.setStateAsync('name', { val: this.config.customName, ack: true });
+            this.setStateChangedAsync('name', { val: this.config.customName, ack: true });
         } else {
-            this.setStateAsync('name', { val: '', ack: true });
+            this.setStateChangedAsync('name', { val: '', ack: true });
         }
 
         // Delete old (unused) namespace on startup
@@ -358,14 +358,14 @@ class OctoPrint extends utils.Adapter {
     }
 
     setApiConnected(connection) {
-        this.setStateAsync('info.connection', connection, true);
+        this.setStateChangedAsync('info.connection', connection, true);
         this.apiConnected = connection;
 
         if (!connection) {
             this.log.debug('API is offline');
 
             this.printerStatus = 'API not connected';
-            this.setStateAsync('printer_status', { val: this.printerStatus, ack: true });
+            this.setStateChangedAsync('printer_status', { val: this.printerStatus, ack: true });
         }
     }
 
@@ -380,8 +380,8 @@ class OctoPrint extends utils.Adapter {
 
                     this.log.debug(`connected to OctoPrint API - online! - status: ${response.status}`);
 
-                    this.setStateAsync('meta.version', { val: response.data.server, ack: true });
-                    this.setStateAsync('meta.api_version', { val: response.data.api, ack: true });
+                    this.setStateChangedAsync('meta.version', { val: response.data.server, ack: true });
+                    this.setStateChangedAsync('meta.api_version', { val: response.data.api, ack: true });
 
                     if (this.isNewerVersion(response.data.server, this.supportedVersion) && !this.displayedVersionWarning) {
                         this.log.warn(
@@ -509,7 +509,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync(`tools.${key}.actualTemperature`, { val: obj.actual, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.actualTemperature`, { val: obj.actual, ack: true });
 
                                     // Set target temperature
                                     await this.setObjectNotExistsAsync(`tools.${key}.targetTemperature`, {
@@ -535,7 +535,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync(`tools.${key}.targetTemperature`, { val: obj.target, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.targetTemperature`, { val: obj.target, ack: true });
 
                                     // Set offset temperature
                                     await this.setObjectNotExistsAsync(`tools.${key}.offsetTemperature`, {
@@ -562,7 +562,7 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateAsync(`tools.${key}.offsetTemperature`, { val: obj.target, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.offsetTemperature`, { val: obj.target, ack: true });
                                 }
 
                                 if (isTool) {
@@ -687,7 +687,7 @@ class OctoPrint extends utils.Adapter {
 
                                                 if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
                                                     foundThumbnail = true;
-                                                    await this.setStateAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
+                                                    await this.setStateChangedAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
                                                 }
                                             } catch (err) {
                                                 this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail.url`);
@@ -697,16 +697,16 @@ class OctoPrint extends utils.Adapter {
 
                                     if (!foundThumbnail) {
                                         this.log.debug(`[plugin slicer thumbnails] unable to find file which matches current job file`);
-                                        await this.setStateAsync('printjob.file.thumbnail_url', { val: null, ack: true });
+                                        await this.setStateChangedAsync('printjob.file.thumbnail_url', { val: null, ack: true });
                                     }
                                 } else {
                                     await this.delObjectAsync('printjob.file.thumbnail_url');
                                 }
 
-                                await this.setStateAsync('printjob.file.name', { val: content.job.file.name, ack: true });
-                                await this.setStateAsync('printjob.file.origin', { val: content.job.file.origin, ack: true });
-                                await this.setStateAsync('printjob.file.size', { val: Number((content.job.file.size / 1024).toFixed(2)), ack: true });
-                                await this.setStateAsync('printjob.file.date', { val: new Date(content.job.file.date * 1000).getTime(), ack: true });
+                                await this.setStateChangedAsync('printjob.file.name', { val: content.job.file.name, ack: true });
+                                await this.setStateChangedAsync('printjob.file.origin', { val: content.job.file.origin, ack: true });
+                                await this.setStateChangedAsync('printjob.file.size', { val: Number((content.job.file.size / 1024).toFixed(2)), ack: true });
+                                await this.setStateChangedAsync('printjob.file.date', { val: new Date(content.job.file.date * 1000).getTime(), ack: true });
 
                                 if (content?.job?.filament) {
                                     let filamentLength = 0;
@@ -721,34 +721,34 @@ class OctoPrint extends utils.Adapter {
                                     }
 
                                     if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                        await this.setStateAsync('printjob.filament.length', { val: Number((filamentLength / 1000).toFixed(2)), ack: true });
-                                        await this.setStateAsync('printjob.filament.volume', { val: Number(filamentVolume.toFixed(2)), ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.length', { val: Number((filamentLength / 1000).toFixed(2)), ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.volume', { val: Number(filamentVolume.toFixed(2)), ack: true });
                                     } else {
                                         this.log.debug('Filament length and/or volume contains no valid number');
 
-                                        await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
-                                        await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.length', { val: 0, ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.volume', { val: 0, ack: true });
                                     }
                                 } else {
-                                    await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
-                                    await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
+                                    await this.setStateChangedAsync('printjob.filament.length', { val: 0, ack: true });
+                                    await this.setStateChangedAsync('printjob.filament.volume', { val: 0, ack: true });
                                 }
                             }
 
                             if (content?.progress) {
-                                await this.setStateAsync('printjob.progress.completion', { val: Math.round(content.progress.completion), ack: true });
-                                await this.setStateAsync('printjob.progress.filepos', { val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true });
-                                await this.setStateAsync('printjob.progress.printtime', { val: content.progress.printTime, ack: true });
-                                await this.setStateAsync('printjob.progress.printtimeLeft', { val: content.progress.printTimeLeft, ack: true });
+                                await this.setStateChangedAsync('printjob.progress.completion', { val: Math.round(content.progress.completion), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.filepos', { val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.printtime', { val: content.progress.printTime, ack: true });
+                                await this.setStateChangedAsync('printjob.progress.printtimeLeft', { val: content.progress.printTimeLeft, ack: true });
 
-                                await this.setStateAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(content.progress.printTime), ack: true });
-                                await this.setStateAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(content.progress.printTimeLeft), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(content.progress.printTime), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(content.progress.printTimeLeft), ack: true });
 
                                 const finishedAt = new Date();
                                 finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
 
-                                await this.setStateAsync('printjob.progress.finishedAt', { val: finishedAt.getTime(), ack: true });
-                                await this.setStateAsync('printjob.progress.finishedAtFormat', { val: this.formatDate(finishedAt), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.finishedAt', { val: finishedAt.getTime(), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.finishedAtFormat', { val: this.formatDate(finishedAt), ack: true });
                             }
                         }
                     })
@@ -759,21 +759,21 @@ class OctoPrint extends utils.Adapter {
                 this.log.debug('refreshing job state: skipped detail refresh (not printing)');
 
                 // Reset all values
-                await this.setStateAsync('printjob.file.name', { val: '', ack: true });
-                await this.setStateAsync('printjob.file.origin', { val: '', ack: true });
-                await this.setStateAsync('printjob.file.size', { val: 0, ack: true });
-                await this.setStateAsync('printjob.file.date', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.file.name', { val: '', ack: true });
+                await this.setStateChangedAsync('printjob.file.origin', { val: '', ack: true });
+                await this.setStateChangedAsync('printjob.file.size', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.file.date', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.filament.length', { val: 0, ack: true });
-                await this.setStateAsync('printjob.filament.volume', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.filament.length', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.filament.volume', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.progress.completion', { val: 0, ack: true });
-                await this.setStateAsync('printjob.progress.filepos', { val: 0, ack: true });
-                await this.setStateAsync('printjob.progress.printtime', { val: 0, ack: true });
-                await this.setStateAsync('printjob.progress.printtimeLeft', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.progress.completion', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.progress.filepos', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.progress.printtime', { val: 0, ack: true });
+                await this.setStateChangedAsync('printjob.progress.printtimeLeft', { val: 0, ack: true });
 
-                await this.setStateAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(0), ack: true });
-                await this.setStateAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(0), ack: true });
+                await this.setStateChangedAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(0), ack: true });
+                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(0), ack: true });
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
@@ -889,7 +889,7 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateAsync(`files.${fileNameClean}.name`, { val: file.name, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.name`, { val: file.name, ack: true });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
                                 type: 'state',
@@ -913,7 +913,7 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateAsync(`files.${fileNameClean}.path`, { val: file.path, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.path`, { val: file.path, ack: true });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
                                 type: 'state',
@@ -938,7 +938,7 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateAsync(`files.${fileNameClean}.size`, { val: file.size, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.size`, { val: file.size, ack: true });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
                                 type: 'state',
@@ -962,7 +962,7 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateAsync(`files.${fileNameClean}.date`, { val: file.date, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.date`, { val: file.date, ack: true });
 
                             if (this.config.pluginSlicerThumbnails) {
                                 await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail`, {
@@ -1035,7 +1035,7 @@ class OctoPrint extends utils.Adapter {
                                 if (file.thumbnail) {
                                     this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
 
-                                    await this.setStateAsync(`files.${fileNameClean}.thumbnail.url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
+                                    await this.setStateChangedAsync(`files.${fileNameClean}.thumbnail.url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
 
                                     axios({
                                         method: 'get',
@@ -1278,9 +1278,9 @@ class OctoPrint extends utils.Adapter {
 
         this.log.debug(`updatePrinterStatus from: "${this.printerStatus}" -> printerOperational: ${this.printerOperational}, printerPrinting: ${this.printerPrinting}`);
 
-        this.setStateAsync('printer_status', { val: this.printerStatus, ack: true });
-        this.setStateAsync('operational', { val: this.printerOperational, ack: true });
-        this.setStateAsync('printing', { val: this.printerPrinting, ack: true });
+        this.setStateChangedAsync('printer_status', { val: this.printerStatus, ack: true });
+        this.setStateChangedAsync('operational', { val: this.printerOperational, ack: true });
+        this.setStateChangedAsync('printing', { val: this.printerPrinting, ack: true });
     }
 
     isNewerVersion(oldVer, newVer) {
