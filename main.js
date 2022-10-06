@@ -65,11 +65,11 @@ class OctoPrint extends utils.Adapter {
     onStateChange(id, state) {
         // No ack = changed by user
         if (id && state && !state.ack) {
-            const cleanId = this.removeNamespace(id);
+            const idNoNamespace = this.removeNamespace(id);
 
             if (this.apiConnected) {
-                if (cleanId.match(new RegExp('tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
-                    const matches = cleanId.match(/tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
+                if (idNoNamespace.match(new RegExp('tools.tool[0-9]{1}.(targetTemperature|extrude)'))) {
+                    const matches = idNoNamespace.match(/tools\.(tool[0-9]{1})\.(targetTemperature|extrude)$/);
                     const toolId = matches[1];
                     const command = matches[2];
 
@@ -86,7 +86,7 @@ class OctoPrint extends utils.Adapter {
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
@@ -107,7 +107,7 @@ class OctoPrint extends utils.Adapter {
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
@@ -119,7 +119,7 @@ class OctoPrint extends utils.Adapter {
                                 this.log.debug(`(printer/tool) error: ${err}`);
                             });
                     }
-                } else if (cleanId === 'tools.bed.targetTemperature') {
+                } else if (idNoNamespace === 'tools.bed.targetTemperature') {
                     this.log.debug(`changing target bed temperature to ${state.val}°C`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#issue-a-bed-command
@@ -129,7 +129,7 @@ class OctoPrint extends utils.Adapter {
                     })
                         .then((response) => {
                             if (response.status === 204) {
-                                this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                             } else {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                 // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
@@ -140,7 +140,7 @@ class OctoPrint extends utils.Adapter {
                         .catch((err) => {
                             this.log.debug(`(printer/bed) error: ${err}`);
                         });
-                } else if (cleanId === 'command.printer') {
+                } else if (idNoNamespace === 'command.printer') {
                     const allowedCommandsConnection = ['connect', 'disconnect', 'fake_ack'];
                     const allowedCommandsPrinter = ['home'];
 
@@ -153,7 +153,7 @@ class OctoPrint extends utils.Adapter {
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                     this.refreshState('onStateChange command.printer');
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
@@ -174,7 +174,7 @@ class OctoPrint extends utils.Adapter {
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
@@ -188,7 +188,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
                     }
-                } else if (cleanId === 'command.printjob') {
+                } else if (idNoNamespace === 'command.printjob') {
                     const allowedCommands = ['start', 'pause', 'resume', 'cancel', 'restart'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
@@ -213,7 +213,7 @@ class OctoPrint extends utils.Adapter {
                         this.buildServiceRequest('job', printjobCommand)
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 409 Conflict – If the printer is not operational or the current print job state does not match the preconditions for the command.
 
@@ -226,7 +226,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-                } else if (cleanId === 'command.sd') {
+                } else if (idNoNamespace === 'command.sd') {
                     const allowedCommands = ['init', 'refresh', 'release'];
 
                     if (allowedCommands.indexOf(state.val) > -1) {
@@ -238,7 +238,7 @@ class OctoPrint extends utils.Adapter {
                         })
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
@@ -251,7 +251,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
                     }
-                } else if (cleanId === 'command.custom') {
+                } else if (idNoNamespace === 'command.custom') {
                     this.log.debug(`sending custom command: ${state.val}`);
 
                     // https://docs.octoprint.org/en/master/api/printer.html#send-an-arbitrary-command-to-the-printer
@@ -260,7 +260,7 @@ class OctoPrint extends utils.Adapter {
                     })
                         .then((response) => {
                             if (response.status === 204) {
-                                this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                             } else {
                                 // 409 Conflict – If the printer is not operational
 
@@ -270,7 +270,7 @@ class OctoPrint extends utils.Adapter {
                         .catch((err) => {
                             this.log.debug(`(printer/command) error: ${err}`);
                         });
-                } else if (cleanId === 'command.system') {
+                } else if (idNoNamespace === 'command.system') {
                     if (this.systemCommands.indexOf(state.val) > -1) {
                         this.log.debug(`sending system command: ${state.val}`);
 
@@ -278,7 +278,7 @@ class OctoPrint extends utils.Adapter {
                         this.buildServiceRequest('system/commands/' + state.val, {})
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – If a divider is supposed to be executed or if the request is malformed otherwise
                                     // 404 Not Found – If the command could not be found for source and action
@@ -293,7 +293,7 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error(`system command not allowed: ${state.val}. Choose one of: ${this.systemCommands.join(', ')}`);
                     }
-                } else if (cleanId.indexOf('command.jog.') === 0) {
+                } else if (idNoNamespace.indexOf('command.jog.') === 0) {
                     // Validate jog value
                     if (state.val !== 0) {
                         const axis = id.split('.').pop(); // Last element of the object id is the axis
@@ -310,7 +310,7 @@ class OctoPrint extends utils.Adapter {
                         this.buildServiceRequest('printer/printhead', jogCommand)
                             .then((response) => {
                                 if (response.status === 204) {
-                                    this.setStateAsync(cleanId, { val: state.val, ack: true });
+                                    this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
@@ -324,8 +324,8 @@ class OctoPrint extends utils.Adapter {
                     } else {
                         this.log.error('Jog: provide non-zero jog value');
                     }
-                } else if (cleanId.match(new RegExp('files.[a-zA-Z0-9_]+.(select|print)'))) {
-                    const matches = cleanId.match(/files\.([a-zA-Z0-9_]+)\.(select|print)$/);
+                } else if (idNoNamespace.match(new RegExp('files.[a-zA-Z0-9_]+.(select|print)'))) {
+                    const matches = idNoNamespace.match(/files\.([a-zA-Z0-9_]+)\.(select|print)$/);
                     const fileId = matches[1];
                     const action = matches[2];
 
@@ -359,7 +359,7 @@ class OctoPrint extends utils.Adapter {
     }
 
     setApiConnected(connection) {
-        this.setStateChangedAsync('info.connection', connection, true);
+        this.setStateChangedAsync('info.connection', { val: connection, ack: true });
         this.apiConnected = connection;
 
         if (!connection) {
