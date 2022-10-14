@@ -4,6 +4,7 @@ const utils = require('@iobroker/adapter-core');
 const axios = require('axios').default;
 
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
+const pluginSlicerThumbnails = require('./lib/plugins/slicerthumbnails');
 
 class OctoPrint extends utils.Adapter {
     constructor(options) {
@@ -825,16 +826,16 @@ class OctoPrint extends utils.Adapter {
                 // Collect all existing files
                 if (fileChannels) {
                     for (let i = 0; i < fileChannels.length; i++) {
-                        const id = this.removeNamespace(fileChannels[i]._id);
+                        const idNoNamespace = this.removeNamespace(fileChannels[i]._id);
 
                         // Check if the state is a direct child (e.g. files.MyCustomFile)
-                        if (id.split('.').length === 2) {
+                        if (idNoNamespace.split('.').length === 2) {
                             if (!fileChannels[i].native.path) {
                                 // Force recreation of files without native path (upgraded from older version)
-                                await this.delObjectAsync(id, { recursive: true });
-                                this.log.debug(`[refreshFiles] found file channel without native.path - deleted ${id}`);
+                                await this.delObjectAsync(idNoNamespace, { recursive: true });
+                                this.log.debug(`[refreshFiles] found file channel without native.path - deleted ${idNoNamespace}`);
                             } else {
-                                filesAll.push(id);
+                                filesAll.push(idNoNamespace);
                             }
                         }
                     }
@@ -1008,9 +1009,7 @@ class OctoPrint extends utils.Adapter {
                                     native: {},
                                 });
 
-                                const thumbnailId = `files.${fileNameClean}.thumbnail.png`;
-
-                                await this.setObjectNotExistsAsync(thumbnailId, {
+                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail.png`, {
                                     type: 'state',
                                     common: {
                                         name: {
@@ -1034,48 +1033,9 @@ class OctoPrint extends utils.Adapter {
                                 });
 
                                 if (file.thumbnail) {
-                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists - requesting`);
+                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists`);
 
                                     await this.setStateChangedAsync(`files.${fileNameClean}.thumbnail.url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
-
-                                    axios({
-                                        method: 'get',
-                                        responseType: 'arraybuffer',
-                                        baseURL: this.getOctoprintUri(),
-                                        url: file.thumbnail,
-                                        timeout: this.config.apiTimeoutSek * 1000,
-                                        validateStatus: (status) => {
-                                            return [200].indexOf(status) > -1;
-                                        },
-                                    })
-                                        .then((response) => {
-                                            if (response.data) {
-                                                const responseType = Object.prototype.toString.call(response.data);
-                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] received data as ${responseType} for ${file.thumbnail}: ${JSON.stringify(response.headers)}`);
-
-                                                this.setForeignBinaryState(`${this.namespace}.${thumbnailId}`, Buffer.from(response.data), () => {
-                                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] saved binary information in ${thumbnailId}`);
-                                                });
-                                            } else {
-                                                this.log.debug(`[refreshFiles] [plugin slicer thumbnails] response was empty: ${JSON.stringify(response.headers)}`);
-                                            }
-                                        })
-                                        .catch((error) => {
-                                            if (error.response) {
-                                                // The request was made and the server responded with a status code
-
-                                                this.log.warn(`[refreshFiles] [plugin slicer thumbnails] received ${error.response.status} response from ${file.thumbnail}`);
-                                            } else if (error.request) {
-                                                // The request was made but no response was received
-                                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                                // http.ClientRequest in node.js
-
-                                                this.log.info(`[refreshFiles] [plugin slicer thumbnails] error ${error.code} from ${file.thumbnail}: ${error.message}`);
-                                            } else {
-                                                // Something happened in setting up the request that triggered an Error
-                                                this.log.error(error.message);
-                                            }
-                                        });
                                 }
                             } else {
                                 await this.delObjectAsync(`files.${fileNameClean}.thumbnail`, { recursive: true });
@@ -1137,6 +1097,10 @@ class OctoPrint extends utils.Adapter {
                                 // this.delForeignBinaryStateAsync(`${id}.thumbnail`);
                                 this.log.debug(`[refreshFiles] file deleted: "${id}"`);
                             }
+                        }
+
+                        if (this.config.pluginSlicerThumbnails) {
+                            pluginSlicerThumbnails.downloadThumbnailsToStates(this);
                         }
                     }
                 })
