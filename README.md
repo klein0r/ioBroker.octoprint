@@ -52,7 +52,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 4.0.1 (2022-10-14)
 
 Tested with OctoPrint 1.8.4
 
@@ -84,11 +84,6 @@ Tested with OctoPrint 1.7.3
 * (klein0r) Added print times as readable states (seconds to string)
 * (klein0r) Added formatted date when print job will finish
 * (klein0r) Added fan speed and feedrate from plugin Display Layer Progress
-
-### 3.1.0 (2022-02-24)
-
-* (klein0r) Calculate date/time when print will be finished
-* (klein0r) Renamed ``printjob.progress.printtime_left`` to ``printjob.progress.printtimeLeft`` **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
 
 ## License
 

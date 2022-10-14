@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "news": {
+      "4.0.1": {
+        "en": "Tested with OctoPrint 1.8.4\n\n* Just download every thumbnail once (requires plugin Slicer Thumbnails)",
+        "de": "Getestet mit OctoPrint 1.8.4\n\n* Einfach alle Miniaturansichten einmal herunterladen (erfordert Plugin Slicer Thumbnails)",
+        "ru": "Проверено с OctoPrint 1.8.4\n\n* Просто скачайте каждый миниатюрный раз (требуется плагин Slicer Thumbnails)",
+        "pt": "Testado com OctoPrint 1.8.4\n\n* Basta baixar cada miniatura uma vez (requer plugin Slicer Thumbnails)",
+        "nl": "Vertaling:\n\n♪ download elke duimnagel eens (requires plugin Slicer Thumbnails)",
+        "fr": "Testé avec OctoPrint 1.8.4\n\n* Il suffit de télécharger chaque miniature une fois (requis plugin Slicer Thumbnails)",
+        "it": "Testato con OctoPrint 1.8.4\n\n# Basta scaricare ogni miniatura una volta (richiede plugin Slicer Thumbnails)",
+        "es": "Probada con OctoPrint 1.8.4\n\n* Sólo descarga cada miniatura una vez (requiere plugin Slicer Thumbnails)",
+        "pl": "Testy w wersji 1.8.4\n\n* Just download every thumbnail once (ang.)",
+        "uk": "Випробувано з OctoPrint 1.8.4\n\nІм'я * Просто завантажте кожну мініатюру один раз (обов'язково плагін Slicer Thumbnails)",
+        "zh-cn": "与Octo Print的试验1.8.4\n\n* A/64/50。 仅每一次挖掘一次(Requires plugin Slicer Thumbnails)"
+      },
       "4.0.0": {
         "en": "NodeJS 14.x is required (NodeJS 12.x is EOL)\n\nTested with OctoPrint 1.8.0\n\n* Added last and average layer duration (requires plugin Display Layer Progress)\n* Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Improved handling of thumbnails and states for plugins",
         "de": "NodeJS 14.x ist erforderlich (NodeJS 12.x ist EOL)\n\nGetestet mit OctoPrint 1.8.0\n\n* Letzte und durchschnittliche Layerdauer hinzugefügt (erfordert Plugin Display Layer Progress)\n* Thumbnail-Informationen von Dateien in neue Struktur verschoben **(BREAKING CHANGE – ÜBERPRÜFEN SIE IHRE SCRIPTS UND VIS)**\n* Verbesserte Handhabung von Thumbnails und Zuständen für Plugins",
@@ -74,18 +87,6 @@
         "es": "Roles de estado actualizados\nSugerencia agregada para la configuración de Admin 4",
         "pl": "Zaktualizowane role stanowe\nDodano wskazówkę dotyczącą konfiguracji Admin 4",
         "zh-cn": "更新了状态角色\n添加了 Admin 4 配置的提示"
-      },
-      "3.0.0": {
-        "en": "Added printing and operational state",
-        "de": "Druck- und Betriebszustand hinzugefügt",
-        "ru": "Добавлено состояние печати и работы",
-        "pt": "Adicionado impressão e estado operacional",
-        "nl": "Afdrukken en operationele status toegevoegd",
-        "fr": "Ajout de l'impression et de l'état opérationnel",
-        "it": "Aggiunta stampa e stato operativo",
-        "es": "Impresión agregada y estado operativo.",
-        "pl": "Dodano drukowanie i stan operacyjny",
-        "zh-cn": "添加了打印和操作状态"
       }
     },
     "titleLang": {
