@@ -57,7 +57,6 @@ iobroker add octoprint
 Tested with OctoPrint 1.8.4
 
 * (klein0r) Just download every thumbnail once (requires plugin Slicer Thumbnails)
-* (klein0r) Download and upload gcode files to file system automatically
 
 ### 4.0.0 (2022-05-19)
 
