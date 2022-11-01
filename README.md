@@ -56,6 +56,8 @@ iobroker add octoprint
 
 Tested with OctoPrint 1.8.6
 
+* (klein0r) Dropped Admin 5 support
+
 ### 4.0.1 (2022-10-14)
 
 Tested with OctoPrint 1.8.4
