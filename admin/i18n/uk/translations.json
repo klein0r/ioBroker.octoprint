@@ -1,0 +1,19 @@
+{
+    "API-Key": "API-ключ",
+    "Define your own printer name for this instance": "Визначте власну назву принтера для цього екземпляра",
+    "Extended options": "Розширені параметри",
+    "IP": "IP-адреса",
+    "IP of your OctoPrint installation": "IP вашого встановлення OctoPrint",
+    "Name": "Ім'я",
+    "Options": "Опції",
+    "Port": "Порт",
+    "Refresh Interval": "Інтервал оновлення",
+    "Refresh Interval (while operational)": "Інтервал оновлення (під час роботи)",
+    "Refresh Interval (while printing)": "Інтервал оновлення (під час друку)",
+    "can be found in the settings section of OctoPrint": "можна знайти в розділі налаштувань OctoPrint",
+    "in Seconds": "за секунди",
+    "Enable plugin: Display Layer Progress": "Увімкнути плагін: Показати прогрес шару",
+    "Enable plugin: Slicer Thumbnails": "Увімкнути плагін: Slicer Thumbnails",
+    "use HTTPS": "використовувати HTTPS",
+    "Request timeout": "Час очікування запиту в секундах"
+}
