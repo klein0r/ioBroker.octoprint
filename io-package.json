@@ -39,8 +39,8 @@
         "it": "NodeJS 14.x è richiesto (NodeJS 12.x è EOL)\n\nTestato con OctoPrint 1.8.0\n\n* Aggiunta la durata dell'ultimo livello e quella media (richiede il plug-in Display Layer Progress)\n* Spostate le informazioni in miniatura dei file nella nuova struttura **(BREAKING CHANGE - CONTROLLA I TUOI SCRIPT E VIS)**\n* Migliorata la gestione delle miniature e degli stati per i plugin",
         "es": "Se requiere NodeJS 14.x (NodeJS 12.x es EOL)\n\nProbado con OctoPrint 1.8.0\n\n* Se agregó la duración de la última capa y el promedio (requiere el complemento Mostrar progreso de la capa)\n* Se movió la información en miniatura de los archivos a una nueva estructura **(CAMBIO IMPORTANTE - REVISE SUS SCRIPTS Y VIS)**\n* Manejo mejorado de miniaturas y estados para complementos",
         "pl": "NodeJS 14.x jest wymagany (NodeJS 12.x to EOL)\n\nTestowane z OctoPrint 1.8.0\n\n* Dodano ostatni i średni czas trwania warstwy (wymaga postępu wyświetlania warstwy wtyczki)\n* Przeniesiono informacje o miniaturach plików do nowej struktury **(NAŁADZAJĄCA ZMIANA - SPRAWDŹ SWOJE SKRYPTY I VIS)**\n* Ulepszona obsługa miniatur i stanów wtyczek",
-        "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理",
-        "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів"
+        "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів",
+        "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理"
       },
       "3.2.2": {
         "en": "Updated depedency for js-controller to 4.0.15",
@@ -52,8 +52,8 @@
         "it": "Dipendenza aggiornata per js-controller a 4.0.15",
         "es": "Dependencia actualizada para js-controller a 4.0.15",
         "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
-        "zh-cn": "将 js-controller 的依赖更新到 4.0.15",
-        "uk": "Оновлено залежності для js-контролера до 4.0.15"
+        "uk": "Оновлено залежності для js-контролера до 4.0.15",
+        "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
       },
       "3.2.1": {
         "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
@@ -65,8 +65,8 @@
         "it": "Ottieni l'URL della miniatura del file corrente e copia il valore su printjob (richiede il plug-in Slicer Thumbnails)\nMessaggi di registro aggiornati",
         "es": "Obtenga la URL en miniatura del archivo actual y copie el valor en el trabajo de impresión (requiere el complemento Slicer Thumbnails)\nMensajes de registro actualizados",
         "pl": "Uzyskaj adres URL miniatury bieżącego pliku i skopiuj wartość do zadania drukowania (wymaga wtyczki Slicer Thumbnails)\nZaktualizowane komunikaty dziennika",
-        "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息",
-        "uk": "Отримати URL-адресу ескізу поточного файлу та скопіювати значення до завдання друку (потрібен плагін Slicer Thumbnails)\nОновлені повідомлення журналу"
+        "uk": "Отримати URL-адресу ескізу поточного файлу та скопіювати значення до завдання друку (потрібен плагін Slicer Thumbnails)\nОновлені повідомлення журналу",
+        "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息"
       },
       "3.2.0": {
         "en": "Tested with OctoPrint 1.7.3\n\n* Added print times as readable states (seconds to string)\n* Added formatted date when print job will finish\n* Added fan speed and feedrate from plugin Display Layer Progress",
@@ -78,8 +78,8 @@
         "it": "Testato con OctoPrint 1.7.3\n\n* Aggiunti tempi di stampa come stati leggibili (secondi per stringa)\n* Aggiunta la data formattata al termine del lavoro di stampa\n* Aggiunta la velocità della ventola e l'avanzamento dal plug-in Display Layer Progress",
         "es": "Probado con OctoPrint 1.7.3\n\n* Tiempos de impresión agregados como estados legibles (segundos a cadena)\n* Fecha formateada agregada cuando terminará el trabajo de impresión\n* Se agregó la velocidad del ventilador y la velocidad de avance del complemento Display Layer Progress",
         "pl": "Testowane z OctoPrint 1.7.3\n\n* Dodano czasy drukowania jako stany czytelne (sekundy do ciągu)\n* Dodano sformatowaną datę zakończenia zadania drukowania\n* Dodano prędkość wentylatora i prędkość posuwu z wtyczki Display Layer Progress",
-        "zh-cn": "使用 OctoPrint 1.7.3 测试\n\n*将打印时间添加为可读状态（以秒为字符串）\n* 添加打印作业完成的格式化日期\n* 从插件显示层进度添加风扇速度和进给率",
-        "uk": "Протестовано з OctoPrint 1.7.3\n\n* Додано час друку як читабельний стан (секунди до рядка)\n* Додано відформатовану дату завершення завдання друку\n* Додано швидкість вентилятора та швидкість подачі з плагіна Display Layer Progress"
+        "uk": "Протестовано з OctoPrint 1.7.3\n\n* Додано час друку як читабельний стан (секунди до рядка)\n* Додано відформатовану дату завершення завдання друку\n* Додано швидкість вентилятора та швидкість подачі з плагіна Display Layer Progress",
+        "zh-cn": "使用 OctoPrint 1.7.3 测试\n\n*将打印时间添加为可读状态（以秒为字符串）\n* 添加打印作业完成的格式化日期\n* 从插件显示层进度添加风扇速度和进给率"
       },
       "3.1.0": {
         "en": "Calculate date/time when print will be finished",
@@ -91,8 +91,8 @@
         "it": "Calcola data/ora in cui la stampa sarà terminata",
         "es": "Calcular la fecha/hora en que se terminará la impresión",
         "pl": "Oblicz datę/godzinę zakończenia drukowania",
-        "zh-cn": "计算打印完成的日期/时间",
-        "uk": "Обчисліть дату/час, коли друк буде завершено"
+        "uk": "Обчисліть дату/час, коли друк буде завершено",
+        "zh-cn": "计算打印完成的日期/时间"
       }
     },
     "titleLang": {
@@ -105,8 +105,8 @@
       "it": "OctoPrint",
       "es": "OctoPrint",
       "pl": "Ośmiodruk",
-      "zh-cn": "八印",
-      "uk": "OctoPrint"
+      "uk": "OctoPrint",
+      "zh-cn": "八印"
     },
     "desc": {
       "en": "Manage your OctoPrint instance",
@@ -118,8 +118,8 @@
       "it": "Gestisci la tua istanza OctoPrint",
       "es": "Administre su instancia de OctoPrint",
       "pl": "Zarządzaj instancją OctoPrint",
-      "zh-cn": "管理您的 OctoPrint 实例",
-      "uk": "Керуйте своїм екземпляром OctoPrint"
+      "uk": "Керуйте своїм екземпляром OctoPrint",
+      "zh-cn": "管理您的 OctoPrint 实例"
     },
     "authors": [
       "Matthias Kleine <info@haus-automatisierung.com>"
@@ -201,6 +201,7 @@
           "it": "Meta storage per i file utente",
           "es": "Meta almacenamiento para archivos de usuario",
           "pl": "Meta storage for user files",
+          "uk": "Зберігання мета для файлів користувачів",
           "zh-cn": "用户档案的储存"
         },
         "type": "meta.user"
@@ -221,6 +222,7 @@
           "it": "Informazione",
           "es": "Información",
           "pl": "Informacja",
+          "uk": "Інформація",
           "zh-cn": "信息"
         }
       },
@@ -240,6 +242,7 @@
           "it": "Se connesso a OctoPrint",
           "es": "Si está conectado a OctoPrint",
           "pl": "W przypadku połączenia z OctoPrint",
+          "uk": "Підключення до OctoPrint",
           "zh-cn": "如果连接到 OctoPrint"
         },
         "type": "boolean",
@@ -264,6 +267,7 @@
           "it": "Nome stampante personalizzato",
           "es": "Nombre de impresora personalizado",
           "pl": "Niestandardowa nazwa drukarki",
+          "uk": "Назва принтера",
           "zh-cn": "自定义打印机名称"
         },
         "type": "string",
@@ -287,6 +291,7 @@
           "it": "Stato della stampante",
           "es": "Estado de la impresora",
           "pl": "Stan drukarki",
+          "uk": "Статус на сервери",
           "zh-cn": "打印机状态"
         },
         "type": "string",
@@ -311,6 +316,7 @@
           "it": "Stampante operativa",
           "es": "Impresora operativa",
           "pl": "Drukarka działa",
+          "uk": "Операція принтера",
           "zh-cn": "打印机操作"
         },
         "type": "boolean",
@@ -335,6 +341,7 @@
           "it": "sta stampando",
           "es": "está imprimiendo",
           "pl": "Czy drukowanie",
+          "uk": "Є друк",
           "zh-cn": "正在打印"
         },
         "type": "boolean",
@@ -359,6 +366,7 @@
           "it": "Comando",
           "es": "Mando",
           "pl": "Komenda",
+          "uk": "Про компанію",
           "zh-cn": "命令"
         }
       },
@@ -378,6 +386,7 @@
           "it": "Comando stampante",
           "es": "Comando de impresora",
           "pl": "Polecenie drukarki",
+          "uk": "Команда принтера",
           "zh-cn": "打印机命令"
         },
         "type": "string",
@@ -401,6 +410,7 @@
           "it": "Comando lavoro di stampa",
           "es": "Comando de trabajo de impresión",
           "pl": "Polecenie drukowania zadania",
+          "uk": "Друк команди",
           "zh-cn": "打印作业命令"
         },
         "type": "string",
@@ -424,6 +434,7 @@
           "it": "Comando della scheda SD",
           "es": "Comando de la tarjeta SD",
           "pl": "Polecenie karty SD",
+          "uk": "Команда SD-карт",
           "zh-cn": "SD卡指令"
         },
         "type": "string",
@@ -447,6 +458,7 @@
           "it": "Comando stampante personalizzata",
           "es": "Comando de impresora personalizado",
           "pl": "Niestandardowe polecenie drukarki",
+          "uk": "Спеціальна команда принтера",
           "zh-cn": "自定义打印机命令"
         },
         "type": "string",
@@ -470,6 +482,7 @@
           "it": "Esegui comando di sistema",
           "es": "Ejecutar comando del sistema",
           "pl": "Wykonaj polecenie systemowe",
+          "uk": "Командування системи виконання",
           "zh-cn": "执行系统命令"
         },
         "type": "string",
@@ -493,6 +506,7 @@
           "it": "Comandi Jog",
           "es": "Comandos de jog",
           "pl": "Polecenia impulsowania",
+          "uk": "Джог Команди",
           "zh-cn": "点动命令"
         }
       },
@@ -512,6 +526,7 @@
           "it": "Spostamento asse X",
           "es": "Eje Jog X",
           "pl": "Skok osi X",
+          "uk": "Йог Ось X",
           "zh-cn": "点动 X 轴"
         },
         "type": "number",
@@ -536,6 +551,7 @@
           "it": "Jog asse Y",
           "es": "Eje Jog Y",
           "pl": "Jog oś Y",
+          "uk": "Йог Ось Y",
           "zh-cn": "点动 Y 轴"
         },
         "type": "number",
@@ -560,6 +576,7 @@
           "it": "Avanzamento dell'asse Z",
           "es": "Eje Jog Z",
           "pl": "Jog oś Z",
+          "uk": "Йог Ось Z",
           "zh-cn": "点动 Z 轴"
         },
         "type": "number",
@@ -585,6 +602,7 @@
           "it": "Meta informazioni",
           "es": "Meta informacion",
           "pl": "Metainformacje",
+          "uk": "Мета",
           "zh-cn": "元信息"
         }
       },
@@ -604,6 +622,7 @@
           "it": "Versione",
           "es": "Versión",
           "pl": "Wersja",
+          "uk": "Редагування",
           "zh-cn": "版本"
         },
         "type": "string",
@@ -627,6 +646,7 @@
           "it": "Versione API",
           "es": "Versión API",
           "pl": "Wersja API",
+          "uk": "Версія API",
           "zh-cn": "接口版本"
         },
         "type": "string",
@@ -650,6 +670,7 @@
           "it": "Informazioni sullo strumento",
           "es": "Información de la herramienta",
           "pl": "Informacje o narzędziu",
+          "uk": "Інформація",
           "zh-cn": "刀具信息"
         }
       },
@@ -669,6 +690,7 @@
           "it": "Lavoro di stampa",
           "es": "Trabajo de impresión",
           "pl": "Zadanie drukowania",
+          "uk": "Друк вакансії",
           "zh-cn": "打印作业"
         }
       },
@@ -688,6 +710,7 @@
           "it": "Informazioni sul file di lavoro di stampa",
           "es": "Imprimir información del archivo del trabajo",
           "pl": "Drukuj informacje o pliku zadania",
+          "uk": "Друк інформації про роботу",
           "zh-cn": "打印作业文件信息"
         }
       },
@@ -707,6 +730,7 @@
           "it": "Nome del file",
           "es": "Nombre del archivo",
           "pl": "Nazwa pliku",
+          "uk": "Ім'я файла",
           "zh-cn": "文档名称"
         },
         "type": "string",
@@ -730,6 +754,7 @@
           "it": "Origine del file",
           "es": "Origen del archivo",
           "pl": "Pochodzenie pliku",
+          "uk": "Походження файлів",
           "zh-cn": "文件来源"
         },
         "type": "string",
@@ -753,6 +778,7 @@
           "it": "Dimensione del file",
           "es": "Tamaño del archivo",
           "pl": "Rozmiar pliku",
+          "uk": "Розмір файлу",
           "zh-cn": "文件大小"
         },
         "type": "number",
@@ -777,6 +803,7 @@
           "it": "Data file",
           "es": "Fecha de archivo",
           "pl": "Data pliku",
+          "uk": "Дата файлу",
           "zh-cn": "文件日期"
         },
         "type": "number",
@@ -800,6 +827,7 @@
           "it": "Informazioni sul filamento del lavoro di stampa",
           "es": "Imprimir información sobre el filamento del trabajo",
           "pl": "Drukowanie informacji o filamentach",
+          "uk": "Друк інформації про роботу",
           "zh-cn": "打印作业耗材信息"
         }
       },
@@ -819,6 +847,7 @@
           "it": "Lunghezza del filamento",
           "es": "Longitud del filamento",
           "pl": "Długość żarnika",
+          "uk": "Довжина нитки",
           "zh-cn": "灯丝长度"
         },
         "type": "number",
@@ -843,6 +872,7 @@
           "it": "Volume del filamento",
           "es": "Volumen de filamento",
           "pl": "Objętość żarnika",
+          "uk": "Об'єм нитки",
           "zh-cn": "灯丝体积"
         },
         "type": "number",
@@ -867,6 +897,7 @@
           "it": "Avanzamento del lavoro di stampa",
           "es": "Progreso del trabajo de impresión",
           "pl": "Postęp zadania drukowania",
+          "uk": "Розробка сайтів",
           "zh-cn": "打印作业进度"
         }
       },
@@ -886,6 +917,7 @@
           "it": "Progresso",
           "es": "Progreso",
           "pl": "Postęp",
+          "uk": "Прогрес",
           "zh-cn": "进步"
         },
         "type": "number",
@@ -910,6 +942,7 @@
           "it": "Posizione file",
           "es": "Posición de archivo",
           "pl": "Pozycja pliku",
+          "uk": "Положення про файли",
           "zh-cn": "文件位置"
         },
         "type": "number",
@@ -934,6 +967,7 @@
           "it": "Tempo di stampa",
           "es": "Tiempo de impresión",
           "pl": "Czas drukowania",
+          "uk": "Час друку",
           "zh-cn": "打印时间"
         },
         "type": "number",
@@ -958,6 +992,7 @@
           "it": "Tempo di stampa (formattato)",
           "es": "Hora de impresión (formateada)",
           "pl": "Czas drukowania (sformatowany)",
+          "uk": "Час друку (форматований)",
           "zh-cn": "打印时间（格式化）"
         },
         "type": "string",
@@ -981,6 +1016,7 @@
           "it": "Tempo di stampa rimasto",
           "es": "Tiempo de impresión restante",
           "pl": "Pozostały czas drukowania",
+          "uk": "Час друку зліва",
           "zh-cn": "剩余打印时间"
         },
         "type": "number",
@@ -1005,6 +1041,7 @@
           "it": "Tempo di stampa rimasto (formattato)",
           "es": "Tiempo restante de impresión (formateado)",
           "pl": "Pozostały czas drukowania (sformatowany)",
+          "uk": "Час друку зліва (форматований)",
           "zh-cn": "剩余打印时间（格式化）"
         },
         "type": "string",
@@ -1028,6 +1065,7 @@
           "it": "Finito a",
           "es": "Terminado en",
           "pl": "Zakończono o",
+          "uk": "Оздоблений",
           "zh-cn": "完成于"
         },
         "type": "number",
@@ -1051,6 +1089,7 @@
           "it": "Fine alle - data formattata",
           "es": "Terminado el - fecha formateada",
           "pl": "Zakończono w - sformatowano datę",
+          "uk": "Завершено - дата форматування",
           "zh-cn": "完成日期格式"
         },
         "type": "string",
@@ -1074,6 +1113,7 @@
           "it": "Elenco file",
           "es": "Lista de archivos",
           "pl": "Lista plików",
+          "uk": "Список файлів",
           "zh-cn": "文件清单"
         }
       },
@@ -1093,6 +1133,7 @@
           "it": "Plugin",
           "es": "Complementos",
           "pl": "Wtyczki",
+          "uk": "Кошик",
           "zh-cn": "插件"
         }
       },
