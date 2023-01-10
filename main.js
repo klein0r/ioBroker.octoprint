@@ -1009,29 +1009,8 @@ class OctoPrint extends utils.Adapter {
                                     native: {},
                                 });
 
-                                await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail.png`, {
-                                    type: 'state',
-                                    common: {
-                                        name: {
-                                            en: 'Thumbnail',
-                                            de: 'Miniaturansicht',
-                                            ru: 'Миниатюра',
-                                            pt: 'Miniatura',
-                                            nl: 'Miniatuur',
-                                            fr: 'La vignette',
-                                            it: 'Miniatura',
-                                            es: 'Miniatura',
-                                            pl: 'Miniaturka',
-                                            'zh-cn': '缩略图',
-                                        },
-                                        type: 'file',
-                                        role: 'state',
-                                        read: true,
-                                        write: false,
-                                    },
-                                    native: {},
-                                });
-
+                                // Remove old binary state (deprecated in js-controller 5+)
+                                await this.delObjectAsync(`files.${fileNameClean}.thumbnail.png`);
                                 if (file.thumbnail) {
                                     this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists`);
 
@@ -1094,13 +1073,12 @@ class OctoPrint extends utils.Adapter {
 
                             if (filesKeep.indexOf(id) === -1) {
                                 await this.delObjectAsync(id, { recursive: true });
-                                // this.delForeignBinaryStateAsync(`${id}.thumbnail`);
                                 this.log.debug(`[refreshFiles] file deleted: "${id}"`);
                             }
                         }
 
                         if (this.config.pluginSlicerThumbnails) {
-                            pluginSlicerThumbnails.downloadThumbnailsToStates(this);
+                            pluginSlicerThumbnails.downloadThumbnailsToFiles(this);
                         }
                     }
                 })

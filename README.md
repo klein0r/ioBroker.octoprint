@@ -52,6 +52,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (klein0r) Removed binary states (deprecated)
+
 ### 4.1.0 (2022-12-14)
 
 Tested with OctoPrint 1.8.6
