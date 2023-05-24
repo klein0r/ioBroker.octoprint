@@ -1,1144 +1,1144 @@
 {
-    "common": {
-        "name": "octoprint",
-        "version": "4.1.0",
-        "news": {
-            "4.1.0": {
-                "en": "Tested with OctoPrint 1.8.6\n\n* Dropped Admin 5 support\n* Added Ukrainian language",
-                "de": "Getestet mit OctoPrint 1.8.6\n\n* Dropped Admin 5 Unterstützung\n* Hinzugefügt Ukrainische Sprache",
-                "ru": "Проверено с OctoPrint 1.8.6\n\n* Dropped Admin 5 поддержка\n* Добавлен украинский язык",
-                "pt": "Testado com OctoPrint 1.8.6\n\n* Suporte de Admin 5 Dropped\n* Adicionado idioma ucraniano",
-                "nl": "Vertaling:\n\n♪ Dropped Admin 5 support\n♪ Added Oekraïense taal",
-                "fr": "Testé avec OctoPrint 1.8.6\n\n* Soutien Dropped Admin 5\n* Ajout de la langue ukrainienne",
-                "it": "Testato con OctoPrint 1.8.6\n\n* Sostegno di amministrazione goccia 5\n* Aggiunto lingua ucraina",
-                "es": "Probada con OctoPrint 1.8.6\n\n* Soporte de Admin 5\n* Lenguado ucraniano añadido",
-                "pl": "Testy w wersji 1.8.6\n\n* Dropped Admin 5 support\nJęzyk ukraiński",
-                "uk": "Випробувано з OctoPrint 1.8.6\n\n* Підтримка Dropped Admin 5\n* Додано українську мову",
-                "zh-cn": "与Octo Print的试验1.8.6\n\n* Dro Admin 5支助\n* 增加乌克兰语"
-            },
-            "4.0.1": {
-                "en": "Tested with OctoPrint 1.8.4\n\n* Just download every thumbnail once (requires plugin Slicer Thumbnails)",
-                "de": "Getestet mit OctoPrint 1.8.4\n\n* Einfach alle Miniaturansichten einmal herunterladen (erfordert Plugin Slicer Thumbnails)",
-                "ru": "Проверено с OctoPrint 1.8.4\n\n* Просто скачайте каждый миниатюрный раз (требуется плагин Slicer Thumbnails)",
-                "pt": "Testado com OctoPrint 1.8.4\n\n* Basta baixar cada miniatura uma vez (requer plugin Slicer Thumbnails)",
-                "nl": "Vertaling:\n\n♪ download elke duimnagel eens (requires plugin Slicer Thumbnails)",
-                "fr": "Testé avec OctoPrint 1.8.4\n\n* Il suffit de télécharger chaque miniature une fois (requis plugin Slicer Thumbnails)",
-                "it": "Testato con OctoPrint 1.8.4\n\n# Basta scaricare ogni miniatura una volta (richiede plugin Slicer Thumbnails)",
-                "es": "Probada con OctoPrint 1.8.4\n\n* Sólo descarga cada miniatura una vez (requiere plugin Slicer Thumbnails)",
-                "pl": "Testy w wersji 1.8.4\n\n* Just download every thumbnail once (ang.)",
-                "uk": "Випробувано з OctoPrint 1.8.4\n\nІм'я * Просто завантажте кожну мініатюру один раз (обов'язково плагін Slicer Thumbnails)",
-                "zh-cn": "与Octo Print的试验1.8.4\n\n* A/64/50。 仅每一次挖掘一次(Requires plugin Slicer Thumbnails)"
-            },
-            "4.0.0": {
-                "en": "NodeJS 14.x is required (NodeJS 12.x is EOL)\n\nTested with OctoPrint 1.8.0\n\n* Added last and average layer duration (requires plugin Display Layer Progress)\n* Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Improved handling of thumbnails and states for plugins",
-                "de": "NodeJS 14.x ist erforderlich (NodeJS 12.x ist EOL)\n\nGetestet mit OctoPrint 1.8.0\n\n* Letzte und durchschnittliche Layerdauer hinzugefügt (erfordert Plugin Display Layer Progress)\n* Thumbnail-Informationen von Dateien in neue Struktur verschoben **(BREAKING CHANGE – ÜBERPRÜFEN SIE IHRE SCRIPTS UND VIS)**\n* Verbesserte Handhabung von Thumbnails und Zuständen für Plugins",
-                "ru": "Требуется NodeJS 14.x (NodeJS 12.x является EOL)\n\nПротестировано с OctoPrint 1.8.0\n\n* Добавлена продолжительность последнего и среднего слоя (требуется плагин Display Layer Progress)\n* Информация о миниатюрах файлов перемещена в новую структуру **(СЕРЬЕЗНОЕ ИЗМЕНЕНИЕ - ПРОВЕРЬТЕ СКРИПТЫ И ВИЗУ)**\n* Улучшена обработка миниатюр и состояний для плагинов.",
-                "pt": "NodeJS 14.x é necessário (NodeJS 12.x é EOL)\n\nTestado com OctoPrint 1.8.0\n\n* Adicionado a última e média duração da camada (requer plugin Display Layer Progress)\n* Informações em miniatura movidas de arquivos para nova estrutura **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Manipulação aprimorada de miniaturas e estados para plugins",
-                "nl": "NodeJS 14.x is vereist (NodeJS 12.x is EOL)\n\nGetest met OctoPrint 1.8.0\n\n* Laatste en gemiddelde laagduur toegevoegd (vereist plug-in Display Layer Progress)\n* Miniatuurinformatie van bestanden verplaatst naar een nieuwe structuur **(BREKENDE WIJZIGING - CONTROLEER UW SCRIPTS EN VIS)**\n* Verbeterde verwerking van miniaturen en statussen voor plug-ins",
-                "fr": "NodeJS 14.x est requis (NodeJS 12.x est EOL)\n\nTesté avec OctoPrint 1.8.0\n\n* Ajout de la durée moyenne et de la dernière couche (nécessite le plugin Display Layer Progress)\n* Déplacement des informations sur les vignettes des fichiers vers une nouvelle structure **(CHANGEMENT RUPTURE - VÉRIFIEZ VOS SCRIPTS ET VIS)** \n* Amélioration de la gestion des vignettes et des états des plugins",
-                "it": "NodeJS 14.x è richiesto (NodeJS 12.x è EOL)\n\nTestato con OctoPrint 1.8.0\n\n* Aggiunta la durata dell'ultimo livello e quella media (richiede il plug-in Display Layer Progress)\n* Spostate le informazioni in miniatura dei file nella nuova struttura **(BREAKING CHANGE - CONTROLLA I TUOI SCRIPT E VIS)**\n* Migliorata la gestione delle miniature e degli stati per i plugin",
-                "es": "Se requiere NodeJS 14.x (NodeJS 12.x es EOL)\n\nProbado con OctoPrint 1.8.0\n\n* Se agregó la duración de la última capa y el promedio (requiere el complemento Mostrar progreso de la capa)\n* Se movió la información en miniatura de los archivos a una nueva estructura **(CAMBIO IMPORTANTE - REVISE SUS SCRIPTS Y VIS)**\n* Manejo mejorado de miniaturas y estados para complementos",
-                "pl": "NodeJS 14.x jest wymagany (NodeJS 12.x to EOL)\n\nTestowane z OctoPrint 1.8.0\n\n* Dodano ostatni i średni czas trwania warstwy (wymaga postępu wyświetlania warstwy wtyczki)\n* Przeniesiono informacje o miniaturach plików do nowej struktury **(NAŁADZAJĄCA ZMIANA - SPRAWDŹ SWOJE SKRYPTY I VIS)**\n* Ulepszona obsługa miniatur i stanów wtyczek",
-                "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів",
-                "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理"
-            },
-            "3.2.2": {
-                "en": "Updated depedency for js-controller to 4.0.15",
-                "de": "Abhängigkeit für js-controller auf 4.0.15 aktualisiert",
-                "ru": "Обновлена зависимость для js-контроллера до 4.0.15.",
-                "pt": "Dependência atualizada para js-controller para 4.0.15",
-                "nl": "Afhankelijkheid voor js-controller bijgewerkt naar 4.0.15",
-                "fr": "Mise à jour de la dépendance pour js-controller vers 4.0.15",
-                "it": "Dipendenza aggiornata per js-controller a 4.0.15",
-                "es": "Dependencia actualizada para js-controller a 4.0.15",
-                "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
-                "uk": "Оновлено залежності для js-контролера до 4.0.15",
-                "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
-            },
-            "3.2.1": {
-                "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
-                "de": "Holen Sie sich die Thumbnail-URL der aktuellen Datei und kopieren Sie den Wert in den Druckauftrag (erfordert das Plugin Slicer Thumbnails)\nProtokollmeldungen aktualisiert",
-                "ru": "Получить URL-адрес эскиза текущего файла и скопировать значение в задание печати (требуется плагин Slicer Thumbnails)\nОбновлены сообщения журнала",
-                "pt": "Obtenha o URL da miniatura do arquivo atual e copie o valor para printjob (requer plugin Slicer Thumbnails)\nMensagens de registro atualizadas",
-                "nl": "Verkrijg miniatuur-URL van huidig bestand en kopieer waarde naar printjob (vereist plug-in Slicer Thumbnails)\nBijgewerkte logberichten",
-                "fr": "Obtenir l'URL de la vignette du fichier actuel et copier la valeur dans le travail d'impression (nécessite le plugin Slicer Thumbnails)\nMessages de journal mis à jour",
-                "it": "Ottieni l'URL della miniatura del file corrente e copia il valore su printjob (richiede il plug-in Slicer Thumbnails)\nMessaggi di registro aggiornati",
-                "es": "Obtenga la URL en miniatura del archivo actual y copie el valor en el trabajo de impresión (requiere el complemento Slicer Thumbnails)\nMensajes de registro actualizados",
-                "pl": "Uzyskaj adres URL miniatury bieżącego pliku i skopiuj wartość do zadania drukowania (wymaga wtyczki Slicer Thumbnails)\nZaktualizowane komunikaty dziennika",
-                "uk": "Отримати URL-адресу ескізу поточного файлу та скопіювати значення до завдання друку (потрібен плагін Slicer Thumbnails)\nОновлені повідомлення журналу",
-                "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息"
-            },
-            "3.2.0": {
-                "en": "Tested with OctoPrint 1.7.3\n\n* Added print times as readable states (seconds to string)\n* Added formatted date when print job will finish\n* Added fan speed and feedrate from plugin Display Layer Progress",
-                "de": "Getestet mit OctoPrint 1.7.3\n\n* Druckzeiten als lesbare Zustände hinzugefügt (Sekunden zu String)\n* Formatiertes Datum hinzugefügt, an dem der Druckauftrag abgeschlossen ist\n* Lüftergeschwindigkeit und Feedrate vom Plugin Display Layer Progress hinzugefügt",
-                "ru": "Протестировано с OctoPrint 1.7.3\n\n* Добавлено время печати в виде читаемых состояний (секунды в строку)\n* Добавлен формат даты, когда задание на печать будет завершено\n* Добавлена скорость вентилятора и скорость подачи из плагина Display Layer Progress",
-                "pt": "Testado com OctoPrint 1.7.3\n\n* Adicionados tempos de impressão como estados legíveis (segundos para string)\n* Adicionado data formatada quando o trabalho de impressão terminará\n* Adicionado velocidade do ventilador e taxa de alimentação do plugin Display Layer Progress",
-                "nl": "Getest met OctoPrint 1.7.3\n\n* Afdruktijden toegevoegd als leesbare toestanden (seconden tot string)\n* Opgemaakte datum toegevoegd waarop de afdruktaak zal eindigen\n* Ventilatorsnelheid en voedingssnelheid toegevoegd van plug-in Display Layer Progress",
-                "fr": "Testé avec OctoPrint 1.7.3\n\n* Ajout des temps d'impression en tant qu'états lisibles (secondes à la chaîne)\n* Ajout d'une date formatée à la fin du travail d'impression\n* Ajout de la vitesse du ventilateur et de la vitesse d'avance du plugin Display Layer Progress",
-                "it": "Testato con OctoPrint 1.7.3\n\n* Aggiunti tempi di stampa come stati leggibili (secondi per stringa)\n* Aggiunta la data formattata al termine del lavoro di stampa\n* Aggiunta la velocità della ventola e l'avanzamento dal plug-in Display Layer Progress",
-                "es": "Probado con OctoPrint 1.7.3\n\n* Tiempos de impresión agregados como estados legibles (segundos a cadena)\n* Fecha formateada agregada cuando terminará el trabajo de impresión\n* Se agregó la velocidad del ventilador y la velocidad de avance del complemento Display Layer Progress",
-                "pl": "Testowane z OctoPrint 1.7.3\n\n* Dodano czasy drukowania jako stany czytelne (sekundy do ciągu)\n* Dodano sformatowaną datę zakończenia zadania drukowania\n* Dodano prędkość wentylatora i prędkość posuwu z wtyczki Display Layer Progress",
-                "uk": "Протестовано з OctoPrint 1.7.3\n\n* Додано час друку як читабельний стан (секунди до рядка)\n* Додано відформатовану дату завершення завдання друку\n* Додано швидкість вентилятора та швидкість подачі з плагіна Display Layer Progress",
-                "zh-cn": "使用 OctoPrint 1.7.3 测试\n\n*将打印时间添加为可读状态（以秒为字符串）\n* 添加打印作业完成的格式化日期\n* 从插件显示层进度添加风扇速度和进给率"
-            },
-            "3.1.0": {
-                "en": "Calculate date/time when print will be finished",
-                "de": "Berechnen Sie Datum/Uhrzeit, wann der Druck fertig sein wird",
-                "ru": "Рассчитать дату/время, когда печать будет завершена",
-                "pt": "Calcular data/hora em que a impressão será concluída",
-                "nl": "Bereken datum/tijd wanneer het afdrukken klaar is",
-                "fr": "Calculer la date/heure à laquelle l'impression sera terminée",
-                "it": "Calcola data/ora in cui la stampa sarà terminata",
-                "es": "Calcular la fecha/hora en que se terminará la impresión",
-                "pl": "Oblicz datę/godzinę zakończenia drukowania",
-                "uk": "Обчисліть дату/час, коли друк буде завершено",
-                "zh-cn": "计算打印完成的日期/时间"
-            }
-        },
-        "titleLang": {
-            "en": "OctoPrint",
-            "de": "OctoPrint",
-            "ru": "OctoPrint",
-            "pt": "OctoPrint",
-            "nl": "OctoPrint",
-            "fr": "OctoPrint",
-            "it": "OctoPrint",
-            "es": "OctoPrint",
-            "pl": "Ośmiodruk",
-            "uk": "OctoPrint",
-            "zh-cn": "八印"
-        },
-        "desc": {
-            "en": "Manage your OctoPrint instance",
-            "de": "Verwalte Deine OctoPrint-Instanz",
-            "ru": "Управляйте своим экземпляром OctoPrint",
-            "pt": "Gerenciar sua instância OctoPrint",
-            "nl": "Beheer uw OctoPrint-instantie",
-            "fr": "Gérez votre instance OctoPrint",
-            "it": "Gestisci la tua istanza OctoPrint",
-            "es": "Administre su instancia de OctoPrint",
-            "pl": "Zarządzaj instancją OctoPrint",
-            "uk": "Керуйте своїм екземпляром OctoPrint",
-            "zh-cn": "管理您的 OctoPrint 实例"
-        },
-        "authors": [
-            "Matthias Kleine <info@haus-automatisierung.com>"
-        ],
-        "keywords": [
-            "octoprint",
-            "3d printing",
-            "hardware",
-            "drucker",
-            "gcode"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "icon": "octoprint.png",
-        "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
-        "enabled": false,
-        "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "hardware",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "docs": {
-            "en": "docs/en/README.md",
-            "de": "docs/de/README.md"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=4.0.15"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=6.0.0"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://749c6dc3f9154faa95b9831c273cc779@sentry.iobroker.net/101"
-            }
-        }
+  "common": {
+    "name": "octoprint",
+    "version": "5.0.0",
+    "news": {
+      "5.0.0": {
+        "en": "Tested with OctoPrint 1.9.0\n\n* Removed binary states (deprecated)\n* Allow self-signed certificates\n* Added Ukrainian language",
+        "de": "Getestet mit OctoPrint 1.9.0\n\n* Entfernte binäre Zustände (deprecated)\n* Selbstsignierte Zertifikate zulassen\n* Hinzugefügt Ukrainische Sprache",
+        "ru": "Проверено с OctoPrint 1.9.0\n\n* Удаленные бинарные государства (deprecated)\n* Разрешить самоподписанные сертификаты\n* Добавлен украинский язык",
+        "pt": "Testado com OctoPrint 1.9.0\n\n* estados binários removidos (deprecated)\n* Permitir certificados auto-assinados\n* Adicionado idioma ucraniano",
+        "nl": "Vertaling:\n\nVerwijderde binaire staten\n♪ Allow self-signed certificaat ♪\n♪ Added Oekraïense taal",
+        "fr": "Testé avec OctoPrint 1.9.0\n\n* États binaires supprimés (dépréciés)\n* Permettre des certificats autosignés\n* Ajout de la langue ukrainienne",
+        "it": "Testato con OctoPrint 1.9.0\n\n* Stati binari rimossi (deprecato)\n* Consentire certificati autofirmati\n* Aggiunto lingua ucraina",
+        "es": "Probada con OctoPrint 1.9.0\n\n* estados binarios eliminados (dependidos)\n* Permitir certificados autofirmados\n* Lenguado ucraniano añadido",
+        "pl": "Testy w wersji 1.9.0\n\n* Removed binary states (deprecated) (ang.)\n* Zautomatyzowane certyfikaty\nJęzyk ukraiński",
+        "uk": "Випробувано з OctoPrint 1.9.0\n\n* Вилучені двійкові стани (викрадені)\n* Дозволені сертифікати\n* Додано українську мову",
+        "zh-cn": "与Octo Print1.9.0进行试验。\n\n* 卸任本州(提名)\n* 允许自发证书\n* 增加乌克兰语"
+      },
+      "4.1.0": {
+        "en": "Tested with OctoPrint 1.8.6\n\n* Dropped Admin 5 support\n* Added Ukrainian language",
+        "de": "Getestet mit OctoPrint 1.8.6\n\n* Dropped Admin 5 Unterstützung\n* Hinzugefügt Ukrainische Sprache",
+        "ru": "Проверено с OctoPrint 1.8.6\n\n* Dropped Admin 5 поддержка\n* Добавлен украинский язык",
+        "pt": "Testado com OctoPrint 1.8.6\n\n* Suporte de Admin 5 Dropped\n* Adicionado idioma ucraniano",
+        "nl": "Vertaling:\n\n♪ Dropped Admin 5 support\n♪ Added Oekraïense taal",
+        "fr": "Testé avec OctoPrint 1.8.6\n\n* Soutien Dropped Admin 5\n* Ajout de la langue ukrainienne",
+        "it": "Testato con OctoPrint 1.8.6\n\n* Sostegno di amministrazione goccia 5\n* Aggiunto lingua ucraina",
+        "es": "Probada con OctoPrint 1.8.6\n\n* Soporte de Admin 5\n* Lenguado ucraniano añadido",
+        "pl": "Testy w wersji 1.8.6\n\n* Dropped Admin 5 support\nJęzyk ukraiński",
+        "uk": "Випробувано з OctoPrint 1.8.6\n\n* Підтримка Dropped Admin 5\n* Додано українську мову",
+        "zh-cn": "与Octo Print的试验1.8.6\n\n* Dro Admin 5支助\n* 增加乌克兰语"
+      },
+      "4.0.1": {
+        "en": "Tested with OctoPrint 1.8.4\n\n* Just download every thumbnail once (requires plugin Slicer Thumbnails)",
+        "de": "Getestet mit OctoPrint 1.8.4\n\n* Einfach alle Miniaturansichten einmal herunterladen (erfordert Plugin Slicer Thumbnails)",
+        "ru": "Проверено с OctoPrint 1.8.4\n\n* Просто скачайте каждый миниатюрный раз (требуется плагин Slicer Thumbnails)",
+        "pt": "Testado com OctoPrint 1.8.4\n\n* Basta baixar cada miniatura uma vez (requer plugin Slicer Thumbnails)",
+        "nl": "Vertaling:\n\n♪ download elke duimnagel eens (requires plugin Slicer Thumbnails)",
+        "fr": "Testé avec OctoPrint 1.8.4\n\n* Il suffit de télécharger chaque miniature une fois (requis plugin Slicer Thumbnails)",
+        "it": "Testato con OctoPrint 1.8.4\n\n# Basta scaricare ogni miniatura una volta (richiede plugin Slicer Thumbnails)",
+        "es": "Probada con OctoPrint 1.8.4\n\n* Sólo descarga cada miniatura una vez (requiere plugin Slicer Thumbnails)",
+        "pl": "Testy w wersji 1.8.4\n\n* Just download every thumbnail once (ang.)",
+        "uk": "Випробувано з OctoPrint 1.8.4\n\nІм'я * Просто завантажте кожну мініатюру один раз (обов'язково плагін Slicer Thumbnails)",
+        "zh-cn": "与Octo Print的试验1.8.4\n\n* A/64/50。 仅每一次挖掘一次(Requires plugin Slicer Thumbnails)"
+      },
+      "4.0.0": {
+        "en": "NodeJS 14.x is required (NodeJS 12.x is EOL)\n\nTested with OctoPrint 1.8.0\n\n* Added last and average layer duration (requires plugin Display Layer Progress)\n* Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Improved handling of thumbnails and states for plugins",
+        "de": "NodeJS 14.x ist erforderlich (NodeJS 12.x ist EOL)\n\nGetestet mit OctoPrint 1.8.0\n\n* Letzte und durchschnittliche Layerdauer hinzugefügt (erfordert Plugin Display Layer Progress)\n* Thumbnail-Informationen von Dateien in neue Struktur verschoben **(BREAKING CHANGE – ÜBERPRÜFEN SIE IHRE SCRIPTS UND VIS)**\n* Verbesserte Handhabung von Thumbnails und Zuständen für Plugins",
+        "ru": "Требуется NodeJS 14.x (NodeJS 12.x является EOL)\n\nПротестировано с OctoPrint 1.8.0\n\n* Добавлена продолжительность последнего и среднего слоя (требуется плагин Display Layer Progress)\n* Информация о миниатюрах файлов перемещена в новую структуру **(СЕРЬЕЗНОЕ ИЗМЕНЕНИЕ - ПРОВЕРЬТЕ СКРИПТЫ И ВИЗУ)**\n* Улучшена обработка миниатюр и состояний для плагинов.",
+        "pt": "NodeJS 14.x é necessário (NodeJS 12.x é EOL)\n\nTestado com OctoPrint 1.8.0\n\n* Adicionado a última e média duração da camada (requer plugin Display Layer Progress)\n* Informações em miniatura movidas de arquivos para nova estrutura **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Manipulação aprimorada de miniaturas e estados para plugins",
+        "nl": "NodeJS 14.x is vereist (NodeJS 12.x is EOL)\n\nGetest met OctoPrint 1.8.0\n\n* Laatste en gemiddelde laagduur toegevoegd (vereist plug-in Display Layer Progress)\n* Miniatuurinformatie van bestanden verplaatst naar een nieuwe structuur **(BREKENDE WIJZIGING - CONTROLEER UW SCRIPTS EN VIS)**\n* Verbeterde verwerking van miniaturen en statussen voor plug-ins",
+        "fr": "NodeJS 14.x est requis (NodeJS 12.x est EOL)\n\nTesté avec OctoPrint 1.8.0\n\n* Ajout de la durée moyenne et de la dernière couche (nécessite le plugin Display Layer Progress)\n* Déplacement des informations sur les vignettes des fichiers vers une nouvelle structure **(CHANGEMENT RUPTURE - VÉRIFIEZ VOS SCRIPTS ET VIS)** \n* Amélioration de la gestion des vignettes et des états des plugins",
+        "it": "NodeJS 14.x è richiesto (NodeJS 12.x è EOL)\n\nTestato con OctoPrint 1.8.0\n\n* Aggiunta la durata dell'ultimo livello e quella media (richiede il plug-in Display Layer Progress)\n* Spostate le informazioni in miniatura dei file nella nuova struttura **(BREAKING CHANGE - CONTROLLA I TUOI SCRIPT E VIS)**\n* Migliorata la gestione delle miniature e degli stati per i plugin",
+        "es": "Se requiere NodeJS 14.x (NodeJS 12.x es EOL)\n\nProbado con OctoPrint 1.8.0\n\n* Se agregó la duración de la última capa y el promedio (requiere el complemento Mostrar progreso de la capa)\n* Se movió la información en miniatura de los archivos a una nueva estructura **(CAMBIO IMPORTANTE - REVISE SUS SCRIPTS Y VIS)**\n* Manejo mejorado de miniaturas y estados para complementos",
+        "pl": "NodeJS 14.x jest wymagany (NodeJS 12.x to EOL)\n\nTestowane z OctoPrint 1.8.0\n\n* Dodano ostatni i średni czas trwania warstwy (wymaga postępu wyświetlania warstwy wtyczki)\n* Przeniesiono informacje o miniaturach plików do nowej struktury **(NAŁADZAJĄCA ZMIANA - SPRAWDŹ SWOJE SKRYPTY I VIS)**\n* Ulepszona obsługa miniatur i stanów wtyczek",
+        "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів",
+        "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理"
+      },
+      "3.2.2": {
+        "en": "Updated depedency for js-controller to 4.0.15",
+        "de": "Abhängigkeit für js-controller auf 4.0.15 aktualisiert",
+        "ru": "Обновлена зависимость для js-контроллера до 4.0.15.",
+        "pt": "Dependência atualizada para js-controller para 4.0.15",
+        "nl": "Afhankelijkheid voor js-controller bijgewerkt naar 4.0.15",
+        "fr": "Mise à jour de la dépendance pour js-controller vers 4.0.15",
+        "it": "Dipendenza aggiornata per js-controller a 4.0.15",
+        "es": "Dependencia actualizada para js-controller a 4.0.15",
+        "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
+        "uk": "Оновлено залежності для js-контролера до 4.0.15",
+        "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
+      },
+      "3.2.1": {
+        "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
+        "de": "Holen Sie sich die Thumbnail-URL der aktuellen Datei und kopieren Sie den Wert in den Druckauftrag (erfordert das Plugin Slicer Thumbnails)\nProtokollmeldungen aktualisiert",
+        "ru": "Получить URL-адрес эскиза текущего файла и скопировать значение в задание печати (требуется плагин Slicer Thumbnails)\nОбновлены сообщения журнала",
+        "pt": "Obtenha o URL da miniatura do arquivo atual e copie o valor para printjob (requer plugin Slicer Thumbnails)\nMensagens de registro atualizadas",
+        "nl": "Verkrijg miniatuur-URL van huidig bestand en kopieer waarde naar printjob (vereist plug-in Slicer Thumbnails)\nBijgewerkte logberichten",
+        "fr": "Obtenir l'URL de la vignette du fichier actuel et copier la valeur dans le travail d'impression (nécessite le plugin Slicer Thumbnails)\nMessages de journal mis à jour",
+        "it": "Ottieni l'URL della miniatura del file corrente e copia il valore su printjob (richiede il plug-in Slicer Thumbnails)\nMessaggi di registro aggiornati",
+        "es": "Obtenga la URL en miniatura del archivo actual y copie el valor en el trabajo de impresión (requiere el complemento Slicer Thumbnails)\nMensajes de registro actualizados",
+        "pl": "Uzyskaj adres URL miniatury bieżącego pliku i skopiuj wartość do zadania drukowania (wymaga wtyczki Slicer Thumbnails)\nZaktualizowane komunikaty dziennika",
+        "uk": "Отримати URL-адресу ескізу поточного файлу та скопіювати значення до завдання друку (потрібен плагін Slicer Thumbnails)\nОновлені повідомлення журналу",
+        "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息"
+      },
+      "3.2.0": {
+        "en": "Tested with OctoPrint 1.7.3\n\n* Added print times as readable states (seconds to string)\n* Added formatted date when print job will finish\n* Added fan speed and feedrate from plugin Display Layer Progress",
+        "de": "Getestet mit OctoPrint 1.7.3\n\n* Druckzeiten als lesbare Zustände hinzugefügt (Sekunden zu String)\n* Formatiertes Datum hinzugefügt, an dem der Druckauftrag abgeschlossen ist\n* Lüftergeschwindigkeit und Feedrate vom Plugin Display Layer Progress hinzugefügt",
+        "ru": "Протестировано с OctoPrint 1.7.3\n\n* Добавлено время печати в виде читаемых состояний (секунды в строку)\n* Добавлен формат даты, когда задание на печать будет завершено\n* Добавлена скорость вентилятора и скорость подачи из плагина Display Layer Progress",
+        "pt": "Testado com OctoPrint 1.7.3\n\n* Adicionados tempos de impressão como estados legíveis (segundos para string)\n* Adicionado data formatada quando o trabalho de impressão terminará\n* Adicionado velocidade do ventilador e taxa de alimentação do plugin Display Layer Progress",
+        "nl": "Getest met OctoPrint 1.7.3\n\n* Afdruktijden toegevoegd als leesbare toestanden (seconden tot string)\n* Opgemaakte datum toegevoegd waarop de afdruktaak zal eindigen\n* Ventilatorsnelheid en voedingssnelheid toegevoegd van plug-in Display Layer Progress",
+        "fr": "Testé avec OctoPrint 1.7.3\n\n* Ajout des temps d'impression en tant qu'états lisibles (secondes à la chaîne)\n* Ajout d'une date formatée à la fin du travail d'impression\n* Ajout de la vitesse du ventilateur et de la vitesse d'avance du plugin Display Layer Progress",
+        "it": "Testato con OctoPrint 1.7.3\n\n* Aggiunti tempi di stampa come stati leggibili (secondi per stringa)\n* Aggiunta la data formattata al termine del lavoro di stampa\n* Aggiunta la velocità della ventola e l'avanzamento dal plug-in Display Layer Progress",
+        "es": "Probado con OctoPrint 1.7.3\n\n* Tiempos de impresión agregados como estados legibles (segundos a cadena)\n* Fecha formateada agregada cuando terminará el trabajo de impresión\n* Se agregó la velocidad del ventilador y la velocidad de avance del complemento Display Layer Progress",
+        "pl": "Testowane z OctoPrint 1.7.3\n\n* Dodano czasy drukowania jako stany czytelne (sekundy do ciągu)\n* Dodano sformatowaną datę zakończenia zadania drukowania\n* Dodano prędkość wentylatora i prędkość posuwu z wtyczki Display Layer Progress",
+        "uk": "Протестовано з OctoPrint 1.7.3\n\n* Додано час друку як читабельний стан (секунди до рядка)\n* Додано відформатовану дату завершення завдання друку\n* Додано швидкість вентилятора та швидкість подачі з плагіна Display Layer Progress",
+        "zh-cn": "使用 OctoPrint 1.7.3 测试\n\n*将打印时间添加为可读状态（以秒为字符串）\n* 添加打印作业完成的格式化日期\n* 从插件显示层进度添加风扇速度和进给率"
+      }
     },
-    "protectedNative": [
-        "octoprintApiKey"
-    ],
-    "encryptedNative": [
-        "octoprintApiKey"
-    ],
-    "native": {
-        "octoprintIp": "",
-        "octoprintPort": "80",
-        "customName": "My 3D printer",
-        "octoprintApiKey": "",
-        "apiTimeoutSek": 2,
-        "useHttps": false,
-        "allowSelfSignedCertificates": false,
-        "pluginDisplayLayerProgress": false,
-        "pluginSlicerThumbnails": false,
-        "apiRefreshInterval": 60,
-        "apiRefreshIntervalOperational": 30,
-        "apiRefreshIntervalPrinting": 10
+    "titleLang": {
+      "en": "OctoPrint",
+      "de": "OctoPrint",
+      "ru": "OctoPrint",
+      "pt": "OctoPrint",
+      "nl": "OctoPrint",
+      "fr": "OctoPrint",
+      "it": "OctoPrint",
+      "es": "OctoPrint",
+      "pl": "Ośmiodruk",
+      "uk": "OctoPrint",
+      "zh-cn": "八印"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "",
-            "type": "meta",
-            "common": {
-                "name": {
-                    "en": "Meta storage for user files",
-                    "de": "Meta-Speicher für Benutzerdateien",
-                    "ru": "Meta Storage для файлов пользователей",
-                    "pt": "Meta de armazenamento para arquivos de usuário",
-                    "nl": "Meta opslag voor gebruikersbestanden",
-                    "fr": "Stockage Meta pour les fichiers utilisateur",
-                    "it": "Meta storage per i file utente",
-                    "es": "Meta almacenamiento para archivos de usuario",
-                    "pl": "Meta storage for user files",
-                    "uk": "Зберігання мета для файлів користувачів",
-                    "zh-cn": "用户档案的储存"
-                },
-                "type": "meta.user"
-            },
-            "native": {}
+    "desc": {
+      "en": "Manage your OctoPrint instance",
+      "de": "Verwalte Deine OctoPrint-Instanz",
+      "ru": "Управляйте своим экземпляром OctoPrint",
+      "pt": "Gerenciar sua instância OctoPrint",
+      "nl": "Beheer uw OctoPrint-instantie",
+      "fr": "Gérez votre instance OctoPrint",
+      "it": "Gestisci la tua istanza OctoPrint",
+      "es": "Administre su instancia de OctoPrint",
+      "pl": "Zarządzaj instancją OctoPrint",
+      "uk": "Керуйте своїм екземпляром OctoPrint",
+      "zh-cn": "管理您的 OctoPrint 实例"
+    },
+    "authors": [
+      "Matthias Kleine <info@haus-automatisierung.com>"
+    ],
+    "keywords": [
+      "octoprint",
+      "3d printing",
+      "hardware",
+      "drucker",
+      "gcode"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "icon": "octoprint.png",
+    "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
+    "enabled": false,
+    "readme": "https://github.com/klein0r/ioBroker.octoprint/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "hardware",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "docs": {
+      "en": "docs/en/README.md",
+      "de": "docs/de/README.md"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=4.0.15"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://749c6dc3f9154faa95b9831c273cc779@sentry.iobroker.net/101"
+      }
+    }
+  },
+  "protectedNative": [
+    "octoprintApiKey"
+  ],
+  "encryptedNative": [
+    "octoprintApiKey"
+  ],
+  "native": {
+    "octoprintIp": "",
+    "octoprintPort": "80",
+    "customName": "My 3D printer",
+    "octoprintApiKey": "",
+    "apiTimeoutSek": 2,
+    "useHttps": false,
+    "allowSelfSignedCertificates": false,
+    "pluginDisplayLayerProgress": false,
+    "pluginSlicerThumbnails": false,
+    "apiRefreshInterval": 60,
+    "apiRefreshIntervalOperational": 30,
+    "apiRefreshIntervalPrinting": 10
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "",
+      "type": "meta",
+      "common": {
+        "name": {
+          "en": "Meta storage for user files",
+          "de": "Meta-Speicher für Benutzerdateien",
+          "ru": "Meta Storage для файлов пользователей",
+          "pt": "Meta de armazenamento para arquivos de usuário",
+          "nl": "Meta opslag voor gebruikersbestanden",
+          "fr": "Stockage Meta pour les fichiers utilisateur",
+          "it": "Meta storage per i file utente",
+          "es": "Meta almacenamiento para archivos de usuario",
+          "pl": "Meta storage for user files",
+          "uk": "Зберігання мета для файлів користувачів",
+          "zh-cn": "用户档案的储存"
         },
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Information",
-                    "de": "Information",
-                    "ru": "Информация",
-                    "pt": "Em formação",
-                    "nl": "Informatie",
-                    "fr": "Informations",
-                    "it": "Informazione",
-                    "es": "Información",
-                    "pl": "Informacja",
-                    "uk": "Інформація",
-                    "zh-cn": "信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Connected to OctoPrint",
-                    "de": "Mit OctoPrint verbunden",
-                    "ru": "При подключении к OctoPrint",
-                    "pt": "Se conectado ao OctoPrint",
-                    "nl": "Indien verbonden met OctoPrint",
-                    "fr": "Si connecté à OctoPrint",
-                    "it": "Se connesso a OctoPrint",
-                    "es": "Si está conectado a OctoPrint",
-                    "pl": "W przypadku połączenia z OctoPrint",
-                    "uk": "Підключення до OctoPrint",
-                    "zh-cn": "如果连接到 OctoPrint"
-                },
-                "type": "boolean",
-                "role": "indicator.reachable",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "name",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Custom printer name",
-                    "de": "Benutzerdefinierter Druckername",
-                    "ru": "Пользовательское имя принтера",
-                    "pt": "Nome de impressora personalizado",
-                    "nl": "Aangepaste printernaam",
-                    "fr": "Nom d'imprimante personnalisé",
-                    "it": "Nome stampante personalizzato",
-                    "es": "Nombre de impresora personalizado",
-                    "pl": "Niestandardowa nazwa drukarki",
-                    "uk": "Назва принтера",
-                    "zh-cn": "自定义打印机名称"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printer_status",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Printer Status",
-                    "de": "Druckerstatus",
-                    "ru": "Состояние принтера",
-                    "pt": "Status da impressora",
-                    "nl": "Printerstatus",
-                    "fr": "État de l'imprimante",
-                    "it": "Stato della stampante",
-                    "es": "Estado de la impresora",
-                    "pl": "Stan drukarki",
-                    "uk": "Статус на сервери",
-                    "zh-cn": "打印机状态"
-                },
-                "type": "string",
-                "role": "state",
-                "read": true,
-                "write": false,
-                "def": "API not connected"
-            },
-            "native": {}
-        },
-        {
-            "_id": "operational",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Printer Operational",
-                    "de": "Drucker betriebsbereit",
-                    "ru": "Принтер работает",
-                    "pt": "Impressora Operacional",
-                    "nl": "Printer operationeel",
-                    "fr": "Imprimante opérationnelle",
-                    "it": "Stampante operativa",
-                    "es": "Impresora operativa",
-                    "pl": "Drukarka działa",
-                    "uk": "Операція принтера",
-                    "zh-cn": "打印机操作"
-                },
-                "type": "boolean",
-                "role": "state",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printing",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Is Printing",
-                    "de": "Druckt",
-                    "ru": "печатает",
-                    "pt": "Está Imprimindo",
-                    "nl": "Is aan het afdrukken",
-                    "fr": "Est en train d'imprimer",
-                    "it": "sta stampando",
-                    "es": "está imprimiendo",
-                    "pl": "Czy drukowanie",
-                    "uk": "Є друк",
-                    "zh-cn": "正在打印"
-                },
-                "type": "boolean",
-                "role": "state",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "command",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Command",
-                    "de": "Befehl",
-                    "ru": "Командование",
-                    "pt": "Comando",
-                    "nl": "Opdracht",
-                    "fr": "Commander",
-                    "it": "Comando",
-                    "es": "Mando",
-                    "pl": "Komenda",
-                    "uk": "Про компанію",
-                    "zh-cn": "命令"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.printer",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Printer command",
-                    "de": "Drucker-Befehl",
-                    "ru": "Команда принтера",
-                    "pt": "Comando da impressora",
-                    "nl": "Printeropdracht",
-                    "fr": "Commande d'imprimante",
-                    "it": "Comando stampante",
-                    "es": "Comando de impresora",
-                    "pl": "Polecenie drukarki",
-                    "uk": "Команда принтера",
-                    "zh-cn": "打印机命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.printjob",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print job command",
-                    "de": "Druckauftragsbefehl",
-                    "ru": "Команда задания на печать",
-                    "pt": "Comando de trabalho de impressão",
-                    "nl": "Opdracht afdruktaak",
-                    "fr": "Commande de travail d'impression",
-                    "it": "Comando lavoro di stampa",
-                    "es": "Comando de trabajo de impresión",
-                    "pl": "Polecenie drukowania zadania",
-                    "uk": "Друк команди",
-                    "zh-cn": "打印作业命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.sd",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "SD card command",
-                    "de": "SD-Karten-Befehl",
-                    "ru": "Команда SD-карты",
-                    "pt": "Comando do cartão SD",
-                    "nl": "SD-kaartopdracht",
-                    "fr": "Commande de carte SD",
-                    "it": "Comando della scheda SD",
-                    "es": "Comando de la tarjeta SD",
-                    "pl": "Polecenie karty SD",
-                    "uk": "Команда SD-карт",
-                    "zh-cn": "SD卡指令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.custom",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Custom printer command",
-                    "de": "Benutzerdefinierter Drucker-Befehl",
-                    "ru": "Пользовательская команда принтера",
-                    "pt": "Comando de impressora personalizado",
-                    "nl": "Aangepaste printeropdracht",
-                    "fr": "Commande d'imprimante personnalisée",
-                    "it": "Comando stampante personalizzata",
-                    "es": "Comando de impresora personalizado",
-                    "pl": "Niestandardowe polecenie drukarki",
-                    "uk": "Спеціальна команда принтера",
-                    "zh-cn": "自定义打印机命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.system",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Execute system command",
-                    "de": "Systembefehl ausführen",
-                    "ru": "Выполнить системную команду",
-                    "pt": "Execute o comando do sistema",
-                    "nl": "Systeemopdracht uitvoeren",
-                    "fr": "Exécuter la commande système",
-                    "it": "Esegui comando di sistema",
-                    "es": "Ejecutar comando del sistema",
-                    "pl": "Wykonaj polecenie systemowe",
-                    "uk": "Командування системи виконання",
-                    "zh-cn": "执行系统命令"
-                },
-                "type": "string",
-                "role": "command",
-                "read": false,
-                "write": true
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Jog Commands",
-                    "de": "Jog-Befehle",
-                    "ru": "Команды бега трусцой",
-                    "pt": "Comandos Jog",
-                    "nl": "Jog-opdrachten",
-                    "fr": "Commandes de jogging",
-                    "it": "Comandi Jog",
-                    "es": "Comandos de jog",
-                    "pl": "Polecenia impulsowania",
-                    "uk": "Джог Команди",
-                    "zh-cn": "点动命令"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.x",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog X axis",
-                    "de": "Jog-X-Achse",
-                    "ru": "Ось X Jog",
-                    "pt": "Eixo Jog X",
-                    "nl": "Jog X-as",
-                    "fr": "Jogger l'axe X",
-                    "it": "Spostamento asse X",
-                    "es": "Eje Jog X",
-                    "pl": "Skok osi X",
-                    "uk": "Йог Ось X",
-                    "zh-cn": "点动 X 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true,
-                "def": 0
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.y",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog Y axis",
-                    "de": "Jog-Y-Achse",
-                    "ru": "Перемещение по оси Y",
-                    "pt": "Eixo Y de jog",
-                    "nl": "Jog Y-as",
-                    "fr": "Jogger l'axe Y",
-                    "it": "Jog asse Y",
-                    "es": "Eje Jog Y",
-                    "pl": "Jog oś Y",
-                    "uk": "Йог Ось Y",
-                    "zh-cn": "点动 Y 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true,
-                "def": 0
-            },
-            "native": {}
-        },
-        {
-            "_id": "command.jog.z",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Jog Z axis",
-                    "de": "Jog-Z-Achse",
-                    "ru": "Перемещение оси Z",
-                    "pt": "Eixo Z jog",
-                    "nl": "Jog Z-as",
-                    "fr": "Jogger l'axe Z",
-                    "it": "Avanzamento dell'asse Z",
-                    "es": "Eje Jog Z",
-                    "pl": "Jog oś Z",
-                    "uk": "Йог Ось Z",
-                    "zh-cn": "点动 Z 轴"
-                },
-                "type": "number",
-                "role": "value",
-                "read": false,
-                "write": true,
-                "def": 0
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta",
-            "type": "channel",
-            "common": {
-                "role": "",
-                "name": {
-                    "en": "Meta information",
-                    "de": "Meta-Informationen",
-                    "ru": "Мета информация",
-                    "pt": "Meta informação",
-                    "nl": "Meta informatie",
-                    "fr": "Méta-information",
-                    "it": "Meta informazioni",
-                    "es": "Meta informacion",
-                    "pl": "Metainformacje",
-                    "uk": "Мета",
-                    "zh-cn": "元信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta.version",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Version",
-                    "de": "Version",
-                    "ru": "Версия",
-                    "pt": "Versão",
-                    "nl": "Versie",
-                    "fr": "Version",
-                    "it": "Versione",
-                    "es": "Versión",
-                    "pl": "Wersja",
-                    "uk": "Редагування",
-                    "zh-cn": "版本"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "meta.api_version",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "API Version",
-                    "de": "API-Version",
-                    "ru": "Версия API",
-                    "pt": "Versão API",
-                    "nl": "API-versie",
-                    "fr": "Version API",
-                    "it": "Versione API",
-                    "es": "Versión API",
-                    "pl": "Wersja API",
-                    "uk": "Версія API",
-                    "zh-cn": "接口版本"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "tools",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Tool information",
-                    "de": "Werkzeuginformationen",
-                    "ru": "Информация об инструменте",
-                    "pt": "Informação da ferramenta",
-                    "nl": "Gereedschapsinformatie",
-                    "fr": "Informations sur l'outil",
-                    "it": "Informazioni sullo strumento",
-                    "es": "Información de la herramienta",
-                    "pl": "Informacje o narzędziu",
-                    "uk": "Інформація",
-                    "zh-cn": "刀具信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job",
-                    "de": "Druckauftrag",
-                    "ru": "Распечатать задание",
-                    "pt": "Trabalho de impressão",
-                    "nl": "Afdruktaak",
-                    "fr": "Travail d'impression",
-                    "it": "Lavoro di stampa",
-                    "es": "Trabajo de impresión",
-                    "pl": "Zadanie drukowania",
-                    "uk": "Друк вакансії",
-                    "zh-cn": "打印作业"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job file information",
-                    "de": "Informationen zur Druckauftragsdatei",
-                    "ru": "Информация о файле задания на печать",
-                    "pt": "Informações do arquivo de trabalho de impressão",
-                    "nl": "Informatie over taakbestand afdrukken",
-                    "fr": "Imprimer les informations du fichier de travail",
-                    "it": "Informazioni sul file di lavoro di stampa",
-                    "es": "Imprimir información del archivo del trabajo",
-                    "pl": "Drukuj informacje o pliku zadania",
-                    "uk": "Друк інформації про роботу",
-                    "zh-cn": "打印作业文件信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.name",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File name",
-                    "de": "Dateiname",
-                    "ru": "Имя файла",
-                    "pt": "Nome do arquivo",
-                    "nl": "Bestandsnaam",
-                    "fr": "Nom de fichier",
-                    "it": "Nome del file",
-                    "es": "Nombre del archivo",
-                    "pl": "Nazwa pliku",
-                    "uk": "Ім'я файла",
-                    "zh-cn": "文档名称"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.origin",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File origin",
-                    "de": "Dateiursprung",
-                    "ru": "Источник файла",
-                    "pt": "Origem do arquivo",
-                    "nl": "Oorsprong van bestand",
-                    "fr": "Origine du fichier",
-                    "it": "Origine del file",
-                    "es": "Origen del archivo",
-                    "pl": "Pochodzenie pliku",
-                    "uk": "Походження файлів",
-                    "zh-cn": "文件来源"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.size",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File size",
-                    "de": "Dateigröße",
-                    "ru": "Размер файла",
-                    "pt": "Tamanho do arquivo",
-                    "nl": "Bestandsgrootte",
-                    "fr": "Taille du fichier",
-                    "it": "Dimensione del file",
-                    "es": "Tamaño del archivo",
-                    "pl": "Rozmiar pliku",
-                    "uk": "Розмір файлу",
-                    "zh-cn": "文件大小"
-                },
-                "type": "number",
-                "unit": "KiB",
-                "role": "value",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.file.date",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File date",
-                    "de": "Dateidatum",
-                    "ru": "Дата файла",
-                    "pt": "Data do arquivo",
-                    "nl": "Bestandsdatum",
-                    "fr": "Date du fichier",
-                    "it": "Data file",
-                    "es": "Fecha de archivo",
-                    "pl": "Data pliku",
-                    "uk": "Дата файлу",
-                    "zh-cn": "文件日期"
-                },
-                "type": "number",
-                "role": "date",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job filament information",
-                    "de": "Filamentinformationen für Druckaufträge",
-                    "ru": "Информация о нити для задания на печать",
-                    "pt": "Informações de filamento do trabalho de impressão",
-                    "nl": "Informatie over afdruktaak filament",
-                    "fr": "Imprimer les informations sur le filament de travail",
-                    "it": "Informazioni sul filamento del lavoro di stampa",
-                    "es": "Imprimir información sobre el filamento del trabajo",
-                    "pl": "Drukowanie informacji o filamentach",
-                    "uk": "Друк інформації про роботу",
-                    "zh-cn": "打印作业耗材信息"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament.length",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Filament length",
-                    "de": "Filamentlänge",
-                    "ru": "Длина нити",
-                    "pt": "Comprimento do filamento",
-                    "nl": "filament lengte",
-                    "fr": "Longueur des filaments",
-                    "it": "Lunghezza del filamento",
-                    "es": "Longitud del filamento",
-                    "pl": "Długość żarnika",
-                    "uk": "Довжина нитки",
-                    "zh-cn": "灯丝长度"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "m",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.filament.volume",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Filament volume",
-                    "de": "Filamentvolumen",
-                    "ru": "Объем нити",
-                    "pt": "Volume do filamento",
-                    "nl": "Filamentvolume",
-                    "fr": "Volume de filament",
-                    "it": "Volume del filamento",
-                    "es": "Volumen de filamento",
-                    "pl": "Objętość żarnika",
-                    "uk": "Об'єм нитки",
-                    "zh-cn": "灯丝体积"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "cm³",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Print job progress",
-                    "de": "Fortschritt des Druckauftrags",
-                    "ru": "Ход выполнения задания на печать",
-                    "pt": "Progresso do trabalho de impressão",
-                    "nl": "Voortgang afdruktaak",
-                    "fr": "Progression du travail d'impression",
-                    "it": "Avanzamento del lavoro di stampa",
-                    "es": "Progreso del trabajo de impresión",
-                    "pl": "Postęp zadania drukowania",
-                    "uk": "Розробка сайтів",
-                    "zh-cn": "打印作业进度"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.completion",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Progress",
-                    "de": "Fortschritt",
-                    "ru": "Прогресс",
-                    "pt": "Progresso",
-                    "nl": "Voortgang",
-                    "fr": "Le progrès",
-                    "it": "Progresso",
-                    "es": "Progreso",
-                    "pl": "Postęp",
-                    "uk": "Прогрес",
-                    "zh-cn": "进步"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "%",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.filepos",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "File position",
-                    "de": "Dateiposition",
-                    "ru": "Положение файла",
-                    "pt": "Posição do arquivo",
-                    "nl": "Bestandspositie",
-                    "fr": "Emplacement du fichier",
-                    "it": "Posizione file",
-                    "es": "Posición de archivo",
-                    "pl": "Pozycja pliku",
-                    "uk": "Положення про файли",
-                    "zh-cn": "文件位置"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "KiB",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtime",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time",
-                    "de": "Druckzeit",
-                    "ru": "Время печати",
-                    "pt": "Tempo de impressão",
-                    "nl": "Afdruktijd",
-                    "fr": "Temps d'impression",
-                    "it": "Tempo di stampa",
-                    "es": "Tiempo de impresión",
-                    "pl": "Czas drukowania",
-                    "uk": "Час друку",
-                    "zh-cn": "打印时间"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "s",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtimeFormat",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time (formatted)",
-                    "de": "Druckzeit (formatiert)",
-                    "ru": "Время печати (отформатировано)",
-                    "pt": "Tempo de impressão (formatado)",
-                    "nl": "Afdruktijd (opgemaakt)",
-                    "fr": "Temps d'impression (formaté)",
-                    "it": "Tempo di stampa (formattato)",
-                    "es": "Hora de impresión (formateada)",
-                    "pl": "Czas drukowania (sformatowany)",
-                    "uk": "Час друку (форматований)",
-                    "zh-cn": "打印时间（格式化）"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtimeLeft",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time left",
-                    "de": "Verbleibende Druckzeit",
-                    "ru": "Оставшееся время печати",
-                    "pt": "Tempo de impressão restante",
-                    "nl": "Resterende afdruktijd",
-                    "fr": "Temps d'impression restant",
-                    "it": "Tempo di stampa rimasto",
-                    "es": "Tiempo de impresión restante",
-                    "pl": "Pozostały czas drukowania",
-                    "uk": "Час друку зліва",
-                    "zh-cn": "剩余打印时间"
-                },
-                "type": "number",
-                "role": "value",
-                "unit": "s",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.printtimeLeftFormat",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Print time left (formatted)",
-                    "de": "Verbleibende Druckzeit (formatiert)",
-                    "ru": "Оставшееся время печати (отформатировано)",
-                    "pt": "Tempo de impressão restante (formatado)",
-                    "nl": "Resterende afdruktijd (opgemaakt)",
-                    "fr": "Temps d'impression restant (formaté)",
-                    "it": "Tempo di stampa rimasto (formattato)",
-                    "es": "Tiempo restante de impresión (formateado)",
-                    "pl": "Pozostały czas drukowania (sformatowany)",
-                    "uk": "Час друку зліва (форматований)",
-                    "zh-cn": "剩余打印时间（格式化）"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.finishedAt",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Finished at",
-                    "de": "Fertig um",
-                    "ru": "Закончено в",
-                    "pt": "Terminado em",
-                    "nl": "Afgewerkt om",
-                    "fr": "Terminé à",
-                    "it": "Finito a",
-                    "es": "Terminado en",
-                    "pl": "Zakończono o",
-                    "uk": "Оздоблений",
-                    "zh-cn": "完成于"
-                },
-                "type": "number",
-                "role": "date",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "printjob.progress.finishedAtFormat",
-            "type": "state",
-            "common": {
-                "name": {
-                    "en": "Finished at - date formatted",
-                    "de": "Fertig um - Datum formatiert",
-                    "ru": "Завершено в - дата отформатирована",
-                    "pt": "Concluído em - data formatada",
-                    "nl": "Voltooid om - datum geformatteerd",
-                    "fr": "Fini à - date formatée",
-                    "it": "Fine alle - data formattata",
-                    "es": "Terminado el - fecha formateada",
-                    "pl": "Zakończono w - sformatowano datę",
-                    "uk": "Завершено - дата форматування",
-                    "zh-cn": "完成日期格式"
-                },
-                "type": "string",
-                "role": "text",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        },
-        {
-            "_id": "files",
-            "type": "folder",
-            "common": {
-                "name": {
-                    "en": "File list",
-                    "de": "Dateiliste",
-                    "ru": "Список файлов",
-                    "pt": "Lista de arquivos",
-                    "nl": "Bestandslijst",
-                    "fr": "Liste des fichiers",
-                    "it": "Elenco file",
-                    "es": "Lista de archivos",
-                    "pl": "Lista plików",
-                    "uk": "Список файлів",
-                    "zh-cn": "文件清单"
-                }
-            },
-            "native": {}
-        },
-        {
-            "_id": "plugins",
-            "type": "channel",
-            "common": {
-                "name": {
-                    "en": "Plugins",
-                    "de": "Plugins",
-                    "ru": "Плагины",
-                    "pt": "Plugins",
-                    "nl": "Plug-ins",
-                    "fr": "Plugins",
-                    "it": "Plugin",
-                    "es": "Complementos",
-                    "pl": "Wtyczki",
-                    "uk": "Кошик",
-                    "zh-cn": "插件"
-                }
-            },
-            "native": {}
+        "type": "meta.user"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Information",
+          "ru": "Информация",
+          "pt": "Em formação",
+          "nl": "Informatie",
+          "fr": "Informations",
+          "it": "Informazione",
+          "es": "Información",
+          "pl": "Informacja",
+          "uk": "Інформація",
+          "zh-cn": "信息"
         }
-    ]
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Connected to OctoPrint",
+          "de": "Mit OctoPrint verbunden",
+          "ru": "При подключении к OctoPrint",
+          "pt": "Se conectado ao OctoPrint",
+          "nl": "Indien verbonden met OctoPrint",
+          "fr": "Si connecté à OctoPrint",
+          "it": "Se connesso a OctoPrint",
+          "es": "Si está conectado a OctoPrint",
+          "pl": "W przypadku połączenia z OctoPrint",
+          "uk": "Підключення до OctoPrint",
+          "zh-cn": "如果连接到 OctoPrint"
+        },
+        "type": "boolean",
+        "role": "indicator.reachable",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "name",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Custom printer name",
+          "de": "Benutzerdefinierter Druckername",
+          "ru": "Пользовательское имя принтера",
+          "pt": "Nome de impressora personalizado",
+          "nl": "Aangepaste printernaam",
+          "fr": "Nom d'imprimante personnalisé",
+          "it": "Nome stampante personalizzato",
+          "es": "Nombre de impresora personalizado",
+          "pl": "Niestandardowa nazwa drukarki",
+          "uk": "Назва принтера",
+          "zh-cn": "自定义打印机名称"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printer_status",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Printer Status",
+          "de": "Druckerstatus",
+          "ru": "Состояние принтера",
+          "pt": "Status da impressora",
+          "nl": "Printerstatus",
+          "fr": "État de l'imprimante",
+          "it": "Stato della stampante",
+          "es": "Estado de la impresora",
+          "pl": "Stan drukarki",
+          "uk": "Статус на сервери",
+          "zh-cn": "打印机状态"
+        },
+        "type": "string",
+        "role": "state",
+        "read": true,
+        "write": false,
+        "def": "API not connected"
+      },
+      "native": {}
+    },
+    {
+      "_id": "operational",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Printer Operational",
+          "de": "Drucker betriebsbereit",
+          "ru": "Принтер работает",
+          "pt": "Impressora Operacional",
+          "nl": "Printer operationeel",
+          "fr": "Imprimante opérationnelle",
+          "it": "Stampante operativa",
+          "es": "Impresora operativa",
+          "pl": "Drukarka działa",
+          "uk": "Операція принтера",
+          "zh-cn": "打印机操作"
+        },
+        "type": "boolean",
+        "role": "state",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printing",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Is Printing",
+          "de": "Druckt",
+          "ru": "печатает",
+          "pt": "Está Imprimindo",
+          "nl": "Is aan het afdrukken",
+          "fr": "Est en train d'imprimer",
+          "it": "sta stampando",
+          "es": "está imprimiendo",
+          "pl": "Czy drukowanie",
+          "uk": "Є друк",
+          "zh-cn": "正在打印"
+        },
+        "type": "boolean",
+        "role": "state",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "command",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Command",
+          "de": "Befehl",
+          "ru": "Командование",
+          "pt": "Comando",
+          "nl": "Opdracht",
+          "fr": "Commander",
+          "it": "Comando",
+          "es": "Mando",
+          "pl": "Komenda",
+          "uk": "Про компанію",
+          "zh-cn": "命令"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.printer",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Printer command",
+          "de": "Drucker-Befehl",
+          "ru": "Команда принтера",
+          "pt": "Comando da impressora",
+          "nl": "Printeropdracht",
+          "fr": "Commande d'imprimante",
+          "it": "Comando stampante",
+          "es": "Comando de impresora",
+          "pl": "Polecenie drukarki",
+          "uk": "Команда принтера",
+          "zh-cn": "打印机命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.printjob",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print job command",
+          "de": "Druckauftragsbefehl",
+          "ru": "Команда задания на печать",
+          "pt": "Comando de trabalho de impressão",
+          "nl": "Opdracht afdruktaak",
+          "fr": "Commande de travail d'impression",
+          "it": "Comando lavoro di stampa",
+          "es": "Comando de trabajo de impresión",
+          "pl": "Polecenie drukowania zadania",
+          "uk": "Друк команди",
+          "zh-cn": "打印作业命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.sd",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "SD card command",
+          "de": "SD-Karten-Befehl",
+          "ru": "Команда SD-карты",
+          "pt": "Comando do cartão SD",
+          "nl": "SD-kaartopdracht",
+          "fr": "Commande de carte SD",
+          "it": "Comando della scheda SD",
+          "es": "Comando de la tarjeta SD",
+          "pl": "Polecenie karty SD",
+          "uk": "Команда SD-карт",
+          "zh-cn": "SD卡指令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.custom",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Custom printer command",
+          "de": "Benutzerdefinierter Drucker-Befehl",
+          "ru": "Пользовательская команда принтера",
+          "pt": "Comando de impressora personalizado",
+          "nl": "Aangepaste printeropdracht",
+          "fr": "Commande d'imprimante personnalisée",
+          "it": "Comando stampante personalizzata",
+          "es": "Comando de impresora personalizado",
+          "pl": "Niestandardowe polecenie drukarki",
+          "uk": "Спеціальна команда принтера",
+          "zh-cn": "自定义打印机命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.system",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Execute system command",
+          "de": "Systembefehl ausführen",
+          "ru": "Выполнить системную команду",
+          "pt": "Execute o comando do sistema",
+          "nl": "Systeemopdracht uitvoeren",
+          "fr": "Exécuter la commande système",
+          "it": "Esegui comando di sistema",
+          "es": "Ejecutar comando del sistema",
+          "pl": "Wykonaj polecenie systemowe",
+          "uk": "Командування системи виконання",
+          "zh-cn": "执行系统命令"
+        },
+        "type": "string",
+        "role": "command",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Jog Commands",
+          "de": "Jog-Befehle",
+          "ru": "Команды бега трусцой",
+          "pt": "Comandos Jog",
+          "nl": "Jog-opdrachten",
+          "fr": "Commandes de jogging",
+          "it": "Comandi Jog",
+          "es": "Comandos de jog",
+          "pl": "Polecenia impulsowania",
+          "uk": "Джог Команди",
+          "zh-cn": "点动命令"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.x",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog X axis",
+          "de": "Jog-X-Achse",
+          "ru": "Ось X Jog",
+          "pt": "Eixo Jog X",
+          "nl": "Jog X-as",
+          "fr": "Jogger l'axe X",
+          "it": "Spostamento asse X",
+          "es": "Eje Jog X",
+          "pl": "Skok osi X",
+          "uk": "Йог Ось X",
+          "zh-cn": "点动 X 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.y",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog Y axis",
+          "de": "Jog-Y-Achse",
+          "ru": "Перемещение по оси Y",
+          "pt": "Eixo Y de jog",
+          "nl": "Jog Y-as",
+          "fr": "Jogger l'axe Y",
+          "it": "Jog asse Y",
+          "es": "Eje Jog Y",
+          "pl": "Jog oś Y",
+          "uk": "Йог Ось Y",
+          "zh-cn": "点动 Y 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "command.jog.z",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Jog Z axis",
+          "de": "Jog-Z-Achse",
+          "ru": "Перемещение оси Z",
+          "pt": "Eixo Z jog",
+          "nl": "Jog Z-as",
+          "fr": "Jogger l'axe Z",
+          "it": "Avanzamento dell'asse Z",
+          "es": "Eje Jog Z",
+          "pl": "Jog oś Z",
+          "uk": "Йог Ось Z",
+          "zh-cn": "点动 Z 轴"
+        },
+        "type": "number",
+        "role": "value",
+        "read": false,
+        "write": true,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta",
+      "type": "channel",
+      "common": {
+        "role": "",
+        "name": {
+          "en": "Meta information",
+          "de": "Meta-Informationen",
+          "ru": "Мета информация",
+          "pt": "Meta informação",
+          "nl": "Meta informatie",
+          "fr": "Méta-information",
+          "it": "Meta informazioni",
+          "es": "Meta informacion",
+          "pl": "Metainformacje",
+          "uk": "Мета",
+          "zh-cn": "元信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta.version",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Version",
+          "de": "Version",
+          "ru": "Версия",
+          "pt": "Versão",
+          "nl": "Versie",
+          "fr": "Version",
+          "it": "Versione",
+          "es": "Versión",
+          "pl": "Wersja",
+          "uk": "Редагування",
+          "zh-cn": "版本"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "meta.api_version",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "API Version",
+          "de": "API-Version",
+          "ru": "Версия API",
+          "pt": "Versão API",
+          "nl": "API-versie",
+          "fr": "Version API",
+          "it": "Versione API",
+          "es": "Versión API",
+          "pl": "Wersja API",
+          "uk": "Версія API",
+          "zh-cn": "接口版本"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "tools",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Tool information",
+          "de": "Werkzeuginformationen",
+          "ru": "Информация об инструменте",
+          "pt": "Informação da ferramenta",
+          "nl": "Gereedschapsinformatie",
+          "fr": "Informations sur l'outil",
+          "it": "Informazioni sullo strumento",
+          "es": "Información de la herramienta",
+          "pl": "Informacje o narzędziu",
+          "uk": "Інформація",
+          "zh-cn": "刀具信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job",
+          "de": "Druckauftrag",
+          "ru": "Распечатать задание",
+          "pt": "Trabalho de impressão",
+          "nl": "Afdruktaak",
+          "fr": "Travail d'impression",
+          "it": "Lavoro di stampa",
+          "es": "Trabajo de impresión",
+          "pl": "Zadanie drukowania",
+          "uk": "Друк вакансії",
+          "zh-cn": "打印作业"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job file information",
+          "de": "Informationen zur Druckauftragsdatei",
+          "ru": "Информация о файле задания на печать",
+          "pt": "Informações do arquivo de trabalho de impressão",
+          "nl": "Informatie over taakbestand afdrukken",
+          "fr": "Imprimer les informations du fichier de travail",
+          "it": "Informazioni sul file di lavoro di stampa",
+          "es": "Imprimir información del archivo del trabajo",
+          "pl": "Drukuj informacje o pliku zadania",
+          "uk": "Друк інформації про роботу",
+          "zh-cn": "打印作业文件信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.name",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File name",
+          "de": "Dateiname",
+          "ru": "Имя файла",
+          "pt": "Nome do arquivo",
+          "nl": "Bestandsnaam",
+          "fr": "Nom de fichier",
+          "it": "Nome del file",
+          "es": "Nombre del archivo",
+          "pl": "Nazwa pliku",
+          "uk": "Ім'я файла",
+          "zh-cn": "文档名称"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.origin",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File origin",
+          "de": "Dateiursprung",
+          "ru": "Источник файла",
+          "pt": "Origem do arquivo",
+          "nl": "Oorsprong van bestand",
+          "fr": "Origine du fichier",
+          "it": "Origine del file",
+          "es": "Origen del archivo",
+          "pl": "Pochodzenie pliku",
+          "uk": "Походження файлів",
+          "zh-cn": "文件来源"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.size",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File size",
+          "de": "Dateigröße",
+          "ru": "Размер файла",
+          "pt": "Tamanho do arquivo",
+          "nl": "Bestandsgrootte",
+          "fr": "Taille du fichier",
+          "it": "Dimensione del file",
+          "es": "Tamaño del archivo",
+          "pl": "Rozmiar pliku",
+          "uk": "Розмір файлу",
+          "zh-cn": "文件大小"
+        },
+        "type": "number",
+        "unit": "KiB",
+        "role": "value",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.file.date",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File date",
+          "de": "Dateidatum",
+          "ru": "Дата файла",
+          "pt": "Data do arquivo",
+          "nl": "Bestandsdatum",
+          "fr": "Date du fichier",
+          "it": "Data file",
+          "es": "Fecha de archivo",
+          "pl": "Data pliku",
+          "uk": "Дата файлу",
+          "zh-cn": "文件日期"
+        },
+        "type": "number",
+        "role": "date",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job filament information",
+          "de": "Filamentinformationen für Druckaufträge",
+          "ru": "Информация о нити для задания на печать",
+          "pt": "Informações de filamento do trabalho de impressão",
+          "nl": "Informatie over afdruktaak filament",
+          "fr": "Imprimer les informations sur le filament de travail",
+          "it": "Informazioni sul filamento del lavoro di stampa",
+          "es": "Imprimir información sobre el filamento del trabajo",
+          "pl": "Drukowanie informacji o filamentach",
+          "uk": "Друк інформації про роботу",
+          "zh-cn": "打印作业耗材信息"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament.length",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Filament length",
+          "de": "Filamentlänge",
+          "ru": "Длина нити",
+          "pt": "Comprimento do filamento",
+          "nl": "filament lengte",
+          "fr": "Longueur des filaments",
+          "it": "Lunghezza del filamento",
+          "es": "Longitud del filamento",
+          "pl": "Długość żarnika",
+          "uk": "Довжина нитки",
+          "zh-cn": "灯丝长度"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "m",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.filament.volume",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Filament volume",
+          "de": "Filamentvolumen",
+          "ru": "Объем нити",
+          "pt": "Volume do filamento",
+          "nl": "Filamentvolume",
+          "fr": "Volume de filament",
+          "it": "Volume del filamento",
+          "es": "Volumen de filamento",
+          "pl": "Objętość żarnika",
+          "uk": "Об'єм нитки",
+          "zh-cn": "灯丝体积"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "cm³",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Print job progress",
+          "de": "Fortschritt des Druckauftrags",
+          "ru": "Ход выполнения задания на печать",
+          "pt": "Progresso do trabalho de impressão",
+          "nl": "Voortgang afdruktaak",
+          "fr": "Progression du travail d'impression",
+          "it": "Avanzamento del lavoro di stampa",
+          "es": "Progreso del trabajo de impresión",
+          "pl": "Postęp zadania drukowania",
+          "uk": "Розробка сайтів",
+          "zh-cn": "打印作业进度"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.completion",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Progress",
+          "de": "Fortschritt",
+          "ru": "Прогресс",
+          "pt": "Progresso",
+          "nl": "Voortgang",
+          "fr": "Le progrès",
+          "it": "Progresso",
+          "es": "Progreso",
+          "pl": "Postęp",
+          "uk": "Прогрес",
+          "zh-cn": "进步"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "%",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.filepos",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "File position",
+          "de": "Dateiposition",
+          "ru": "Положение файла",
+          "pt": "Posição do arquivo",
+          "nl": "Bestandspositie",
+          "fr": "Emplacement du fichier",
+          "it": "Posizione file",
+          "es": "Posición de archivo",
+          "pl": "Pozycja pliku",
+          "uk": "Положення про файли",
+          "zh-cn": "文件位置"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "KiB",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtime",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time",
+          "de": "Druckzeit",
+          "ru": "Время печати",
+          "pt": "Tempo de impressão",
+          "nl": "Afdruktijd",
+          "fr": "Temps d'impression",
+          "it": "Tempo di stampa",
+          "es": "Tiempo de impresión",
+          "pl": "Czas drukowania",
+          "uk": "Час друку",
+          "zh-cn": "打印时间"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "s",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtimeFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time (formatted)",
+          "de": "Druckzeit (formatiert)",
+          "ru": "Время печати (отформатировано)",
+          "pt": "Tempo de impressão (formatado)",
+          "nl": "Afdruktijd (opgemaakt)",
+          "fr": "Temps d'impression (formaté)",
+          "it": "Tempo di stampa (formattato)",
+          "es": "Hora de impresión (formateada)",
+          "pl": "Czas drukowania (sformatowany)",
+          "uk": "Час друку (форматований)",
+          "zh-cn": "打印时间（格式化）"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtimeLeft",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time left",
+          "de": "Verbleibende Druckzeit",
+          "ru": "Оставшееся время печати",
+          "pt": "Tempo de impressão restante",
+          "nl": "Resterende afdruktijd",
+          "fr": "Temps d'impression restant",
+          "it": "Tempo di stampa rimasto",
+          "es": "Tiempo de impresión restante",
+          "pl": "Pozostały czas drukowania",
+          "uk": "Час друку зліва",
+          "zh-cn": "剩余打印时间"
+        },
+        "type": "number",
+        "role": "value",
+        "unit": "s",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.printtimeLeftFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Print time left (formatted)",
+          "de": "Verbleibende Druckzeit (formatiert)",
+          "ru": "Оставшееся время печати (отформатировано)",
+          "pt": "Tempo de impressão restante (formatado)",
+          "nl": "Resterende afdruktijd (opgemaakt)",
+          "fr": "Temps d'impression restant (formaté)",
+          "it": "Tempo di stampa rimasto (formattato)",
+          "es": "Tiempo restante de impresión (formateado)",
+          "pl": "Pozostały czas drukowania (sformatowany)",
+          "uk": "Час друку зліва (форматований)",
+          "zh-cn": "剩余打印时间（格式化）"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.finishedAt",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Finished at",
+          "de": "Fertig um",
+          "ru": "Закончено в",
+          "pt": "Terminado em",
+          "nl": "Afgewerkt om",
+          "fr": "Terminé à",
+          "it": "Finito a",
+          "es": "Terminado en",
+          "pl": "Zakończono o",
+          "uk": "Оздоблений",
+          "zh-cn": "完成于"
+        },
+        "type": "number",
+        "role": "date",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "printjob.progress.finishedAtFormat",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Finished at - date formatted",
+          "de": "Fertig um - Datum formatiert",
+          "ru": "Завершено в - дата отформатирована",
+          "pt": "Concluído em - data formatada",
+          "nl": "Voltooid om - datum geformatteerd",
+          "fr": "Fini à - date formatée",
+          "it": "Fine alle - data formattata",
+          "es": "Terminado el - fecha formateada",
+          "pl": "Zakończono w - sformatowano datę",
+          "uk": "Завершено - дата форматування",
+          "zh-cn": "完成日期格式"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "files",
+      "type": "folder",
+      "common": {
+        "name": {
+          "en": "File list",
+          "de": "Dateiliste",
+          "ru": "Список файлов",
+          "pt": "Lista de arquivos",
+          "nl": "Bestandslijst",
+          "fr": "Liste des fichiers",
+          "it": "Elenco file",
+          "es": "Lista de archivos",
+          "pl": "Lista plików",
+          "uk": "Список файлів",
+          "zh-cn": "文件清单"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "plugins",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Plugins",
+          "de": "Plugins",
+          "ru": "Плагины",
+          "pt": "Plugins",
+          "nl": "Plug-ins",
+          "fr": "Plugins",
+          "it": "Plugin",
+          "es": "Complementos",
+          "pl": "Wtyczki",
+          "uk": "Кошик",
+          "zh-cn": "插件"
+        }
+      },
+      "native": {}
+    }
+  ]
 }

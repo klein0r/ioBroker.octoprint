@@ -52,7 +52,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 5.0.0 (2023-05-24)
 
 Tested with OctoPrint 1.9.0
 
@@ -86,11 +86,6 @@ Tested with OctoPrint 1.8.0
 ### 3.2.2 (2022-04-29)
 
 * (klein0r) Updated depedency for js-controller to 4.0.15
-
-### 3.2.1 (2022-04-28)
-
-* (klein0r) Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)
-* (klein0r) Updated log messages
 
 ## License
 

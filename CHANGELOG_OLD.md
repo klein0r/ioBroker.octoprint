@@ -1,4 +1,9 @@
 # Older changes
+## 3.2.1 (2022-04-28)
+
+* (klein0r) Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)
+* (klein0r) Updated log messages
+
 ## 3.2.0 (2022-03-07)
 
 Tested with OctoPrint 1.7.3
