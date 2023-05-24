@@ -54,6 +54,8 @@ iobroker add octoprint
 -->
 ### **WORK IN PROGRESS**
 
+Tested with OctoPrint 1.9.0
+
 * (klein0r) Removed binary states (deprecated)
 * (klein0r) Added Ukrainian language
 
