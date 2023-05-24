@@ -54,9 +54,17 @@
                     "newLine": true,
                     "type": "checkbox",
                     "sm": 12,
-                    "md": 12,
-                    "lg": 12,
+                    "md": 6,
+                    "lg": 6,
                     "label": "use HTTPS"
+                },
+                "allowSelfSignedCertificates": {
+                    "hidden": "!data.useHttps",
+                    "type": "checkbox",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "label": "Allow self-signed certificates"
                 },
                 "pluginDisplayLayerProgress": {
                     "newLine": true,

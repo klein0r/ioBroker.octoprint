@@ -57,6 +57,7 @@ iobroker add octoprint
 Tested with OctoPrint 1.9.0
 
 * (klein0r) Removed binary states (deprecated)
+* (klein0r) Allow self-signed certificates
 * (klein0r) Added Ukrainian language
 
 ### 4.1.0 (2022-12-14)

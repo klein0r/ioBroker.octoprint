@@ -1,7 +1,9 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
+const https = require('https');
 const axios = require('axios').default;
+const adapterName = require('./package.json').name.split('.').pop();
 
 const pluginDisplayLayerProgress = require('./lib/plugins/displaylayerprogress');
 const pluginSlicerThumbnails = require('./lib/plugins/slicerthumbnails');
@@ -10,7 +12,7 @@ class OctoPrint extends utils.Adapter {
     constructor(options) {
         super({
             ...options,
-            name: 'octoprint',
+            name: adapterName,
             useFormatDate: true,
         });
 
@@ -1162,6 +1164,9 @@ class OctoPrint extends utils.Adapter {
                 validateStatus: (status) => {
                     return [200, 204, 409].indexOf(status) > -1;
                 },
+                httpsAgent: new https.Agent({
+                    rejectUnauthorized: !this.config.allowSelfSignedCertificates,
+                }),
             })
                 .then((response) => {
                     this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);

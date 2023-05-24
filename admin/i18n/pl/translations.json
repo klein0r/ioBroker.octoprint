@@ -15,5 +15,6 @@
     "Enable plugin: Display Layer Progress": "Włącz wtyczkę: Display Layer Progress",
     "Enable plugin: Slicer Thumbnails": "Włącz wtyczkę: Slicer Thumbnails",
     "use HTTPS": "użyj HTTPS",
-    "Request timeout": "Limit czasu żądania w sekundach"
+    "Request timeout": "Limit czasu żądania w sekundach",
+    "Allow self-signed certificates": "Zezwalaj na certyfikaty z podpisem własnym"
 }

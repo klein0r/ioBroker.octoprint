@@ -15,5 +15,6 @@
     "Enable plugin: Display Layer Progress": "Увімкнути плагін: Показати прогрес шару",
     "Enable plugin: Slicer Thumbnails": "Увімкнути плагін: Slicer Thumbnails",
     "use HTTPS": "використовувати HTTPS",
-    "Request timeout": "Час очікування запиту в секундах"
+    "Request timeout": "Час очікування запиту в секундах",
+    "Allow self-signed certificates": "Дозволити самопідписані сертифікати"
 }

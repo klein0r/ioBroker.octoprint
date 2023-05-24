@@ -15,5 +15,6 @@
     "Enable plugin: Display Layer Progress": "Plug-in inschakelen: Display Layer Progress",
     "Enable plugin: Slicer Thumbnails": "Plug-in inschakelen: Slicer Thumbnails",
     "use HTTPS": "gebruik HTTPS",
-    "Request timeout": "Verzoek time-out in seconden"
+    "Request timeout": "Verzoek time-out in seconden",
+    "Allow self-signed certificates": "Sta zelfondertekende certificaten toe"
 }

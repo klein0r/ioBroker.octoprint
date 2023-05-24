@@ -15,5 +15,6 @@
     "Enable plugin: Display Layer Progress": "启用插件：Display Layer Progress",
     "Enable plugin: Slicer Thumbnails": "启用插件：Slicer Thumbnails",
     "use HTTPS": "使用 HTTPS",
-    "Request timeout": "请求超时（以秒为单位）"
+    "Request timeout": "请求超时（以秒为单位）",
+    "Allow self-signed certificates": "允许自签名证书"
 }
