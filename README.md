@@ -52,6 +52,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (klein0r) Allow self-signed certificates
+
 ### 5.0.0 (2023-05-24)
 
 Tested with OctoPrint 1.9.0

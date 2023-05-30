@@ -1,7 +1,7 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const https = require('https');
+const https = require('node:https');
 const axios = require('axios').default;
 const adapterName = require('./package.json').name.split('.').pop();
 
