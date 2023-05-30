@@ -52,7 +52,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 5.0.1 (2023-05-30)
 
 * (klein0r) Allow self-signed certificates
 
@@ -86,10 +86,6 @@ Tested with OctoPrint 1.8.0
 * (klein0r) Added last and average layer duration (requires plugin Display Layer Progress)
 * (klein0r) Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
 * (klein0r) Improved handling of thumbnails and states for plugins
-
-### 3.2.2 (2022-04-29)
-
-* (klein0r) Updated depedency for js-controller to 4.0.15
 
 ## License
 
