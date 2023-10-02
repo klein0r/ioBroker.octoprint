@@ -1083,12 +1083,10 @@ class OctoPrint extends utils.Adapter {
                         }
 
                         // Delete non existent files
-                        for (let i = 0; i < filesAll.length; i++) {
-                            const id = filesAll[i];
-
-                            if (filesKeep.indexOf(id) === -1) {
-                                await this.delObjectAsync(id, { recursive: true });
-                                this.log.debug(`[refreshFiles] file deleted: "${id}"`);
+                        for (const file of filesAll) {
+                            if (!filesKeep.includes(file)) {
+                                await this.delObjectAsync(file, { recursive: true });
+                                this.log.debug(`[refreshFiles] file deleted: "${file}"`);
                             }
                         }
 
@@ -1152,10 +1150,10 @@ class OctoPrint extends utils.Adapter {
             }
 
             axios({
-                method: method,
-                data: data,
+                method,
+                data,
                 baseURL: this.getOctoprintUri(),
-                url: url,
+                url,
                 timeout: this.config.apiTimeoutSek * 1000,
                 responseType: 'json',
                 headers: {
