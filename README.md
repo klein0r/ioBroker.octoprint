@@ -50,7 +50,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 5.1.0 (2023-10-25)
 
 NodeJS 16.x is required
 
@@ -82,16 +82,6 @@ Tested with OctoPrint 1.8.6
 Tested with OctoPrint 1.8.4
 
 * (klein0r) Just download every thumbnail once (requires plugin Slicer Thumbnails)
-
-### 4.0.0 (2022-05-19)
-
-NodeJS 14.x is required (NodeJS 12.x is EOL)
-
-Tested with OctoPrint 1.8.0
-
-* (klein0r) Added last and average layer duration (requires plugin Display Layer Progress)
-* (klein0r) Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
-* (klein0r) Improved handling of thumbnails and states for plugins
 
 ## License
 

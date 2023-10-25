@@ -1,4 +1,14 @@
 # Older changes
+## 4.0.0 (2022-05-19)
+
+NodeJS 14.x is required (NodeJS 12.x is EOL)
+
+Tested with OctoPrint 1.8.0
+
+* (klein0r) Added last and average layer duration (requires plugin Display Layer Progress)
+* (klein0r) Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+* (klein0r) Improved handling of thumbnails and states for plugins
+
 ## 3.2.2 (2022-04-29)
 
 * (klein0r) Updated depedency for js-controller to 4.0.15

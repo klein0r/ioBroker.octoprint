@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "5.0.1",
+    "version": "5.1.0",
     "news": {
+      "5.1.0": {
+        "en": "NodeJS 16.x is required\n\nTested with OctoPrint 1.9.3\n\n* Added admin icons",
+        "de": "NodeJS 16.x ist erforderlich\n\nGetestet mit OctoPrint 1.9.3\n\n* Admin-Symbole hinzugefügt",
+        "ru": "NodeJS 16.x требуется\n\nПроверено с OctoPrint 1.9.3\n\n* Добавлены иконки админ",
+        "pt": "NodeJS 16.x é necessário\n\nTestado com OctoPrint 1.9.3\n\n* Adicionado ícones de administrador",
+        "nl": "NodeJS 16.x is vereist\n\nTest met OctoPrint 1.9.3\n\n♪ Added admin icons ♪",
+        "fr": "NodeJS 16.x est nécessaire\n\nTesté avec OctoPrint 1.9.3\n\n* Ajout des icônes d'administration",
+        "it": "NodeJS 16.x è richiesto\n\nTestato con OctoPrint 1.9.3\n\n* Aggiunte icone di amministratore",
+        "es": "NodeJS 16.x es necesario\n\nPruebas con OctoPrint 1.9.3\n\n* iconos de administración añadidos",
+        "pl": "NodeJS 16 (ang.)\n\nTesty w wersji 1.9.3\n\n* Added admin icon",
+        "uk": "NodeJS 16.x обов'язковий\n\nВипробувано з OctoPrint 1.9.3\n\n* Додано іконки адміністратора",
+        "zh-cn": "不需要16.JS16x。\n\n与Octo Print1.9.3 进行试验\n\n* 增加说明"
+      },
       "5.0.1": {
         "en": "Allow self-signed certificates",
         "de": "Selbstsignierte Zertifikate zulassen",
@@ -80,19 +93,6 @@
         "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
         "uk": "Оновлено залежності для js-контролера до 4.0.15",
         "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
-      },
-      "3.2.1": {
-        "en": "Get thumbnail url of current file and copy value to printjob (requires plugin Slicer Thumbnails)\nUpdated log messages",
-        "de": "Holen Sie sich die Thumbnail-URL der aktuellen Datei und kopieren Sie den Wert in den Druckauftrag (erfordert das Plugin Slicer Thumbnails)\nProtokollmeldungen aktualisiert",
-        "ru": "Получить URL-адрес эскиза текущего файла и скопировать значение в задание печати (требуется плагин Slicer Thumbnails)\nОбновлены сообщения журнала",
-        "pt": "Obtenha o URL da miniatura do arquivo atual e copie o valor para printjob (requer plugin Slicer Thumbnails)\nMensagens de registro atualizadas",
-        "nl": "Verkrijg miniatuur-URL van huidig bestand en kopieer waarde naar printjob (vereist plug-in Slicer Thumbnails)\nBijgewerkte logberichten",
-        "fr": "Obtenir l'URL de la vignette du fichier actuel et copier la valeur dans le travail d'impression (nécessite le plugin Slicer Thumbnails)\nMessages de journal mis à jour",
-        "it": "Ottieni l'URL della miniatura del file corrente e copia il valore su printjob (richiede il plug-in Slicer Thumbnails)\nMessaggi di registro aggiornati",
-        "es": "Obtenga la URL en miniatura del archivo actual y copie el valor en el trabajo de impresión (requiere el complemento Slicer Thumbnails)\nMensajes de registro actualizados",
-        "pl": "Uzyskaj adres URL miniatury bieżącego pliku i skopiuj wartość do zadania drukowania (wymaga wtyczki Slicer Thumbnails)\nZaktualizowane komunikaty dziennika",
-        "uk": "Отримати URL-адресу ескізу поточного файлу та скопіювати значення до завдання друку (потрібен плагін Slicer Thumbnails)\nОновлені повідомлення журналу",
-        "zh-cn": "获取当前文件的缩略图 url 并将值复制到打印作业（需要插件 Slicer Thumbnails）\n更新的日志消息"
       }
     },
     "titleLang": {
