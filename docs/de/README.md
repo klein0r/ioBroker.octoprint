@@ -2,7 +2,7 @@
 
 # ioBroker.octoprint
 
-**Getestet mit [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.9.0**
+**Getestet mit [OctoPrint](https://github.com/OctoPrint/OctoPrint/releases) 1.9.3**
 
 ## Features
 

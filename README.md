@@ -54,6 +54,8 @@ iobroker add octoprint
 
 NodeJS 16.x is required
 
+Tested with OctoPrint 1.9.3
+
 * (klein0r) Added admin icons
 
 ### 5.0.1 (2023-05-30)
