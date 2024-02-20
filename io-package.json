@@ -131,7 +131,12 @@
       "drucker",
       "gcode"
     ],
-    "license": "MIT",
+    "tier": 3,
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "automaticUpgrade": "patch",
     "platform": "Javascript/Node.js",
     "icon": "octoprint.png",
     "extIcon": "https://raw.githubusercontent.com/klein0r/ioBroker.octoprint/master/admin/octoprint.png",
