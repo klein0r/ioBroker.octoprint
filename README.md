@@ -24,7 +24,7 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Sponsored by
 
-[![ioBroker Master Kurs](https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png)](https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-octoprint)
+[![ioBroker Master Kurs](https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png?2024)](https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-octoprint)
 
 ## Installation
 
