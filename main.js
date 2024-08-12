@@ -698,7 +698,7 @@ class OctoPrint extends utils.Adapter {
                                                     foundThumbnail = true;
                                                     await this.setStateChangedAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
                                                 }
-                                            } catch (err) {
+                                            } catch {
                                                 this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail.url`);
                                             }
                                         }
@@ -1299,7 +1299,7 @@ class OctoPrint extends utils.Adapter {
 
             this.log.debug('cleaned everything up...');
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     }
