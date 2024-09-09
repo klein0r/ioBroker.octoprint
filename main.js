@@ -16,7 +16,7 @@ class OctoPrint extends utils.Adapter {
             useFormatDate: true,
         });
 
-        this.supportedVersion = '1.9.3';
+        this.supportedVersion = '1.10.2';
         this.displayedVersionWarning = false;
 
         this.apiConnected = false;
