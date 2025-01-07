@@ -52,7 +52,7 @@ iobroker add octoprint
 -->
 ### **WORK IN PROGRESS**
 
-NodeJS >= 18.x and js-controller >= 5 is required
+NodeJS >= 20.x and js-controller >= 6 is required
 
 Tested with OctoPrint 1.10.2
 
