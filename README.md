@@ -54,7 +54,7 @@ iobroker add octoprint
 
 NodeJS >= 20.x and js-controller >= 6 is required
 
-Tested with OctoPrint 1.10.2
+Tested with OctoPrint 1.10.3
 
 ### 5.1.0 (2023-10-25)
 
