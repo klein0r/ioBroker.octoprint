@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "5.1.0",
+    "version": "6.0.0",
     "news": {
+      "6.0.0": {
+        "en": "NodeJS >= 20.x and js-controller >= 6 is required\n\nTested with OctoPrint 1.10.3",
+        "de": "NodeJS >= 20.x und js-Controller >= 6 ist erforderlich\n\nGetestet mit OctoPrint 1.10.3",
+        "ru": "NodeJS >= 20.x и js-controller >= 6 требуется\n\nПроверено 1.10.3",
+        "pt": "NodeJS >= 20.x e js-controller >= 6 é necessário\n\nTestado com OctoPrint 1.10.3",
+        "nl": "Van niet-gelegeerd staal 6 is vereist\n\nGetest met OctoPrint 1.10.3",
+        "fr": "NodeJS >= 20.x et js-controller >= 6 est nécessaire\n\nTesté avec OctoPrint 1.10.3",
+        "it": "NodeJS >= 20.x e js-controller >= 6 è richiesto\n\nTestato con OctoPrint 1.10.3",
+        "es": "NodeJS ю= 20.x y js-controller Se requiere 6\n\nProbada con OctoPrint 1.10.3",
+        "pl": "NodeJS > = 20 x i kontroler js- > = 6 jest wymagane\n\nTestowane z OctoPrint 1.10.3",
+        "uk": "NodeJS >= 20.x та js-controller >= 6 обов'язковий\n\nВипробувано з OctoPrint 1.10.3",
+        "zh-cn": "节点JS20x和js控制器QQ 需要6个\n\n用Octoprint 1.10.3试验"
+      },
       "5.1.0": {
         "en": "NodeJS 16.x is required\n\nTested with OctoPrint 1.9.3\n\n* Added admin icons",
         "de": "NodeJS 16.x ist erforderlich\n\nGetestet mit OctoPrint 1.9.3\n\n* Admin-Symbole hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "NodeJS 14.x jest wymagany (NodeJS 12.x to EOL)\n\nTestowane z OctoPrint 1.8.0\n\n* Dodano ostatni i średni czas trwania warstwy (wymaga postępu wyświetlania warstwy wtyczki)\n* Przeniesiono informacje o miniaturach plików do nowej struktury **(NAŁADZAJĄCA ZMIANA - SPRAWDŹ SWOJE SKRYPTY I VIS)**\n* Ulepszona obsługa miniatur i stanów wtyczek",
         "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів",
         "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理"
-      },
-      "3.2.2": {
-        "en": "Updated depedency for js-controller to 4.0.15",
-        "de": "Abhängigkeit für js-controller auf 4.0.15 aktualisiert",
-        "ru": "Обновлена зависимость для js-контроллера до 4.0.15.",
-        "pt": "Dependência atualizada para js-controller para 4.0.15",
-        "nl": "Afhankelijkheid voor js-controller bijgewerkt naar 4.0.15",
-        "fr": "Mise à jour de la dépendance pour js-controller vers 4.0.15",
-        "it": "Dipendenza aggiornata per js-controller a 4.0.15",
-        "es": "Dependencia actualizada para js-controller a 4.0.15",
-        "pl": "Zaktualizowano zależność dla kontrolera js do 4.0.15",
-        "uk": "Оновлено залежності для js-контролера до 4.0.15",
-        "zh-cn": "将 js-controller 的依赖更新到 4.0.15"
       }
     },
     "titleLang": {

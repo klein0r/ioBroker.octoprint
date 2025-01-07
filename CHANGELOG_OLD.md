@@ -1,4 +1,10 @@
 # Older changes
+## 4.0.1 (2022-10-14)
+
+Tested with OctoPrint 1.8.4
+
+* (klein0r) Just download every thumbnail once (requires plugin Slicer Thumbnails)
+
 ## 4.0.0 (2022-05-19)
 
 NodeJS 14.x is required (NodeJS 12.x is EOL)

@@ -50,7 +50,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 6.0.0 (2025-01-07)
 
 NodeJS >= 20.x and js-controller >= 6 is required
 
@@ -82,12 +82,6 @@ Tested with OctoPrint 1.8.6
 
 * (klein0r) Dropped Admin 5 support
 * (klein0r) Added Ukrainian language
-
-### 4.0.1 (2022-10-14)
-
-Tested with OctoPrint 1.8.4
-
-* (klein0r) Just download every thumbnail once (requires plugin Slicer Thumbnails)
 
 ## License
 
