@@ -1123,20 +1123,16 @@ class OctoPrint extends utils.Adapter {
         return `${prefix}://${this.config.octoprintIp}:${this.config.octoprintPort}`;
     }
 
-    async buildServiceRequest(service, callback, data) {
-        return new Promise((resolve, reject) => {
-            this.log.debug('[buildServiceRequest] starting service request');
+    async buildServiceRequest(service, data) {
+        this.log.debug('[buildServiceRequest] starting service request');
 
-            this.buildRequest(`/api/${service}`, callback, data).then(resolve, reject);
-        });
+        return this.buildRequest(`/api/${service}`, data);
     }
 
-    async buildPluginRequest(plugin, callback, data) {
-        return new Promise((resolve, reject) => {
-            this.log.debug('[buildPluginRequest] starting plugin request');
+    async buildPluginRequest(plugin, data) {
+        this.log.debug('[buildPluginRequest] starting plugin request');
 
-            this.buildRequest(`/plugin/${plugin}`, callback, data).then(resolve, reject);
-        });
+        return this.buildRequest(`/plugin/${plugin}`, data);
     }
 
     async buildRequest(url, data) {
