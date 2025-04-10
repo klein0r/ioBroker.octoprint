@@ -50,6 +50,10 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (klein0r) Updated dependencies
+
 ### 6.0.0 (2025-01-07)
 
 NodeJS >= 20.x and js-controller >= 6 is required
