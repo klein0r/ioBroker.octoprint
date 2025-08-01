@@ -45,7 +45,7 @@
     "@types/sinon-chai": "^4.0.0",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
-    "eslint": "^9.30.0",
+    "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "globals": "^16.2.0",
