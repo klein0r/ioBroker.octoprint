@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "news": {
+      "6.0.1": {
+        "en": "Updated dependencies\nadmin 7.6.17 and js-controller 6.0.11 (or later) are required",
+        "de": "Aktualisierte Abhängigkeiten\nadmin 7.6.17 und js-controller 6.0.11 (oder später) sind erforderlich",
+        "ru": "Обновленные зависимости\nadmin 7.6.17 и js-контроллер 6.0.11 (или более поздние)",
+        "pt": "Dependências atualizadas\nadmin 7.6.17 e js-controller 6.0.11 (ou posterior) são necessários",
+        "nl": "Bijgewerkte afhankelijkheden\nadmin 7.6.17 en js-controller 6.0.11 (of later) zijn vereist",
+        "fr": "Dépendances actualisées\nadmin 7.6.17 et js-contrôleur 6.0.11 (ou plus tard) sont requis",
+        "it": "Dipendenze aggiornate\nadmin 7.6.17 e js-controller 6.0.11 (o successivo) sono richiesti",
+        "es": "Dependencias actualizadas\nadmin 7.6.17 y js-controller 6.0.11 (o posterior) son necesarios",
+        "pl": "Aktualizacja zależności\nwymagany jest admin 7.6.17 i kontroler js- 6.0.11 (lub późniejszy)",
+        "uk": "Оновлені залежності\nadmin 7.6.17 та js-controller 6.0.11 (або пізніше) обов’язкові",
+        "zh-cn": "更新的依赖关系\n需要admin 7.6.17和js控制器 6.0.11(或以后)"
+      },
       "6.0.0": {
         "en": "NodeJS >= 20.x and js-controller >= 6 is required\n\nTested with OctoPrint 1.10.3",
         "de": "NodeJS >= 20.x und js-Controller >= 6 ist erforderlich\n\nGetestet mit OctoPrint 1.10.3",
@@ -80,19 +93,6 @@
         "pl": "Testy w wersji 1.8.4\n\n* Just download every thumbnail once (ang.)",
         "uk": "Випробувано з OctoPrint 1.8.4\n\nІм'я * Просто завантажте кожну мініатюру один раз (обов'язково плагін Slicer Thumbnails)",
         "zh-cn": "与Octo Print的试验1.8.4\n\n* A/64/50。 仅每一次挖掘一次(Requires plugin Slicer Thumbnails)"
-      },
-      "4.0.0": {
-        "en": "NodeJS 14.x is required (NodeJS 12.x is EOL)\n\nTested with OctoPrint 1.8.0\n\n* Added last and average layer duration (requires plugin Display Layer Progress)\n* Moved thumbnail information of files to new structure **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Improved handling of thumbnails and states for plugins",
-        "de": "NodeJS 14.x ist erforderlich (NodeJS 12.x ist EOL)\n\nGetestet mit OctoPrint 1.8.0\n\n* Letzte und durchschnittliche Layerdauer hinzugefügt (erfordert Plugin Display Layer Progress)\n* Thumbnail-Informationen von Dateien in neue Struktur verschoben **(BREAKING CHANGE – ÜBERPRÜFEN SIE IHRE SCRIPTS UND VIS)**\n* Verbesserte Handhabung von Thumbnails und Zuständen für Plugins",
-        "ru": "Требуется NodeJS 14.x (NodeJS 12.x является EOL)\n\nПротестировано с OctoPrint 1.8.0\n\n* Добавлена продолжительность последнего и среднего слоя (требуется плагин Display Layer Progress)\n* Информация о миниатюрах файлов перемещена в новую структуру **(СЕРЬЕЗНОЕ ИЗМЕНЕНИЕ - ПРОВЕРЬТЕ СКРИПТЫ И ВИЗУ)**\n* Улучшена обработка миниатюр и состояний для плагинов.",
-        "pt": "NodeJS 14.x é necessário (NodeJS 12.x é EOL)\n\nTestado com OctoPrint 1.8.0\n\n* Adicionado a última e média duração da camada (requer plugin Display Layer Progress)\n* Informações em miniatura movidas de arquivos para nova estrutura **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**\n* Manipulação aprimorada de miniaturas e estados para plugins",
-        "nl": "NodeJS 14.x is vereist (NodeJS 12.x is EOL)\n\nGetest met OctoPrint 1.8.0\n\n* Laatste en gemiddelde laagduur toegevoegd (vereist plug-in Display Layer Progress)\n* Miniatuurinformatie van bestanden verplaatst naar een nieuwe structuur **(BREKENDE WIJZIGING - CONTROLEER UW SCRIPTS EN VIS)**\n* Verbeterde verwerking van miniaturen en statussen voor plug-ins",
-        "fr": "NodeJS 14.x est requis (NodeJS 12.x est EOL)\n\nTesté avec OctoPrint 1.8.0\n\n* Ajout de la durée moyenne et de la dernière couche (nécessite le plugin Display Layer Progress)\n* Déplacement des informations sur les vignettes des fichiers vers une nouvelle structure **(CHANGEMENT RUPTURE - VÉRIFIEZ VOS SCRIPTS ET VIS)** \n* Amélioration de la gestion des vignettes et des états des plugins",
-        "it": "NodeJS 14.x è richiesto (NodeJS 12.x è EOL)\n\nTestato con OctoPrint 1.8.0\n\n* Aggiunta la durata dell'ultimo livello e quella media (richiede il plug-in Display Layer Progress)\n* Spostate le informazioni in miniatura dei file nella nuova struttura **(BREAKING CHANGE - CONTROLLA I TUOI SCRIPT E VIS)**\n* Migliorata la gestione delle miniature e degli stati per i plugin",
-        "es": "Se requiere NodeJS 14.x (NodeJS 12.x es EOL)\n\nProbado con OctoPrint 1.8.0\n\n* Se agregó la duración de la última capa y el promedio (requiere el complemento Mostrar progreso de la capa)\n* Se movió la información en miniatura de los archivos a una nueva estructura **(CAMBIO IMPORTANTE - REVISE SUS SCRIPTS Y VIS)**\n* Manejo mejorado de miniaturas y estados para complementos",
-        "pl": "NodeJS 14.x jest wymagany (NodeJS 12.x to EOL)\n\nTestowane z OctoPrint 1.8.0\n\n* Dodano ostatni i średni czas trwania warstwy (wymaga postępu wyświetlania warstwy wtyczki)\n* Przeniesiono informacje o miniaturach plików do nowej struktury **(NAŁADZAJĄCA ZMIANA - SPRAWDŹ SWOJE SKRYPTY I VIS)**\n* Ulepszona obsługa miniatur i stanów wtyczek",
-        "uk": "Потрібен NodeJS 14.x (NodeJS 12.x є EOL)\n\nПротестовано з OctoPrint 1.8.0\n\n* Додано останню та середню тривалість шару (потрібен плагін Display Layer Progress)\n* Інформацію про мініатюри файлів переміщено до нової структури **(ГРУЗОВА ЗМІНА - ПЕРЕВІРТЕ СВОЇ СЦЕНАРІЇ ТА VIS)**\n* Покращена обробка ескізів і станів для плагінів",
-        "zh-cn": "需要 NodeJS 14.x（NodeJS 12.x 已停产）\n\n使用 OctoPrint 1.8.0 测试\n\n* 添加最后一层和平均层持续时间（需要插件显示层进度）\n* 将文件的缩略图信息移至新结构 **（重大更改 - 检查您的脚本和 VIS）**\n* 改进了插件缩略图和状态的处理"
       }
     },
     "titleLang": {

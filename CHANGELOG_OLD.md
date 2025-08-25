@@ -1,4 +1,11 @@
 # Older changes
+## 4.1.0 (2022-12-14)
+
+Tested with OctoPrint 1.8.6
+
+* (klein0r) Dropped Admin 5 support
+* (klein0r) Added Ukrainian language
+
 ## 4.0.1 (2022-10-14)
 
 Tested with OctoPrint 1.8.4

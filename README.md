@@ -50,7 +50,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 6.0.1 (2025-08-25)
 
 * (klein0r) Updated dependencies
 * (@klein0r) admin 7.6.17 and js-controller 6.0.11 (or later) are required
@@ -79,13 +79,6 @@ Tested with OctoPrint 1.9.0
 
 * (klein0r) Removed binary states (deprecated)
 * (klein0r) Allow self-signed certificates
-* (klein0r) Added Ukrainian language
-
-### 4.1.0 (2022-12-14)
-
-Tested with OctoPrint 1.8.6
-
-* (klein0r) Dropped Admin 5 support
 * (klein0r) Added Ukrainian language
 
 ## License
