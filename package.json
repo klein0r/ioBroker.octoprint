@@ -48,7 +48,7 @@
     "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.3.0",
+    "globals": "^16.4.0",
     "mocha": "^11.7.3",
     "prettier": "^3.6.2",
     "proxyquire": "^2.1.3",
