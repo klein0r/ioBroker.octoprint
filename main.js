@@ -87,17 +87,19 @@ class OctoPrint extends utils.Adapter {
                             command: 'target',
                             targets: targetObj,
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/tool) error: ${err}`);
                             });
                     } else if (command === 'extrude') {
@@ -108,17 +110,19 @@ class OctoPrint extends utils.Adapter {
                             command: 'extrude',
                             amount: state.val,
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – If targets or offsets contains a property or tool contains a value not matching the format tool{n}, the target/offset temperature, extrusion amount or flow rate factor is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                     // 409 Conflict – If the printer is not operational or – in case of select or extrude – currently printing.
 
-                                    this.log.error(`(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(printer/tool) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/tool) error: ${err}`);
                             });
                     }
@@ -130,17 +134,19 @@ class OctoPrint extends utils.Adapter {
                         command: 'target',
                         target: state.val,
                     })
-                        .then((response) => {
+                        .then(response => {
                             if (response.status === 204) {
                                 this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                             } else {
                                 // 400 Bad Request – If target or offset is not a valid number or outside of the supported range, or if the request is otherwise invalid.
                                 // 409 Conflict – If the printer is not operational or the selected printer profile does not have a heated bed.
 
-                                this.log.error(`(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                this.log.error(
+                                    `(printer/bed) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                );
                             }
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             this.log.debug(`(printer/bed) error: ${err}`);
                         });
                 } else if (idNoNamespace === 'command.printer') {
@@ -154,17 +160,19 @@ class OctoPrint extends utils.Adapter {
                         this.buildServiceRequest('connection', {
                             command: state.val,
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                     this.refreshState('onStateChange command.printer');
                                 } else {
                                     // 400 Bad Request – If the selected port or baudrate for a connect command are not part of the available options.
 
-                                    this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(connection) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(connection) error: ${err}`);
                             });
                     } else if (allowedCommandsPrinter.indexOf(state.val) > -1) {
@@ -175,21 +183,27 @@ class OctoPrint extends utils.Adapter {
                             command: state.val,
                             axes: ['x', 'y', 'z'],
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
 
-                                    this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/printhead) error: ${err}`);
                             });
                     } else {
-                        this.log.error('printer command not allowed: ' + state.val + '. Choose one of: ' + allowedCommandsConnection.concat(allowedCommandsPrinter).join(', '));
+                        this.log.error(
+                            `printer command not allowed: ${state.val}. Choose one of: ${allowedCommandsConnection
+                                .concat(allowedCommandsPrinter)
+                                .join(', ')}`,
+                        );
                     }
                 } else if (idNoNamespace === 'command.printjob') {
                     const allowedCommands = ['start', 'pause', 'resume', 'cancel', 'restart'];
@@ -214,7 +228,7 @@ class OctoPrint extends utils.Adapter {
 
                         // https://docs.octoprint.org/en/master/api/job.html#issue-a-job-command
                         this.buildServiceRequest('job', printjobCommand)
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
@@ -223,11 +237,13 @@ class OctoPrint extends utils.Adapter {
                                     this.log.error(`(job) status ${response.status}: ${JSON.stringify(response.data)}`);
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(job) error: ${err}`);
                             });
                     } else {
-                        this.log.error('print job command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
+                        this.log.error(
+                            `print job command not allowed: ${state.val}. Choose one of: ${allowedCommands.join(', ')}`,
+                        );
                     }
                 } else if (idNoNamespace === 'command.sd') {
                     const allowedCommands = ['init', 'refresh', 'release'];
@@ -239,20 +255,24 @@ class OctoPrint extends utils.Adapter {
                         this.buildServiceRequest('printer/sd', {
                             command: state.val,
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 409 Conflict – If a refresh or release command is issued but the SD card has not been initialized (e.g. via init).
 
-                                    this.log.error(`(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(printer/sd) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/sd) error: ${err}`);
                             });
                     } else {
-                        this.log.error('sd card command not allowed: ' + state.val + '. Choose one of: ' + allowedCommands.join(', '));
+                        this.log.error(
+                            `sd card command not allowed: ${state.val}. Choose one of: ${allowedCommands.join(', ')}`,
+                        );
                     }
                 } else if (idNoNamespace === 'command.custom') {
                     this.log.debug(`sending custom command: ${state.val}`);
@@ -261,16 +281,18 @@ class OctoPrint extends utils.Adapter {
                     this.buildServiceRequest('printer/command', {
                         command: state.val,
                     })
-                        .then((response) => {
+                        .then(response => {
                             if (response.status === 204) {
                                 this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                             } else {
                                 // 409 Conflict – If the printer is not operational
 
-                                this.log.error(`(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                this.log.error(
+                                    `(printer/command) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                );
                             }
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             this.log.debug(`(printer/command) error: ${err}`);
                         });
                 } else if (idNoNamespace === 'command.system') {
@@ -278,8 +300,8 @@ class OctoPrint extends utils.Adapter {
                         this.log.debug(`sending system command: ${state.val}`);
 
                         // https://docs.octoprint.org/en/master/api/system.html#execute-a-registered-system-command
-                        this.buildServiceRequest('system/commands/' + state.val, {})
-                            .then((response) => {
+                        this.buildServiceRequest(`system/commands/${state.val}`, {})
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
@@ -287,14 +309,18 @@ class OctoPrint extends utils.Adapter {
                                     // 404 Not Found – If the command could not be found for source and action
                                     // 500 Internal Server Error – If the command didn’t define a command to execute, the command returned a non-zero return code and ignore was not true or some other internal server error occurred
 
-                                    this.log.error(`(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(system/commands/*) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/commands/*) error: ${err}`);
                             });
                     } else {
-                        this.log.error(`system command not allowed: ${state.val}. Choose one of: ${this.systemCommands.join(', ')}`);
+                        this.log.error(
+                            `system command not allowed: ${state.val}. Choose one of: ${this.systemCommands.join(', ')}`,
+                        );
                     }
                 } else if (idNoNamespace.indexOf('command.jog.') === 0) {
                     // Validate jog value
@@ -311,17 +337,19 @@ class OctoPrint extends utils.Adapter {
 
                         // https://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command
                         this.buildServiceRequest('printer/printhead', jogCommand)
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.setStateAsync(idNoNamespace, { val: state.val, ack: true });
                                 } else {
                                     // 400 Bad Request – Invalid axis specified, invalid value for travel amount for a jog command or factor for feed rate or otherwise invalid request.
                                     // 409 Conflict – If the printer is not operational or currently printing.
 
-                                    this.log.error(`(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(printer/printhead) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(printer/printhead) error: ${err}`);
                             });
                     } else {
@@ -344,15 +372,17 @@ class OctoPrint extends utils.Adapter {
                             command: 'select',
                             print: action === 'print',
                         })
-                            .then((response) => {
+                            .then(response => {
                                 if (response.status === 204) {
                                     this.log.debug('selecting/printing file successful');
                                     this.refreshState(`onStateChange file.${action}`);
                                 } else {
-                                    this.log.error(`(files/*) status ${response.status}: ${JSON.stringify(response.data)}`);
+                                    this.log.error(
+                                        `(files/*) status ${response.status}: ${JSON.stringify(response.data)}`,
+                                    );
                                 }
                             })
-                            .catch((err) => {
+                            .catch(err => {
                                 this.log.debug(`(files/*) error: ${err}`);
                             });
                     });
@@ -378,7 +408,7 @@ class OctoPrint extends utils.Adapter {
 
         // https://docs.octoprint.org/en/master/api/version.html
         this.buildServiceRequest('version', null)
-            .then((response) => {
+            .then(response => {
                 if (response.status === 200) {
                     this.setApiConnected(true);
 
@@ -387,7 +417,10 @@ class OctoPrint extends utils.Adapter {
                     this.setStateChangedAsync('meta.version', { val: response.data.server, ack: true });
                     this.setStateChangedAsync('meta.api_version', { val: response.data.api, ack: true });
 
-                    if (this.isNewerVersion(response.data.server, this.supportedVersion) && !this.displayedVersionWarning) {
+                    if (
+                        this.isNewerVersion(response.data.server, this.supportedVersion) &&
+                        !this.displayedVersionWarning
+                    ) {
                         this.log.warn(
                             `You should update your OctoPrint installation - supported version of this adapter is ${this.supportedVersion} (or later). Your current version is ${response.data.server}`,
                         );
@@ -399,7 +432,7 @@ class OctoPrint extends utils.Adapter {
                     this.log.error(`(version) status ${response.status}: ${JSON.stringify(response.data)}`);
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 this.log.debug(`(version) received error - API is now offline: ${JSON.stringify(error)}`);
                 this.setApiConnected(false);
             });
@@ -417,25 +450,33 @@ class OctoPrint extends utils.Adapter {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (API not connected)');
             }, notConnectedTimeout * 1000);
-            this.log.debug(`refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`);
+            this.log.debug(
+                `refreshStateTimeout: re-created refresh timeout (API not connected): id ${this.refreshStateTimeout} - seconds: ${notConnectedTimeout}`,
+            );
         } else if (this.printerPrinting) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (printing)');
             }, this.config.apiRefreshIntervalPrinting * 1000); // Default 10 sec
-            this.log.debug(`refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`);
+            this.log.debug(
+                `refreshStateTimeout: re-created refresh timeout (printing): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalPrinting}`,
+            );
         } else if (this.printerOperational) {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (operational)');
             }, this.config.apiRefreshIntervalOperational * 1000); // Default 30 sec
-            this.log.debug(`refreshStateTimeout: re-created refresh timeout (operational): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalOperational}`);
+            this.log.debug(
+                `refreshStateTimeout: re-created refresh timeout (operational): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshIntervalOperational}`,
+            );
         } else {
             this.refreshStateTimeout = this.setTimeout(() => {
                 this.refreshStateTimeout = null;
                 this.refreshState('timeout (default)');
             }, this.config.apiRefreshInterval * 1000); // Default 60 sec
-            this.log.debug(`refreshStateTimeout: re-created refresh timeout (default): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshInterval}`);
+            this.log.debug(
+                `refreshStateTimeout: re-created refresh timeout (default): id ${this.refreshStateTimeout} - seconds: ${this.config.apiRefreshInterval}`,
+            );
         }
     }
 
@@ -443,7 +484,7 @@ class OctoPrint extends utils.Adapter {
         if (this.apiConnected) {
             // https://docs.octoprint.org/en/master/api/connection.html
             this.buildServiceRequest('connection', null)
-                .then((response) => {
+                .then(response => {
                     if (response.status === 200) {
                         this.updatePrinterStatus(response.data.current.state);
 
@@ -461,13 +502,13 @@ class OctoPrint extends utils.Adapter {
                         this.log.error(`(connection) status ${response.status}: ${JSON.stringify(response.data)}`);
                     }
                 })
-                .catch((err) => {
+                .catch(err => {
                     this.log.debug(`(connection) error: ${err}`);
                 });
 
             if (this.printerOperational) {
                 this.buildServiceRequest('printer', null)
-                    .then(async (response) => {
+                    .then(async response => {
                         const content = response.data;
                         if (content?.temperature) {
                             for (const key of Object.keys(content.temperature)) {
@@ -514,7 +555,10 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateChangedAsync(`tools.${key}.actualTemperature`, { val: obj.actual, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.actualTemperature`, {
+                                        val: obj.actual,
+                                        ack: true,
+                                    });
 
                                     // Set target temperature
                                     await this.setObjectNotExistsAsync(`tools.${key}.targetTemperature`, {
@@ -541,7 +585,10 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateChangedAsync(`tools.${key}.targetTemperature`, { val: obj.target, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.targetTemperature`, {
+                                        val: obj.target,
+                                        ack: true,
+                                    });
 
                                     // Set offset temperature
                                     await this.setObjectNotExistsAsync(`tools.${key}.offsetTemperature`, {
@@ -569,7 +616,10 @@ class OctoPrint extends utils.Adapter {
                                         },
                                         native: {},
                                     });
-                                    await this.setStateChangedAsync(`tools.${key}.offsetTemperature`, { val: obj.target, ack: true });
+                                    await this.setStateChangedAsync(`tools.${key}.offsetTemperature`, {
+                                        val: obj.target,
+                                        ack: true,
+                                    });
                                 }
 
                                 if (isTool) {
@@ -603,25 +653,25 @@ class OctoPrint extends utils.Adapter {
                             }
                         }
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         this.log.debug(`(printer) error: ${err}`);
                     });
             } else {
                 // https://docs.octoprint.org/en/master/api/system.html#list-all-registered-system-commands
                 this.buildServiceRequest('system/commands', null)
-                    .then((response) => {
+                    .then(response => {
                         if (response.status === 200) {
                             this.systemCommands = [];
 
                             for (const key of Object.keys(response.data)) {
                                 const arr = response.data[key];
-                                arr.forEach((e) => this.systemCommands.push(`${e.source}/${e.action}`));
+                                arr.forEach(e => this.systemCommands.push(`${e.source}/${e.action}`));
                             }
 
                             this.log.debug(`(system/commands) registered commands: ${this.systemCommands.join(', ')}`);
                         }
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         this.log.debug(`(system/commands) error: ${err}`);
                     });
             }
@@ -639,7 +689,7 @@ class OctoPrint extends utils.Adapter {
             if (this.printerOperational || this.printerPrinting) {
                 // https://docs.octoprint.org/en/master/api/job.html#retrieve-information-about-the-current-job
                 this.buildServiceRequest('job', null)
-                    .then(async (response) => {
+                    .then(async response => {
                         if (response.status === 200) {
                             const content = response.data;
 
@@ -675,47 +725,77 @@ class OctoPrint extends utils.Adapter {
                                         native: {},
                                     });
 
-                                    this.log.debug(`[plugin slicer thumbnails] trying to find current print job thumbnail url`);
+                                    this.log.debug(
+                                        `[plugin slicer thumbnails] trying to find current print job thumbnail url`,
+                                    );
 
                                     const fileObjectsView = await this.getObjectViewAsync('system', 'channel', {
-                                        startkey: this.namespace + '.files.',
-                                        endkey: this.namespace + '.files.\u9999',
+                                        startkey: `${this.namespace}.files.`,
+                                        endkey: `${this.namespace}.files.\u9999`,
                                     });
 
                                     let foundThumbnail = false;
 
                                     if (fileObjectsView && fileObjectsView.rows) {
                                         // File file where native.path matches current jobs file path
-                                        const currentFileObject = fileObjectsView.rows.find((fileObj) => fileObj.value?.native?.path === filePath);
+                                        const currentFileObject = fileObjectsView.rows.find(
+                                            fileObj => fileObj.value?.native?.path === filePath,
+                                        );
                                         if (currentFileObject) {
                                             const currentFileId = this.removeNamespace(currentFileObject.id);
 
                                             try {
-                                                this.log.debug(`[plugin slicer thumbnails] found current file: ${currentFileId}`);
-                                                const currentFileThumbnailUrlState = await this.getStateAsync(`${currentFileId}.thumbnail.url`);
+                                                this.log.debug(
+                                                    `[plugin slicer thumbnails] found current file: ${currentFileId}`,
+                                                );
+                                                const currentFileThumbnailUrlState = await this.getStateAsync(
+                                                    `${currentFileId}.thumbnail.url`,
+                                                );
 
                                                 if (currentFileThumbnailUrlState && currentFileThumbnailUrlState.val) {
                                                     foundThumbnail = true;
-                                                    await this.setStateChangedAsync('printjob.file.thumbnail_url', { val: currentFileThumbnailUrlState.val, ack: true });
+                                                    await this.setStateChangedAsync('printjob.file.thumbnail_url', {
+                                                        val: currentFileThumbnailUrlState.val,
+                                                        ack: true,
+                                                    });
                                                 }
                                             } catch {
-                                                this.log.debug(`[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail.url`);
+                                                this.log.debug(
+                                                    `[plugin slicer thumbnails] unable to get value of state ${currentFileId}.thumbnail.url`,
+                                                );
                                             }
                                         }
                                     }
 
                                     if (!foundThumbnail) {
-                                        this.log.debug(`[plugin slicer thumbnails] unable to find file which matches current job file`);
-                                        await this.setStateChangedAsync('printjob.file.thumbnail_url', { val: null, ack: true });
+                                        this.log.debug(
+                                            `[plugin slicer thumbnails] unable to find file which matches current job file`,
+                                        );
+                                        await this.setStateChangedAsync('printjob.file.thumbnail_url', {
+                                            val: null,
+                                            ack: true,
+                                        });
                                     }
                                 } else {
                                     await this.delObjectAsync('printjob.file.thumbnail_url');
                                 }
 
-                                await this.setStateChangedAsync('printjob.file.name', { val: content.job.file.name, ack: true });
-                                await this.setStateChangedAsync('printjob.file.origin', { val: content.job.file.origin, ack: true });
-                                await this.setStateChangedAsync('printjob.file.size', { val: Number((content.job.file.size / 1024).toFixed(2)), ack: true });
-                                await this.setStateChangedAsync('printjob.file.date', { val: new Date(content.job.file.date * 1000).getTime(), ack: true });
+                                await this.setStateChangedAsync('printjob.file.name', {
+                                    val: content.job.file.name,
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.file.origin', {
+                                    val: content.job.file.origin,
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.file.size', {
+                                    val: Number((content.job.file.size / 1024).toFixed(2)),
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.file.date', {
+                                    val: new Date(content.job.file.date * 1000).getTime(),
+                                    ack: true,
+                                });
 
                                 if (content?.job?.filament) {
                                     let filamentLength = 0;
@@ -730,13 +810,25 @@ class OctoPrint extends utils.Adapter {
                                     }
 
                                     if (typeof filamentLength == 'number' && typeof filamentVolume == 'number') {
-                                        await this.setStateChangedAsync('printjob.filament.length', { val: Number((filamentLength / 1000).toFixed(2)), ack: true });
-                                        await this.setStateChangedAsync('printjob.filament.volume', { val: Number(filamentVolume.toFixed(2)), ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.length', {
+                                            val: Number((filamentLength / 1000).toFixed(2)),
+                                            ack: true,
+                                        });
+                                        await this.setStateChangedAsync('printjob.filament.volume', {
+                                            val: Number(filamentVolume.toFixed(2)),
+                                            ack: true,
+                                        });
                                     } else {
                                         this.log.debug('Filament length and/or volume contains no valid number');
 
-                                        await this.setStateChangedAsync('printjob.filament.length', { val: 0, ack: true });
-                                        await this.setStateChangedAsync('printjob.filament.volume', { val: 0, ack: true });
+                                        await this.setStateChangedAsync('printjob.filament.length', {
+                                            val: 0,
+                                            ack: true,
+                                        });
+                                        await this.setStateChangedAsync('printjob.filament.volume', {
+                                            val: 0,
+                                            ack: true,
+                                        });
                                     }
                                 } else {
                                     await this.setStateChangedAsync('printjob.filament.length', { val: 0, ack: true });
@@ -745,23 +837,47 @@ class OctoPrint extends utils.Adapter {
                             }
 
                             if (content?.progress) {
-                                await this.setStateChangedAsync('printjob.progress.completion', { val: Math.round(content.progress.completion), ack: true });
-                                await this.setStateChangedAsync('printjob.progress.filepos', { val: Number((content.progress.filepos / 1024).toFixed(2)), ack: true });
-                                await this.setStateChangedAsync('printjob.progress.printtime', { val: content.progress.printTime, ack: true });
-                                await this.setStateChangedAsync('printjob.progress.printtimeLeft', { val: content.progress.printTimeLeft, ack: true });
+                                await this.setStateChangedAsync('printjob.progress.completion', {
+                                    val: Math.round(content.progress.completion),
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.progress.filepos', {
+                                    val: Number((content.progress.filepos / 1024).toFixed(2)),
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.progress.printtime', {
+                                    val: content.progress.printTime,
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.progress.printtimeLeft', {
+                                    val: content.progress.printTimeLeft,
+                                    ack: true,
+                                });
 
-                                await this.setStateChangedAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(content.progress.printTime), ack: true });
-                                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(content.progress.printTimeLeft), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.printtimeFormat', {
+                                    val: this.printtimeString(content.progress.printTime),
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', {
+                                    val: this.printtimeString(content.progress.printTimeLeft),
+                                    ack: true,
+                                });
 
                                 const finishedAt = new Date();
                                 finishedAt.setSeconds(finishedAt.getSeconds() + content.progress.printTimeLeft);
 
-                                await this.setStateChangedAsync('printjob.progress.finishedAt', { val: finishedAt.getTime(), ack: true });
-                                await this.setStateChangedAsync('printjob.progress.finishedAtFormat', { val: this.formatDate(finishedAt), ack: true });
+                                await this.setStateChangedAsync('printjob.progress.finishedAt', {
+                                    val: finishedAt.getTime(),
+                                    ack: true,
+                                });
+                                await this.setStateChangedAsync('printjob.progress.finishedAtFormat', {
+                                    val: this.formatDate(finishedAt),
+                                    ack: true,
+                                });
                             }
                         }
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         this.log.debug(`(job) error: ${err}`);
                     });
             } else {
@@ -781,8 +897,14 @@ class OctoPrint extends utils.Adapter {
                 await this.setStateChangedAsync('printjob.progress.printtime', { val: 0, ack: true });
                 await this.setStateChangedAsync('printjob.progress.printtimeLeft', { val: 0, ack: true });
 
-                await this.setStateChangedAsync('printjob.progress.printtimeFormat', { val: this.printtimeString(0), ack: true });
-                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', { val: this.printtimeString(0), ack: true });
+                await this.setStateChangedAsync('printjob.progress.printtimeFormat', {
+                    val: this.printtimeString(0),
+                    ack: true,
+                });
+                await this.setStateChangedAsync('printjob.progress.printtimeLeftFormat', {
+                    val: this.printtimeString(0),
+                    ack: true,
+                });
             }
         } else {
             this.log.debug('refreshing state: skipped detail refresh (API not connected)');
@@ -797,7 +919,7 @@ class OctoPrint extends utils.Adapter {
                 if (file.type == 'machinecode' && file.origin == 'local') {
                     const fileObj = {
                         name: file.display,
-                        path: file.origin + '/' + file.path,
+                        path: `${file.origin}/${file.path}`,
                         date: file.date ? new Date(file.date * 1000).getTime() : 0,
                         size: file.size ? Number(Math.round(file.size / 1024).toFixed(2)) : 0,
                         thumbnail: null,
@@ -840,7 +962,9 @@ class OctoPrint extends utils.Adapter {
                             if (!fileChannels[i].native.path) {
                                 // Force recreation of files without native path (upgraded from older version)
                                 await this.delObjectAsync(idNoNamespace, { recursive: true });
-                                this.log.debug(`[refreshFiles] found file channel without native.path - deleted ${idNoNamespace}`);
+                                this.log.debug(
+                                    `[refreshFiles] found file channel without native.path - deleted ${idNoNamespace}`,
+                                );
                             } else {
                                 filesAll.push(idNoNamespace);
                             }
@@ -852,7 +976,7 @@ class OctoPrint extends utils.Adapter {
             }
 
             this.buildServiceRequest('files?recursive=true', null)
-                .then(async (response) => {
+                .then(async response => {
                     if (response.status === 200) {
                         const content = response.data;
 
@@ -861,9 +985,13 @@ class OctoPrint extends utils.Adapter {
 
                         for (const f in fileList) {
                             const file = fileList[f];
-                            const fileNameClean = this.cleanNamespace(file.path.replace('.gcode', '').replace('/', ' '));
+                            const fileNameClean = this.cleanNamespace(
+                                file.path.replace('.gcode', '').replace('/', ' '),
+                            );
 
-                            this.log.debug(`[refreshFiles] found file "${fileNameClean}" (clean name) - location: ${file.path}`);
+                            this.log.debug(
+                                `[refreshFiles] found file "${fileNameClean}" (clean name) - location: ${file.path}`,
+                            );
                             filesKeep.push(`files.${fileNameClean}`);
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}`, {
@@ -899,7 +1027,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateChangedAsync(`files.${fileNameClean}.name`, { val: file.name, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.name`, {
+                                val: file.name,
+                                ack: true,
+                            });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.path`, {
                                 type: 'state',
@@ -924,7 +1055,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateChangedAsync(`files.${fileNameClean}.path`, { val: file.path, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.path`, {
+                                val: file.path,
+                                ack: true,
+                            });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.size`, {
                                 type: 'state',
@@ -950,7 +1084,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateChangedAsync(`files.${fileNameClean}.size`, { val: file.size, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.size`, {
+                                val: file.size,
+                                ack: true,
+                            });
 
                             await this.setObjectNotExistsAsync(`files.${fileNameClean}.date`, {
                                 type: 'state',
@@ -975,7 +1112,10 @@ class OctoPrint extends utils.Adapter {
                                 },
                                 native: {},
                             });
-                            await this.setStateChangedAsync(`files.${fileNameClean}.date`, { val: file.date, ack: true });
+                            await this.setStateChangedAsync(`files.${fileNameClean}.date`, {
+                                val: file.date,
+                                ack: true,
+                            });
 
                             if (this.config.pluginSlicerThumbnails) {
                                 await this.setObjectNotExistsAsync(`files.${fileNameClean}.thumbnail`, {
@@ -1025,9 +1165,14 @@ class OctoPrint extends utils.Adapter {
                                 // Remove old binary state (deprecated in js-controller 5+)
                                 await this.delObjectAsync(`files.${fileNameClean}.thumbnail.png`);
                                 if (file.thumbnail) {
-                                    this.log.debug(`[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists`);
+                                    this.log.debug(
+                                        `[refreshFiles] [plugin slicer thumbnails] thumbnail of ${fileNameClean} exists`,
+                                    );
 
-                                    await this.setStateChangedAsync(`files.${fileNameClean}.thumbnail.url`, { val: `${this.getOctoprintUri()}/${file.thumbnail}`, ack: true });
+                                    await this.setStateChangedAsync(`files.${fileNameClean}.thumbnail.url`, {
+                                        val: `${this.getOctoprintUri()}/${file.thumbnail}`,
+                                        ack: true,
+                                    });
                                 }
                             } else {
                                 await this.delObjectAsync(`files.${fileNameClean}.thumbnail`, { recursive: true });
@@ -1095,7 +1240,7 @@ class OctoPrint extends utils.Adapter {
                         }
                     }
                 })
-                .catch((err) => {
+                .catch(err => {
                     this.log.debug(`(files) error: ${err}`);
                 });
         } else {
@@ -1114,7 +1259,7 @@ class OctoPrint extends utils.Adapter {
     }
 
     removeNamespace(id) {
-        const re = new RegExp(this.namespace + '*\\.', 'g');
+        const re = new RegExp(`${this.namespace}*\\.`, 'g');
         return id.replace(re, '');
     }
 
@@ -1155,26 +1300,30 @@ class OctoPrint extends utils.Adapter {
                 headers: {
                     'X-Api-Key': this.config.octoprintApiKey,
                 },
-                validateStatus: (status) => {
+                validateStatus: status => {
                     return [200, 204, 409].indexOf(status) > -1;
                 },
                 httpsAgent: new https.Agent({
                     rejectUnauthorized: !this.config.allowSelfSignedCertificates,
                 }),
             })
-                .then((response) => {
-                    this.log.debug(`received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`);
+                .then(response => {
+                    this.log.debug(
+                        `received ${response.status} response from ${url} with content: ${JSON.stringify(response.data)}`,
+                    );
 
                     // no error - clear up reminder
                     delete this.lastErrorCode;
 
                     resolve(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     if (error.response) {
                         // The request was made and the server responded with a status code
 
-                        this.log.warn(`received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`);
+                        this.log.warn(
+                            `received ${error.response.status} response from ${url} with content: ${JSON.stringify(error.response.data)}`,
+                        );
                     } else if (error.request) {
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -1231,7 +1380,9 @@ class OctoPrint extends utils.Adapter {
         ];
         this.printerPrinting = printingStates.indexOf(printerStatus) >= 0;
 
-        this.log.debug(`updatePrinterStatus from: "${this.printerStatus}" -> printerOperational: ${this.printerOperational}, printerPrinting: ${this.printerPrinting}`);
+        this.log.debug(
+            `updatePrinterStatus from: "${this.printerStatus}" -> printerOperational: ${this.printerOperational}, printerPrinting: ${this.printerPrinting}`,
+        );
 
         this.setStateChangedAsync('printer_status', { val: this.printerStatus, ack: true });
         this.setStateChangedAsync('operational', { val: this.printerOperational, ack: true });
@@ -1244,8 +1395,12 @@ class OctoPrint extends utils.Adapter {
         for (let i = 0; i < newParts.length; i++) {
             const a = ~~newParts[i]; // parse int
             const b = ~~oldParts[i]; // parse int
-            if (a > b) return true;
-            if (a < b) return false;
+            if (a > b) {
+                return true;
+            }
+            if (a < b) {
+                return false;
+            }
         }
         return false;
     }
@@ -1264,20 +1419,19 @@ class OctoPrint extends utils.Adapter {
         let secs = Math.floor(((((timeDifference % secondsInADay) % secondsInAHour) % (60 * 1000)) / 1000) * 1);
 
         if (hours < 10) {
-            hours = '0' + hours;
+            hours = `0${hours}`;
         }
         if (mins < 10) {
-            mins = '0' + mins;
+            mins = `0${mins}`;
         }
         if (secs < 10) {
-            secs = '0' + secs;
+            secs = `0${secs}`;
         }
 
         if (days > 0) {
-            return days + 'D' + hours + ':' + mins + ':' + secs;
-        } else {
-            return hours + ':' + mins + ':' + secs;
+            return `${days}D${hours}:${mins}:${secs}`;
         }
+        return `${hours}:${mins}:${secs}`;
     }
 
     /**
@@ -1301,13 +1455,13 @@ class OctoPrint extends utils.Adapter {
     }
 }
 
-// @ts-ignore parent is a valid property on module
+// @ts-expect-error parent is a valid property on module
 if (module.parent) {
     // Export the constructor in compact mode
     /**
-     * @param {Partial<ioBroker.AdapterOptions>} [options={}]
+     * @param {Partial<ioBroker.AdapterOptions>} [options]
      */
-    module.exports = (options) => new OctoPrint(options);
+    module.exports = options => new OctoPrint(options);
 } else {
     // otherwise start the instance directly
     new OctoPrint();
