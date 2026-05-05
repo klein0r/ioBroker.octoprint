@@ -1,4 +1,14 @@
 # Older changes
+## 5.0.0 (2023-05-24)
+
+Tested with OctoPrint 1.9.0
+
+* (klein0r) Removed binary states (deprecated)
+* (klein0r) Allow self-signed certificates
+* (klein0r) Added Ukrainian language
+
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## 4.1.0 (2022-12-14)
 
 Tested with OctoPrint 1.8.6

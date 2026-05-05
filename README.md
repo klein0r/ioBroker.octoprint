@@ -50,7 +50,7 @@ iobroker add octoprint
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 7.0.0 (2026-05-05)
 
 * (copilot) Adapter requires node.js >= 22 now
 * (@klein0r) Updated dependencies
@@ -78,16 +78,6 @@ Tested with OctoPrint 1.9.3
 ### 5.0.1 (2023-05-30)
 
 * (klein0r) Allow self-signed certificates
-
-### 5.0.0 (2023-05-24)
-
-Tested with OctoPrint 1.9.0
-
-* (klein0r) Removed binary states (deprecated)
-* (klein0r) Allow self-signed certificates
-* (klein0r) Added Ukrainian language
-
-[Older changelogs can be found there](CHANGELOG_OLD.md)
 
 ## License
 

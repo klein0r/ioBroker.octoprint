@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "octoprint",
-    "version": "6.0.1",
+    "version": "7.0.0",
     "news": {
+      "7.0.0": {
+        "en": "Adapter requires node.js >= 22 now\nUpdated dependencies\nadmin 7.6.20 and js-controller 6.0.11 (or later) are required",
+        "de": "Adapter benötigt node.js >= 22 jetzt\nAktualisierte Abhängigkeiten\nadmin 7.6.20 und js-controller 6.0.11 (oder später) sind erforderlich",
+        "ru": "Адаптер требует node.js >= 22 сейчас\nОбновленные зависимости\nadmin 7.6.20 и js-контроллер 6.0.11 (или более поздний)",
+        "pt": "Adaptador requer nod.js >= 22 agora\nDependências atualizadas\nadmin 7.6.20 e js-controller 6.0.11 (ou posterior) são necessários",
+        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nBijgewerkte afhankelijkheden\nadmin 7.6.20 en js-controller 6.0.11 (of later) zijn vereist",
+        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nDépendances actualisées\nadmin 7.6.20 et js-controller 6.0.11 (ou plus tard) sont requis",
+        "it": "Adattatore richiede node.js >= 22 ora\nDipendenze aggiornate\nadmin 7.6.20 e js-controller 6.0.11 (o più tardi) sono richiesti",
+        "es": "Adaptador requiere node.js ю= 22 ahora\nDependencias actualizadas\nadmin 7.6.20 y js-controller 6.0.11 (o posterior) son necesarios",
+        "pl": "Adapter wymaga node.js > = 22\nAktualizacja zależności\nwymagane jest admin 7.6.20 i js- controller 6.0.11 (lub później)",
+        "uk": "Адаптер вимагає node.js >= 22 тепер\nОновлені залежності\nadmin 7.6.20 і js-controller 6.0.11 (або пізніше) обов'язкові",
+        "zh-cn": "适配器需要节点.js 现在22\n更新的依赖关系\n需要admin 7.6.20和js控制器 6.0.11(或以后)"
+      },
       "6.0.1": {
         "en": "Updated dependencies\nadmin 7.6.17 and js-controller 6.0.11 (or later) are required",
         "de": "Aktualisierte Abhängigkeiten\nadmin 7.6.17 und js-controller 6.0.11 (oder später) sind erforderlich",
@@ -80,19 +93,6 @@
         "pl": "Testy w wersji 1.8.6\n\n* Dropped Admin 5 support\nJęzyk ukraiński",
         "uk": "Випробувано з OctoPrint 1.8.6\n\n* Підтримка Dropped Admin 5\n* Додано українську мову",
         "zh-cn": "与Octo Print的试验1.8.6\n\n* Dro Admin 5支助\n* 增加乌克兰语"
-      },
-      "4.0.1": {
-        "en": "Tested with OctoPrint 1.8.4\n\n* Just download every thumbnail once (requires plugin Slicer Thumbnails)",
-        "de": "Getestet mit OctoPrint 1.8.4\n\n* Einfach alle Miniaturansichten einmal herunterladen (erfordert Plugin Slicer Thumbnails)",
-        "ru": "Проверено с OctoPrint 1.8.4\n\n* Просто скачайте каждый миниатюрный раз (требуется плагин Slicer Thumbnails)",
-        "pt": "Testado com OctoPrint 1.8.4\n\n* Basta baixar cada miniatura uma vez (requer plugin Slicer Thumbnails)",
-        "nl": "Vertaling:\n\n♪ download elke duimnagel eens (requires plugin Slicer Thumbnails)",
-        "fr": "Testé avec OctoPrint 1.8.4\n\n* Il suffit de télécharger chaque miniature une fois (requis plugin Slicer Thumbnails)",
-        "it": "Testato con OctoPrint 1.8.4\n\n# Basta scaricare ogni miniatura una volta (richiede plugin Slicer Thumbnails)",
-        "es": "Probada con OctoPrint 1.8.4\n\n* Sólo descarga cada miniatura una vez (requiere plugin Slicer Thumbnails)",
-        "pl": "Testy w wersji 1.8.4\n\n* Just download every thumbnail once (ang.)",
-        "uk": "Випробувано з OctoPrint 1.8.4\n\nІм'я * Просто завантажте кожну мініатюру один раз (обов'язково плагін Slicer Thumbnails)",
-        "zh-cn": "与Octo Print的试验1.8.4\n\n* A/64/50。 仅每一次挖掘一次(Requires plugin Slicer Thumbnails)"
       }
     },
     "titleLang": {
