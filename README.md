@@ -83,6 +83,8 @@ Tested with OctoPrint 1.9.3
 
 * (klein0r) Allow self-signed certificates
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 The MIT License (MIT)
