@@ -395,7 +395,7 @@
           "zh-cn": "打印机命令"
         },
         "type": "string",
-        "role": "command",
+        "role": "state",
         "read": false,
         "write": true
       },
@@ -419,7 +419,7 @@
           "zh-cn": "打印作业命令"
         },
         "type": "string",
-        "role": "command",
+        "role": "state",
         "read": false,
         "write": true
       },
@@ -443,7 +443,7 @@
           "zh-cn": "SD卡指令"
         },
         "type": "string",
-        "role": "command",
+        "role": "state",
         "read": false,
         "write": true
       },
@@ -467,7 +467,7 @@
           "zh-cn": "自定义打印机命令"
         },
         "type": "string",
-        "role": "command",
+        "role": "state",
         "read": false,
         "write": true
       },
@@ -491,7 +491,7 @@
           "zh-cn": "执行系统命令"
         },
         "type": "string",
-        "role": "command",
+        "role": "state",
         "read": false,
         "write": true
       },
