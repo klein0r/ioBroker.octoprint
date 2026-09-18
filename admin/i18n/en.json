@@ -1,6 +1,9 @@
 {
     "API-Key": "API-Key",
+    "Allow self-signed certificates": "Allow self-signed certificates",
     "Define your own printer name for this instance": "Define your own printer name for this instance",
+    "Enable plugin: Display Layer Progress": "Enable plugin: Display Layer Progress",
+    "Enable plugin: Slicer Thumbnails": "Enable plugin: Slicer Thumbnails",
     "Extended options": "Extended options",
     "IP": "IP-Address",
     "IP of your OctoPrint installation": "IP of your OctoPrint installation",
@@ -10,11 +13,8 @@
     "Refresh Interval": "Refresh Interval",
     "Refresh Interval (while operational)": "Refresh Interval (while operational)",
     "Refresh Interval (while printing)": "Refresh Interval (while printing)",
+    "Request timeout": "Request timeout in seconds",
     "can be found in the settings section of OctoPrint": "can be found in the settings section of OctoPrint",
     "in Seconds": "in Seconds",
-    "Enable plugin: Display Layer Progress": "Enable plugin: Display Layer Progress",
-    "Enable plugin: Slicer Thumbnails": "Enable plugin: Slicer Thumbnails",
-    "use HTTPS": "use HTTPS",
-    "Request timeout": "Request timeout in seconds",
-    "Allow self-signed certificates": "Allow self-signed certificates"
+    "use HTTPS": "use HTTPS"
 }

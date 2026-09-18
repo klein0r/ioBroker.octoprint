@@ -1,6 +1,9 @@
 {
     "API-Key": "API密钥",
+    "Allow self-signed certificates": "允许自签名证书",
     "Define your own printer name for this instance": "为此实例定义自己的打印机名称",
+    "Enable plugin: Display Layer Progress": "启用插件：Display Layer Progress",
+    "Enable plugin: Slicer Thumbnails": "启用插件：Slicer Thumbnails",
     "Extended options": "延长选择",
     "IP": "IP地址",
     "IP of your OctoPrint installation": "OctoPrint安装的IP",
@@ -10,11 +13,8 @@
     "Refresh Interval": "刷新间隔",
     "Refresh Interval (while operational)": "刷新间隔（运行时）",
     "Refresh Interval (while printing)": "刷新间隔（打印时）",
+    "Request timeout": "请求超时（以秒为单位）",
     "can be found in the settings section of OctoPrint": "可以在 OctoPrint 的设置部分找到",
     "in Seconds": "马上",
-    "Enable plugin: Display Layer Progress": "启用插件：Display Layer Progress",
-    "Enable plugin: Slicer Thumbnails": "启用插件：Slicer Thumbnails",
-    "use HTTPS": "使用 HTTPS",
-    "Request timeout": "请求超时（以秒为单位）",
-    "Allow self-signed certificates": "允许自签名证书"
+    "use HTTPS": "使用 HTTPS"
 }
