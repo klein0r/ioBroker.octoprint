@@ -491,7 +491,7 @@
           "zh-cn": "执行系统命令"
         },
         "type": "string",
-        "role": "state",
+        "role": "command",
         "read": false,
         "write": true
       },
@@ -535,7 +535,7 @@
           "zh-cn": "点动 X 轴"
         },
         "type": "number",
-        "role": "value",
+        "role": "level",
         "read": false,
         "write": true,
         "def": 0
@@ -560,7 +560,7 @@
           "zh-cn": "点动 Y 轴"
         },
         "type": "number",
-        "role": "value",
+        "role": "level",
         "read": false,
         "write": true,
         "def": 0
@@ -585,7 +585,7 @@
           "zh-cn": "点动 Z 轴"
         },
         "type": "number",
-        "role": "value",
+        "role": "level",
         "read": false,
         "write": true,
         "def": 0
