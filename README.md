@@ -53,6 +53,7 @@ iobroker add octoprint
 ### **WORK IN PROGRESS**
 
 * (@klein0r) Fixed invalid state roles
+* (@klein0r) Adapter requires admin >= 7.8.23 now
 
 ### 7.0.0 (2026-05-05)
 
