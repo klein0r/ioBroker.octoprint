@@ -10,9 +10,11 @@
             "items": {
                 "octoprintIp": {
                     "type": "text",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "IP",
                     "help": "IP of your OctoPrint installation"
                 },
@@ -20,25 +22,31 @@
                     "type": "number",
                     "min": 1,
                     "max": 65535,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "Port"
                 },
                 "customName": {
                     "newLine": true,
                     "type": "text",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "Name",
                     "help": "Define your own printer name for this instance"
                 },
                 "octoprintApiKey": {
                     "type": "text",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "API-Key",
                     "help": "can be found in the settings section of OctoPrint"
                 },
@@ -47,49 +55,61 @@
                     "type": "number",
                     "min": 1,
                     "max": 60,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "Request timeout"
                 },
                 "useHttps": {
                     "newLine": true,
                     "type": "checkbox",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "use HTTPS"
                 },
                 "allowSelfSignedCertificates": {
                     "hidden": "!data.useHttps",
                     "type": "checkbox",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "label": "Allow self-signed certificates"
                 },
                 "pluginDisplayLayerProgress": {
                     "newLine": true,
                     "type": "checkbox",
+                    "xs": 12,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 6,
                     "label": "Enable plugin: Display Layer Progress"
                 },
                 "pluginSlicerThumbnails": {
                     "newLine": true,
                     "type": "checkbox",
+                    "xs": 12,
                     "sm": 12,
                     "md": 12,
                     "lg": 12,
+                    "xl": 6,
                     "label": "Enable plugin: Slicer Thumbnails"
                 },
                 "_ioBrokerKursBanner": {
                     "newLine": true,
                     "type": "staticImage",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
+                    "xl": 6,
                     "href": "https://haus-automatisierung.com/iobroker-kurs/?refid=iobroker-octoprint",
                     "src": "https://haus-automatisierung.com/images/ads/ioBroker-Kurs.png"
                 }
@@ -104,9 +124,11 @@
                     "type": "number",
                     "min": 1,
                     "max": 10000,
+                    "xs": 12,
                     "sm": 12,
                     "md": 12,
-                    "lg": 12,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "Refresh Interval",
                     "help": "in Seconds"
                 },
@@ -115,9 +137,11 @@
                     "type": "number",
                     "min": 1,
                     "max": 10000,
+                    "xs": 12,
                     "sm": 12,
                     "md": 12,
-                    "lg": 12,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "Refresh Interval (while operational)",
                     "help": "in Seconds"
                 },
@@ -126,9 +150,11 @@
                     "type": "number",
                     "min": 1,
                     "max": 10000,
+                    "xs": 12,
                     "sm": 12,
                     "md": 12,
-                    "lg": 12,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "Refresh Interval (while printing)",
                     "help": "in Seconds"
                 }
